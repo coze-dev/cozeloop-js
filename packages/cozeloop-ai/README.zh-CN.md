@@ -1,4 +1,4 @@
-# Coze Loop SDK
+# CozeLoop SDK
 
 [![npm version](https://img.shields.io/npm/v/%40cozeloop%2Fai)](https://www.npmjs.com/package/@cozeloop/ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -41,7 +41,7 @@ const prompt = await promptHub.getPrompt(
 ```
 
 ## 主要特性
-- 🗄️ **Prompt Hub**: 在 [Coze Loop](https://coze.loop.cn) 平台开发、提交和发布 Prompt，使用 `PromptHub` 访问 Prompt。
+- 🗄️ **Prompt Hub**: 在 [CozeLoop](https://coze.loop.cn) 平台开发、提交和发布 Prompt，使用 `PromptHub` 访问 Prompt。
 - 🔐 **多种鉴权方式**: PAT and JWT
 - ⚙️ **可配置**: 超时、请求头、信号、调试
 

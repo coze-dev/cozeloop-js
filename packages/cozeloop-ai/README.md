@@ -1,11 +1,11 @@
-# Coze Loop SDK
+# CozeLoop SDK
 
 [![npm version](https://img.shields.io/npm/v/%40cozeloop%2Fai)](https://www.npmjs.com/package/@cozeloop/ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 English | [简体中文](./README.zh-CN.md)
 
-Official Node.js SDK for [Coze Loop](https://loop.coze.cn) API platform.
+Official Node.js SDK for [CozeLoop](https://loop.coze.cn) API platform.
 
 ## Quick Start
 
@@ -41,7 +41,7 @@ const prompt = await promptHub.getPrompt(
 ```
 
 ## Key Features
-- 🗄️ **Prompt Hub**: Develop, submit and publish prompts on [Coze Loop](https://coze.loop.cn), and access them it via `PromptHub`
+- 🗄️ **Prompt Hub**: Develop, submit and publish prompts on [CozeLoop](https://coze.loop.cn), and access them it via `PromptHub`
 - 🔐 **Authentication Methods**: PAT and JWT
 - ⚙️ **Configurable**: Timeout, headers, signal, debug options
 

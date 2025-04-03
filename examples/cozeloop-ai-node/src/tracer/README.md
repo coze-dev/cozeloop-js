@@ -59,7 +59,7 @@ await loopTracer.traceable(
 | Params | Types | Description |
 |--------|-------|-------------|
 | apiClient | LoopApiClient | The Loop API client |
-| workspaceId | string? | Coze Loop workspace ID |
+| workspaceId | string? | CozeLoop workspace ID |
 | ultraLargeReport | boolean? | Allow ultra long text report. If true, the entire content of input and output will be uploaded and reported when exceed the length limit |
 | recordInputs | boolean? | Allow input info reporting. Default: true |
 | recordOutputs | boolean? | Allow output info reporting. Default: true |
