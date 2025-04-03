@@ -1,0 +1,26 @@
+{
+  "name": "@cozeloop/ai-node-example",
+  "version": "0.0.1",
+  "description": "@cozeloop/ai node examples",
+  "author": "qihai <qihai@bytedance.com>",
+  "scripts": {
+    "lint": "eslint ./ --cache",
+    "ready": "rush rebuild -T .",
+    "run:all": "tsx ./src/index.ts",
+    "test": "echo \"skip test\"",
+    "tsx": "tsx"
+  },
+  "dependencies": {
+    "@cozeloop/ai": "workspace:*",
+    "axios": "^1.7.7"
+  },
+  "devDependencies": {
+    "@loop-infra/eslint-config": "workspace:*",
+    "@loop-infra/ts-config": "workspace:*",
+    "@loop-infra/vitest-config": "workspace:*",
+    "@types/node": "^20",
+    "dotenv": "~16.4.7",
+    "tsx": "^4.19.3",
+    "typescript": "^5.5.3"
+  }
+}

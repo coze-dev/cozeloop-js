@@ -1,0 +1,74 @@
+# valid this file: curl --data-binary @codecov.yml https://codecov.io/validate
+# reference doc: https://docs.codecov.com/docs/common-recipe-list#set-project-coverage-checks-on-a-pull-request
+
+# codecov:
+#   require_ci_to_pass: false
+#   notify:
+#     wait_for_ci: false
+
+# for overall project coverage
+coverage:
+  status:
+    project:
+      default:
+        target: 90%
+        threshold: 1%
+    patch:
+      default:
+        target: 90%
+        threshold: 10%
+
+comment:
+  layout: 'header, diff, components, files' # show component info in the PR comment
+  require_changes: false # if true: only post the comment if coverage changes
+  require_base: false # [true :: must have a base report to post]
+  require_head: true # [true :: must have a head report to post]
+  hide_project_coverage: true # [true :: only show coverage on the git diff aka patch coverage]]
+
+# reference doc: https://docs.codecov.com/docs/components
+component_management:
+  default_rules: # default rules that will be inherited by all components
+    statuses:
+      - type: project
+        target: 90%
+        threshold: 1%
+      - type: patch
+        target: 90%
+        threshold: 10%
+
+  individual_components:
+    - component_id: cozeloop-ai # this is an identifier that should not be changed
+      name: cozeloop-ai # this is a display name, and can be changed freely
+      paths:
+        - packages/cozeloop-ai/**
+      statuses:
+        - type: project
+          target: 90%
+          threshold: 1%
+        - type: patch
+          target: 90%
+          threshold: 10%
+
+    - component_id: realtime-api # this is an identifier that should not be changed
+      name: realtime-api # this is a display name, and can be changed freely
+      paths:
+        - packages/realtime-api/**
+      statuses:
+        - type: project
+          target: 90%
+          threshold: 1%
+        - type: patch
+          target: 90%
+          threshold: 10%
+
+    - component_id: chat-sdk # this is an identifier that should not be changed
+      name: chat-sdk # this is a display name, and can be changed freely
+      paths:
+        - packages/chat-sdk/**
+      statuses:
+        - type: project
+          target: 20%
+          threshold: 1%
+        - type: patch
+          target: 0%
+          threshold: 1%

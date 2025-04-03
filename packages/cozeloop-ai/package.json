@@ -1,0 +1,75 @@
+{
+  "name": "@cozeloop/ai",
+  "version": "0.0.2",
+  "description": "Official Node.js SDK of Coze Loop | 扣子罗盘官方 Node.js SDK",
+  "keywords": [
+    "cozeloop",
+    "ai",
+    "nodejs",
+    "sdk",
+    "typescript"
+  ],
+  "author": "qihai <mocayo@qq.com>",
+  "exports": {
+    ".": {
+      "types": "./dist/typings/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/typings/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "README.zh-CN.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "lint": "eslint ./ --cache",
+    "prepublishOnly": "npm run build",
+    "start": "vitest watch",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
+    "vitest": "vitest"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "~1.9.0",
+    "@opentelemetry/core": "~1.30.1",
+    "@opentelemetry/resources": "~1.30.1",
+    "@opentelemetry/sdk-node": "~0.57.2",
+    "@opentelemetry/sdk-trace-base": "~1.30.1",
+    "@opentelemetry/sdk-trace-node": "~1.30.1",
+    "form-data": "^4.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^3.x",
+    "node-fetch": "^2.x",
+    "promise-retry": "~2.0.1",
+    "quick-lru": "^5.x",
+    "remeda": "^2.21.2",
+    "set-interval-async": "^3.0.3"
+  },
+  "devDependencies": {
+    "@loop-infra/eslint-config": "workspace:*",
+    "@loop-infra/ts-config": "workspace:*",
+    "@loop-infra/vitest-config": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/node": "^20",
+    "@types/node-fetch": "^2.x",
+    "@types/promise-retry": "~1.1.6",
+    "@vitest/coverage-v8": "~2.1.4",
+    "axios": "^1.7.7",
+    "dotenv": "~16.4.7",
+    "msw": "^2.7.3",
+    "rimraf": "~3.0.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.5.3",
+    "vitest": "~2.1.4"
+  },
+  "peerDependencies": {
+    "axios": "^1.7.1"
+  }
+}
