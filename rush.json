@@ -16,7 +16,7 @@
    * path segment in the "$schema" field for all your Rush config files.  This will ensure
    * correct error-underlining and tab-completion for editors such as VS Code.
    */
-  "rushVersion": "5.133.3",
+  "rushVersion": "5.140.0",
 
   /**
    * The next field selects which package manager should be installed and determines its version.
@@ -26,8 +26,7 @@
    * Specify one of: "pnpmVersion", "npmVersion", or "yarnVersion".  See the Rush documentation
    * for details about these alternatives.
    */
-  "pnpmVersion": "8.15.8",
-
+  "pnpmVersion": "9.12.3",
   // "npmVersion": "6.14.15",
   // "yarnVersion": "1.9.4",
 
@@ -42,7 +41,7 @@
    * LTS schedule: https://nodejs.org/en/about/releases/
    * LTS versions: https://nodejs.org/en/download/releases/
    */
-  "nodeSupportedVersionRange": ">=18.20.3 <19.0.0 || >=20.14.0 <21.0.0",
+  "nodeSupportedVersionRange": ">=18",
 
   /**
    * If the version check above fails, Rush will display a message showing the current
