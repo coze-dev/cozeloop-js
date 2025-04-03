@@ -168,7 +168,8 @@ function formatObjectStorage(storage?: ObjectStorage) {
 
 export class LoopTraceSpanConverter {
   private readonly MAX_RETRIES = 3;
-  private readonly MAX_TEXT_SIZE = 4 * 1024 * 1024;
+  /** 1 MB */
+  private readonly MAX_TEXT_SIZE = 1 * 1024 * 1024;
   private readonly MAX_TAG_SIZE = 1024;
   private readonly MAX_TEXT_TRUNCATION_LENGTH = 1000;
   private readonly LONG_TEXT_TOS_KEY_SUFFIX = 'large_text';
@@ -419,9 +420,11 @@ export class LoopTraceSpanConverter {
         file: Buffer.from(serializedValue),
         tos_key: tosKey,
       });
+
+      return serializedValue.slice(0, this.MAX_TEXT_TRUNCATION_LENGTH);
     }
 
-    return serializedValue.slice(0, this.MAX_TEXT_TRUNCATION_LENGTH);
+    return serializedValue.slice(0, this.MAX_TEXT_SIZE);
   }
 
   private convertInput(value: SerializedTagValue) {
