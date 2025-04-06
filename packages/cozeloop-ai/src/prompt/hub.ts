@@ -9,7 +9,12 @@ import {
 import { formatPromptTemplate } from './utils';
 import { type PromptVariables, type PromptHubOptions } from './types';
 import { PromptCache } from './cache';
-import { COZELOOP_TRACE_TAGS, SpanKind, cozeLoopTracer } from '../tracer';
+import {
+  COZELOOP_TRACE_BUSINESS_TAGS,
+  COZELOOP_TRACE_BASIC_TAGS,
+  SpanKind,
+  cozeLoopTracer,
+} from '../tracer';
 import { type Prompt, PromptApi } from '../api';
 
 export class PromptHub {
@@ -85,12 +90,12 @@ export class PromptHub {
           name: 'PromptHub',
           type: SpanKind.PromptHub,
           attributes: {
-            [COZELOOP_TRACE_TAGS.SPAN_INPUT]: JSON.stringify({
+            [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: JSON.stringify({
               prompt_key: key,
               prompt_version: version,
             }),
-            prompt_key: key,
-            prompt_version: version,
+            [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_KEY]: key,
+            [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_VERSION]: version,
           },
         },
       );
@@ -120,9 +125,9 @@ export class PromptHub {
             prompt?.prompt_template,
             variables,
           );
-          span.setAttribute(
-            COZELOOP_TRACE_TAGS.SPAN_OUTPUT,
-            JSON.stringify(toLoopTraceSpanPromptTemplateMessages(messages)),
+          cozeLoopTracer.setOutput(
+            span,
+            toLoopTraceSpanPromptTemplateMessages(messages),
           );
 
           return messages;
@@ -131,14 +136,14 @@ export class PromptHub {
           name: 'PromptTemplate',
           type: SpanKind.PromptTemplate,
           attributes: {
-            [COZELOOP_TRACE_TAGS.SPAN_INPUT]: JSON.stringify(
+            [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: JSON.stringify(
               toLoopTraceSpanPromptTemplateInput(
                 prompt?.prompt_template.messages,
                 variables,
               ),
             ),
-            prompt_key: prompt?.prompt_key,
-            prompt_version: prompt?.version,
+            [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_KEY]: prompt?.prompt_key,
+            [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_VERSION]: prompt?.version,
           },
         },
       );

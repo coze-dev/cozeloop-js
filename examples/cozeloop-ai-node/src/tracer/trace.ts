@@ -1,6 +1,10 @@
 import { setTimeout } from 'node:timers/promises';
 
-import { COZELOOP_TRACE_TAGS, cozeLoopTracer, SpanKind } from '@cozeloop/ai';
+import {
+  COZELOOP_TRACE_BASIC_TAGS,
+  cozeLoopTracer,
+  SpanKind,
+} from '@cozeloop/ai';
 
 async function fakeLLMCall() {
   await setTimeout(2000, [{ role: 'assistant', content: "hi, I'm xx model" }]);
@@ -25,7 +29,7 @@ export async function run() {
     async span => {
       // set input
       span.setAttribute(
-        COZELOOP_TRACE_TAGS.SPAN_INPUT,
+        COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT,
         JSON.stringify([{ role: 'user', content: 'hi' }]),
       );
       // invoke/stream model

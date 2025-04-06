@@ -4,9 +4,10 @@ import { type ReadableSpan } from '@opentelemetry/sdk-trace-base';
 import { suppressTracing } from '@opentelemetry/core';
 import { type Span, context } from '@opentelemetry/api';
 
-import { getTracer, reportError, serializeTagValue } from './utils';
+import { setError } from './utils/tags';
+import { getTracer, serializeTagValue } from './utils';
 import { type LoopTraceWrapperOptions } from './types';
-import { COZELOOP_TRACE_OPTIONS, COZELOOP_TRACE_TAGS } from './constants';
+import { COZELOOP_TRACE_OPTIONS, COZELOOP_TRACE_BASIC_TAGS } from './constants';
 
 function isAsyncFunc<F extends (...args: Parameters<F>) => ReturnType<F>>(
   fn: F,
@@ -25,7 +26,7 @@ function reportTraceExecuteError({
   endWhenDone: boolean;
 }) {
   if (span.isRecording()) {
-    reportError(span, error instanceof Error ? error.message : undefined);
+    setError(span, error instanceof Error ? error.message : undefined);
     if (endWhenDone) {
       span.end();
     }
@@ -60,8 +61,8 @@ function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
       `${name}.${type}`,
       {
         attributes: {
-          [COZELOOP_TRACE_TAGS.SPAN_NAME]: name,
-          [COZELOOP_TRACE_TAGS.SPAN_TYPE]: type,
+          [COZELOOP_TRACE_BASIC_TAGS.SPAN_NAME]: name,
+          [COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE]: type,
         },
       },
       activeContext,
@@ -89,34 +90,36 @@ function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
           ] as boolean;
 
           span.setAttribute(
-            COZELOOP_TRACE_TAGS.SPAN_ULTRA_LARGE_REPORT,
+            COZELOOP_TRACE_BASIC_TAGS.SPAN_ULTRA_LARGE_REPORT,
             ultraLargeReport ?? globalUltraLargeReport ?? false,
           );
 
-          const customInput = spanAttributes[COZELOOP_TRACE_TAGS.SPAN_INPUT];
+          const customInput =
+            spanAttributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT];
 
           if (customInput) {
             span.setAttribute(
-              COZELOOP_TRACE_TAGS.SPAN_INPUT,
+              COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT,
               serializeTagValue(customInput),
             );
           } else if (globalRecordInputs && recordInputs) {
             span.setAttribute(
-              COZELOOP_TRACE_TAGS.SPAN_INPUT,
+              COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT,
               serializeTagValue(args),
             );
           }
 
-          const customOutput = spanAttributes[COZELOOP_TRACE_TAGS.SPAN_OUTPUT];
+          const customOutput =
+            spanAttributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_OUTPUT];
 
           if (customOutput) {
             span.setAttribute(
-              COZELOOP_TRACE_TAGS.SPAN_OUTPUT,
+              COZELOOP_TRACE_BASIC_TAGS.SPAN_OUTPUT,
               serializeTagValue(customOutput),
             );
           } else if (globalRecordOutputs && recordOutputs) {
             span.setAttribute(
-              COZELOOP_TRACE_TAGS.SPAN_OUTPUT,
+              COZELOOP_TRACE_BASIC_TAGS.SPAN_OUTPUT,
               serializeTagValue(result),
             );
           }

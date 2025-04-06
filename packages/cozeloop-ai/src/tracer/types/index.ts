@@ -4,6 +4,8 @@ export enum SpanKind {
   PromptHub = 'prompt_hub',
   PromptTemplate = 'prompt_template',
   Model = 'model',
+  Retriever = 'retriever',
+  Tool = 'tool',
 }
 
 export type SpanType = SpanKind | string;
