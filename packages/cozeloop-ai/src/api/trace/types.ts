@@ -38,6 +38,8 @@ export interface Span {
   input: string;
   /** Output */
   output: string;
+  /** Latency of first response */
+  latency_first_resp?: number;
   /** Object storage information */
   object_storage?: string;
   /** System tags of string type */

@@ -22,6 +22,7 @@ export enum COZELOOP_TRACE_TAGS {
   PARENT_SPAN_ID = 'cozeloop_parent_span_id',
   SPAN_WORKSPACE_ID = 'cozeloop_workspace_id',
   SPAN_ULTRA_LARGE_REPORT = 'cozeloop_ultra_large_report',
+  START_TIME_FIRST_RESP = 'cozeloop_start_time_first_resp',
 
   // Reserved tags
   SPAN_LOG_ID = 'cozeloop_span_log_id',
