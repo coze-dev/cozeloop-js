@@ -27,7 +27,7 @@ export interface OAuthJWTFlowOptions {
   appId?: string;
   /** Api endpoint, inferred from `baseURL` */
   aud?: string;
-  /** Public key, use process.env.COZELOOP_JWT_OAUTH_CLIENT_ID when unprovided */
+  /** Public key, use process.env.COZELOOP_JWT_OAUTH_PUBLIC_KEY_ID when unprovided */
   keyid?: string;
   /** Private key, use process.env.COZELOOP_JWT_OAUTH_PRIVATE_KEY when unprovided */
   privateKey?: string;
@@ -70,37 +70,37 @@ export class OAuthJWTFlow extends OAuthBaseFlow {
     'baseURL' | 'appId' | 'privateKey' | 'keyid' | 'aud'
   >;
 
-  constructor(options: OAuthJWTFlowOptions) {
-    super(options.logger, 'OAuthJWTFlow');
+  constructor(options?: OAuthJWTFlowOptions) {
+    super(options?.logger, 'OAuthJWTFlow');
     const baseURL = ensureProperty({
       propName: 'baseURL',
       envKey: EnvKeys.API_BASE_URL,
       tag: this._tag,
-      value: options.baseURL,
+      value: options?.baseURL,
     });
 
     const appId = ensureProperty({
       propName: 'appId',
       envKey: EnvKeys.JWT_OAUTH_CLIENT_ID,
       tag: this._tag,
-      value: options.appId,
+      value: options?.appId,
     });
 
     const privateKey = ensureProperty({
       propName: 'privateKey',
       envKey: EnvKeys.JWT_OAUTH_PRIVATE_KEY,
-      value: options.privateKey,
+      value: options?.privateKey,
       tag: this._tag,
     });
 
     const keyid = ensureProperty({
       propName: 'keyid',
       envKey: EnvKeys.JWT_OAUTH_PUBLIC_KEY_ID,
-      value: options.keyid,
+      value: options?.keyid,
       tag: this._tag,
     });
 
-    const aud = options.aud || new URL(baseURL).host;
+    const aud = options?.aud || new URL(baseURL).host;
 
     this._options = { ...options, aud, appId, baseURL, privateKey, keyid };
   }
