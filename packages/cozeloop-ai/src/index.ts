@@ -15,7 +15,8 @@ export type * from './prompt';
 // tracer
 export {
   SpanKind,
-  COZELOOP_TRACE_TAGS,
+  COZELOOP_TRACE_BASIC_TAGS,
+  COZELOOP_TRACE_BUSINESS_TAGS,
   CozeLoopTraceClient,
   CozeLoopTraceExporter,
   cozeLoopTracer,

@@ -34,10 +34,7 @@ const hub = new PromptHub({
 await loopTracer.traceable(
   async span => {
     // set input
-    span.setAttribute(
-      LOOP_TRACE_TAGS.SPAN_INPUT,
-      JSON.stringify([{ role: 'user', content: 'hi' }]),
-    );
+    loopTracer.setInput(span, [{ role: 'user', content: 'hi' }]);
     // invoke/stream model
     const result = await fakeLLMCall();
 
@@ -73,6 +70,11 @@ await loopTracer.traceable(
 * Methods of `loopTracer`
   * `initialize(options: LoopTraceInitializeOptions)`
   * `traceable<F extends (span: Span) => ReturnType<F>>(fn: F, options: LoopTraceWrapperOptions): ReturnType<F>`
+  * `setInput`
+  * `setOutput`
+  * `setTag`
+  * `setTags`
+  * `setError`
   * `forceFlush`
   * `shutdown`
 

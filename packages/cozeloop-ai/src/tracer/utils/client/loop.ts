@@ -13,8 +13,9 @@ import { SpanKind, type SerializedTagValue } from '../../types';
 import {
   COZELOOP_LOGGER_TRACER_TAG,
   COZELOOP_TRACE_SPAN_STATUS_CODE,
-  COZELOOP_TRACE_TAGS,
+  COZELOOP_TRACE_BASIC_TAGS,
   ROOT_SPAN_PARENT_ID,
+  COZELOOP_TRACE_BUSINESS_TAGS,
 } from '../../constants';
 import { LoopLoggable, simpleConsoleLogger } from '../../../utils/logger';
 import {
@@ -197,7 +198,7 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       attachments: [],
     };
     this._ultraLargeReport = span.attributes[
-      COZELOOP_TRACE_TAGS.SPAN_ULTRA_LARGE_REPORT
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_ULTRA_LARGE_REPORT
     ] as boolean;
   }
 
@@ -248,7 +249,9 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       this._cutOffTagKeys,
     );
 
-    const spanType = attributes?.[COZELOOP_TRACE_TAGS.SPAN_TYPE] as SpanKind;
+    const spanType = attributes?.[
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE
+    ] as SpanKind;
 
     const runtimeInfo: LoopTraceRunTime = {
       language: 'ts',
@@ -303,8 +306,8 @@ export class LoopTraceSpanConverter extends LoopLoggable {
     const spanCustomTags = Object.entries(this._span.attributes)
       .filter(
         ([key]) =>
-          !Object.values(COZELOOP_TRACE_TAGS).includes(
-            key as COZELOOP_TRACE_TAGS,
+          !Object.values(COZELOOP_TRACE_BASIC_TAGS).includes(
+            key as COZELOOP_TRACE_BASIC_TAGS,
           ),
       )
       .reduce((pre, [originalKey, originalValue]) => {
@@ -487,15 +490,15 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       this._span;
 
     const input = this.convertInput(
-      attributes[COZELOOP_TRACE_TAGS.SPAN_INPUT] as SerializedTagValue,
+      attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT] as SerializedTagValue,
     );
     const output = this.convertOutput(
-      attributes[COZELOOP_TRACE_TAGS.SPAN_OUTPUT] as SerializedTagValue,
+      attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_OUTPUT] as SerializedTagValue,
     );
 
     const startTimeMicros = convertHrTimeToMicroseconds(startTime);
     const startTimeFirstResp = attributes[
-      COZELOOP_TRACE_TAGS.START_TIME_FIRST_RESP
+      COZELOOP_TRACE_BUSINESS_TAGS.START_TIME_FIRST_RESP
     ] as number | undefined;
 
     return {
@@ -505,8 +508,8 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       trace_id: this._span.spanContext().traceId,
       duration: Math.max(convertHrTimeToMicroseconds(duration), 0),
       workspace_id: this._workspaceId,
-      span_name: attributes[COZELOOP_TRACE_TAGS.SPAN_NAME] as string,
-      span_type: attributes[COZELOOP_TRACE_TAGS.SPAN_TYPE] as string,
+      span_name: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_NAME] as string,
+      span_type: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE] as string,
       method: '',
       status_code:
         status.code === SpanStatusCode.ERROR
