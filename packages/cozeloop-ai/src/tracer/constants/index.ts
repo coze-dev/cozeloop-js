@@ -19,8 +19,6 @@ export enum COZELOOP_TRACE_TAGS {
   SPAN_OUTPUT = 'cozeloop_span_output',
   PARENT_SPAN_ID = 'cozeloop_parent_span_id',
   SPAN_WORKSPACE_ID = 'cozeloop_workspace_id',
-  // 0 -> success, non-0 -> error
-  SPAN_STATUS_CODE = 'cozeloop_status_code',
   SPAN_ULTRA_LARGE_REPORT = 'cozeloop_ultra_large_report',
 
   // Reserved tags

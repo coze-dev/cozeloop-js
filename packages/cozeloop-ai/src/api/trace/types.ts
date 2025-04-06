@@ -32,6 +32,8 @@ export interface Span {
   method: string;
   /** Status code */
   status_code: number;
+  /** Error message */
+  error?: string;
   /** Input */
   input: string;
   /** Output */
