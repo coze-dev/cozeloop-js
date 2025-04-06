@@ -499,6 +499,7 @@ export class LoopTraceSpanConverter {
         status.code === SpanStatusCode.ERROR
           ? COZELOOP_TRACE_SPAN_STATUS_CODE.ERROR
           : COZELOOP_TRACE_SPAN_STATUS_CODE.SUCCESS,
+      error: status.message,
       input,
       output,
       object_storage: formatObjectStorage(this._objectStorage),
