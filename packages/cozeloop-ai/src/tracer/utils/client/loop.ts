@@ -493,8 +493,13 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       attributes[COZELOOP_TRACE_TAGS.SPAN_OUTPUT] as SerializedTagValue,
     );
 
+    const startTimeMicros = convertHrTimeToMicroseconds(startTime);
+    const startTimeFirstResp = attributes[
+      COZELOOP_TRACE_TAGS.START_TIME_FIRST_RESP
+    ] as number | undefined;
+
     return {
-      started_at_micros: convertHrTimeToMicroseconds(startTime),
+      started_at_micros: startTimeMicros,
       span_id: this._span.spanContext().spanId,
       parent_id: parentSpanId || ROOT_SPAN_PARENT_ID,
       trace_id: this._span.spanContext().traceId,
@@ -510,6 +515,9 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       error: status.message,
       input,
       output,
+      latency_first_resp: startTimeFirstResp
+        ? startTimeFirstResp - startTimeMicros
+        : undefined,
       object_storage: formatObjectStorage(this._objectStorage),
       ...this.getSpanCustomTags(),
       ...this.getSpanSystemTags(),
