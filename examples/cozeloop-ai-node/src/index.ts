@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 
-import { run as runTrace } from './tracer/trace';
+import { run as runTrace } from './tracer';
 import { run as runPromptHub } from './prompt/hub';
 import { run as runOAuthJwt } from './auth/oauth-jwt';
 import { run as runApiClient } from './api/api-client';
