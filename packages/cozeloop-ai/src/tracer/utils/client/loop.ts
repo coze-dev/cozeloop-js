@@ -9,7 +9,7 @@ import { type ReadableSpan } from '@opentelemetry/sdk-trace-node';
 import { type AttributeValue, SpanStatusCode } from '@opentelemetry/api';
 
 import { convertHrTimeToMicroseconds, safeJSONParse } from '../index';
-import { type SerializedTagValue } from '../../types';
+import { SpanKind, type SerializedTagValue } from '../../types';
 import {
   COZELOOP_LOGGER_TRACER_TAG,
   COZELOOP_TRACE_SPAN_STATUS_CODE,
@@ -27,7 +27,9 @@ import {
   type LoopTraceLLMCallMessage,
   type Attachments,
   type LoopTraceLLMCallMessagePart,
+  type LoopTraceRunTime,
 } from '../../../api';
+import packageJson from '../../../../package.json';
 
 type SpanSystemTags = Pick<
   Span,
@@ -240,18 +242,21 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       system_tags_double: {},
     };
 
-    const { resource } = this._span;
+    const { attributes } = this._span;
 
     spanSystemTags.system_tags_string.cut_off = JSON.stringify(
       this._cutOffTagKeys,
     );
 
-    spanSystemTags.system_tags_string.run_time = JSON.stringify({
-      language: 'typescript',
-      runtime: resource.attributes['process.runtime.name'],
-      runtime_version: resource.attributes['process.runtime.version'],
-      telemetry_sdk_version: resource.attributes['telemetry.sdk.version'],
-    });
+    const spanType = attributes?.[COZELOOP_TRACE_TAGS.SPAN_TYPE] as SpanKind;
+
+    const runtimeInfo: LoopTraceRunTime = {
+      language: 'ts',
+      loop_sdk_version: packageJson.version,
+      scene: Object.values(SpanKind).includes(spanType) ? spanType : 'custom',
+    };
+
+    spanSystemTags.system_tags_string.run_time = JSON.stringify(runtimeInfo);
 
     return spanSystemTags;
   }

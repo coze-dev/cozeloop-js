@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 export enum SpanKind {
   PromptHub = 'prompt_hub',
-  PromptTemplate = 'prompt',
+  PromptTemplate = 'prompt_template',
   Model = 'model',
 }
 
