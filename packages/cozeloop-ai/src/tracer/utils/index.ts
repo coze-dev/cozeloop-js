@@ -9,7 +9,12 @@ import {
 } from '@opentelemetry/api';
 
 import { type SerializedTagValue } from '../types';
-import { COZELOOP_TRACE_IDENTIFIER, COZELOOP_TRACE_TAGS } from '../constants';
+import {
+  COZELOOP_LOGGER_TRACER_TAG,
+  COZELOOP_TRACE_IDENTIFIER,
+  COZELOOP_TRACE_TAGS,
+} from '../constants';
+import { COZELOOP_LOGGER_TAG } from '../../utils/logger';
 
 export function getTracer() {
   return trace.getTracer(COZELOOP_TRACE_IDENTIFIER.LOOP);
@@ -34,7 +39,8 @@ export function reportError(span: Span, errorMessage?: string) {
   const { attributes } = span as unknown as ReadableSpan;
 
   console.error(
-    `[LoopSDKTracerError]: errorMessage=${errorMessage}, spanName=${
+    `[${COZELOOP_LOGGER_TAG}] [${COZELOOP_LOGGER_TRACER_TAG}]
+    Business custom function execution error, errorMessage=${errorMessage}, spanName=${
       attributes?.[COZELOOP_TRACE_TAGS.SPAN_NAME]
     }, spanType=${attributes?.[COZELOOP_TRACE_TAGS.SPAN_TYPE]}, spanId=${
       span.spanContext().spanId

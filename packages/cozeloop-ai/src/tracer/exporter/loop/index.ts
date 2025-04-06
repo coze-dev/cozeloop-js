@@ -5,8 +5,12 @@ import {
   type SpanExporter,
 } from '@opentelemetry/sdk-trace-node';
 
-import { COZELOOP_TRACE_IDENTIFIER } from '../../constants';
+import {
+  COZELOOP_LOGGER_TRACER_TAG,
+  COZELOOP_TRACE_IDENTIFIER,
+} from '../../constants';
 import { CozeLoopTraceClient } from '../../client';
+import { LoopLoggable, simpleConsoleLogger } from '../../../utils/logger';
 import { type LoopApiClient } from '../../../api/types';
 
 interface LoopTraceExporterOptions {
@@ -14,11 +18,15 @@ interface LoopTraceExporterOptions {
   workspaceId: string;
 }
 
-export class CozeLoopTraceExporter implements SpanExporter {
+export class CozeLoopTraceExporter
+  extends LoopLoggable
+  implements SpanExporter
+{
   protected _workspaceId: string;
   protected _loopTraceClient: CozeLoopTraceClient;
 
   constructor(options: LoopTraceExporterOptions) {
+    super(simpleConsoleLogger, COZELOOP_LOGGER_TRACER_TAG);
     const { workspaceId, apiClient } = options;
 
     this._workspaceId = workspaceId;
@@ -38,14 +46,10 @@ export class CozeLoopTraceExporter implements SpanExporter {
   }
 
   async shutdown(): Promise<void> {
-    await console.warn(
-      '[LoopSDKTracerWarning]: Shutdown CozeLoopTraceExporter',
-    );
+    await this.loopLogger.warn('Shutdown CozeLoopTraceExporter');
   }
 
   async forceFlush(): Promise<void> {
-    await console.warn(
-      '[LoopSDKTracerWarning]: Forces to export all finished spans',
-    );
+    await this.loopLogger.warn('Forces to export all finished spans');
   }
 }

@@ -10,10 +10,14 @@ import {
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { Resource } from '@opentelemetry/resources';
 
+import { COZELOOP_LOGGER_TAG } from '../utils/logger';
 import { ensureProperty, EnvKeys } from '../utils/env';
 import { type LoopTraceInitializeOptions } from './types';
 import { CozeLoopTraceExporter } from './exporter';
-import { COZELOOP_TRACE_OPTIONS } from './constants';
+import {
+  COZELOOP_LOGGER_TRACER_TAG,
+  COZELOOP_TRACE_OPTIONS,
+} from './constants';
 
 function instantiateProcessor(
   processor: LoopTraceInitializeOptions['processor'],
@@ -92,7 +96,9 @@ export const tracerInitModule = (function () {
   }
 
   function forceFlush() {
-    console.warn('[LoopSDKTracerWarning]: Forces to export all finished spans');
+    console.warn(
+      `[${COZELOOP_LOGGER_TAG}] [${COZELOOP_LOGGER_TRACER_TAG}] Forces to export all finished spans`,
+    );
     _spanProcessor?.forceFlush();
   }
 
