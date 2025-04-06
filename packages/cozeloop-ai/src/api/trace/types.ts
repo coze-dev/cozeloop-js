@@ -158,3 +158,11 @@ export interface LoopTracePromptTemplateInput {
   templates?: LoopTraceLLMCallMessage[];
   arguments?: LoopTracePromptTemplateArgument[];
 }
+
+export interface LoopTraceRunTime {
+  language: 'go' | 'python' | 'ts';
+  loop_sdk_version?: string;
+  scene?: string;
+  library?: 'eino' | 'langchain';
+  library_version?: string;
+}
