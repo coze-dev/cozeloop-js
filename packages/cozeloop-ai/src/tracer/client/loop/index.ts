@@ -3,6 +3,8 @@
 import { type ReadableSpan } from '@opentelemetry/sdk-trace-node';
 
 import { LoopTraceSpanConverter } from '../../utils/client';
+import { COZELOOP_LOGGER_TRACER_TAG } from '../../constants';
+import { LoopLoggable, simpleConsoleLogger } from '../../../utils/logger';
 import { type LoopApiClient } from '../../../api/types';
 import { TraceApi } from '../../../api';
 
@@ -11,11 +13,12 @@ interface LoopTraceClientInitOptions {
   workspaceId: string;
 }
 
-export class CozeLoopTraceClient {
+export class CozeLoopTraceClient extends LoopLoggable {
   protected _api: TraceApi;
   protected _workspaceId: string;
 
   constructor(options: LoopTraceClientInitOptions) {
+    super(simpleConsoleLogger, COZELOOP_LOGGER_TRACER_TAG);
     const { workspaceId, apiClient } = options;
     this._workspaceId = workspaceId;
     this._api = new TraceApi(apiClient);
@@ -39,8 +42,8 @@ export class CozeLoopTraceClient {
         }),
       });
     } catch (error) {
-      console.error(
-        `[LoopSDKTracerError]: Report span error, errorMessage=${error instanceof Error ? error.message : '-'}`,
+      this.loopLogger.error(
+        `Report span error, errorMessage=${error instanceof Error ? error.message : '-'}`,
       );
     }
   }

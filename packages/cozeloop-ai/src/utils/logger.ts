@@ -4,6 +4,8 @@ import { stringifyVal } from './common';
 
 type LoggerLevel = 'info' | 'debug' | 'warn' | 'error';
 
+export const COZELOOP_LOGGER_TAG = 'CozeLoop';
+
 export interface SimpleLogger {
   (msg: string, level?: LoggerLevel): void;
 }
@@ -50,9 +52,7 @@ function buildLogger(
       return;
     }
 
-    const message = tag
-      ? `[${tag}] ${formatMessage(messages)}`
-      : formatMessage(messages);
+    const message = `[${COZELOOP_LOGGER_TAG}] ${tag ? `[${tag}] ` : ''}${formatMessage(messages)}`;
 
     logger(message, level);
   };

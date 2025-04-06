@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 export const ROOT_SPAN_PARENT_ID = '0';
 
+export const COZELOOP_LOGGER_TRACER_TAG = 'Tracer';
+
 export enum COZELOOP_TRACE_IDENTIFIER {
   LOOP = 'cozeloop-js',
 }

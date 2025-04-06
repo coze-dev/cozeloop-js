@@ -11,10 +11,12 @@ import { type AttributeValue, SpanStatusCode } from '@opentelemetry/api';
 import { convertHrTimeToMicroseconds, safeJSONParse } from '../index';
 import { type SerializedTagValue } from '../../types';
 import {
+  COZELOOP_LOGGER_TRACER_TAG,
   COZELOOP_TRACE_SPAN_STATUS_CODE,
   COZELOOP_TRACE_TAGS,
   ROOT_SPAN_PARENT_ID,
 } from '../../constants';
+import { LoopLoggable, simpleConsoleLogger } from '../../../utils/logger';
 import {
   type LoopTraceLLMCallOutput,
   type LoopTraceLLMCallInput,
@@ -166,7 +168,7 @@ function formatObjectStorage(storage?: ObjectStorage) {
     : '';
 }
 
-export class LoopTraceSpanConverter {
+export class LoopTraceSpanConverter extends LoopLoggable {
   private readonly MAX_RETRIES = 3;
   /** 1 MB */
   private readonly MAX_TEXT_SIZE = 1 * 1024 * 1024;
@@ -182,6 +184,7 @@ export class LoopTraceSpanConverter {
   private _cutOffTagKeys: string[] = [];
 
   constructor(options: LoopTraceSpanConverterOptions) {
+    super(simpleConsoleLogger, COZELOOP_LOGGER_TRACER_TAG);
     const { span, api, workspaceId } = options;
     this._span = span;
     this._api = api;
@@ -224,8 +227,8 @@ export class LoopTraceSpanConverter {
         },
       );
     } catch (error) {
-      console.error(
-        `[LoopSDKTracerError]: Upload span file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
+      this.loopLogger.error(
+        `Upload span file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
       );
     }
   }
@@ -395,8 +398,8 @@ export class LoopTraceSpanConverter {
           tos_key: tosKey,
         });
       } catch (error) {
-        console.error(
-          `[LoopSDKTracerError]: convert base64 to file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
+        this.loopLogger.error(
+          `Convert base64 to file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
         );
       }
 
