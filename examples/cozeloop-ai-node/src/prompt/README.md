@@ -22,8 +22,6 @@ const prompt2 = await hub.get('your_prompt_key')
 
 // format prompt to messages with variables
 const messages = hub.formatPrompt(prompt1, { key: 'value' });
-// format prompt to messages without variables
-const messages = hub.formatPrompt(prompt2);
 ```
 
 ### 2. API interface

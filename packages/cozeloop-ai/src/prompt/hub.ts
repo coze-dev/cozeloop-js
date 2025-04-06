@@ -110,9 +110,6 @@ export class PromptHub {
    *
    * // format prompt to messages with variables
    * const messages = hub.formatPrompt(prompt, { key: 'value' });
-   *
-   * // format prompt to messages without variables
-   * const messages = hub.formatPrompt(prompt);
    * ```
    */
   formatPrompt(prompt?: Prompt, variables?: PromptVariables) {
