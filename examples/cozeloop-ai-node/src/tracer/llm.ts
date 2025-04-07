@@ -1,85 +1,11 @@
-import { setTimeout } from 'node:timers/promises';
-
+import { SpanKind } from '@cozeloop/ai';
 import {
   COZELOOP_TRACE_BUSINESS_TAGS,
   cozeLoopTracer,
   type LoopTraceLLMCallInput,
-  type LoopTraceLLMCallOutput,
-  SpanKind,
 } from '@cozeloop/ai';
 
-async function doSomething() {
-  await setTimeout(2000, 'result');
-}
-
-async function fakeLLMCall(): Promise<LoopTraceLLMCallOutput> {
-  return await setTimeout(2000, {
-    choices: [
-      {
-        index: 0,
-        finish_reason: 'stop',
-        message: {
-          role: 'assistant',
-          content: "hi, I'm xx model",
-        },
-      },
-    ],
-  });
-}
-
-export async function runRoot() {
-  // We recommend concatenating a complete user request into a trace,
-  // so the recommended approach is to report a root span at the entrance of the entire execution
-  await cozeLoopTracer.traceable(
-    async () => {
-      // execute your method
-      const result = await doSomething();
-
-      return result;
-    },
-    {
-      name: 'TestRootSpan',
-      type: 'RootSpanType',
-    },
-  );
-}
-
-export async function runCustom() {
-  // Wrap any function to make it traceable
-  await cozeLoopTracer.traceable(
-    async parentSpan => {
-      // Manually set input
-      cozeLoopTracer.setInput(parentSpan, 'xxx');
-
-      // Invoke any function, if it throws error, error will be caught and automatically set span as error
-      const result = await doSomething();
-
-      // Or, you can manually set error
-      cozeLoopTracer.setError(parentSpan, 'custom error message');
-
-      // You can also trace nested span, the parent-child relationship of span will be automatically concatenated
-      await cozeLoopTracer.traceable(
-        async childSpan => {
-          // Set custom tags
-          childSpan.setAttribute('custom-tag', 'xxx');
-
-          await doSomething();
-        },
-        {
-          name: 'TestCustomChildSpan',
-          type: 'MyCustomType',
-        },
-      );
-
-      // Automatically set return value as output
-      return result;
-    },
-    {
-      name: 'TestCustomParentSpan',
-      type: 'MyCustomType',
-    },
-  );
-}
+import { fakeLLMCall } from './utils';
 
 export async function runModel() {
   // Wrap model invoke function to make it traceable

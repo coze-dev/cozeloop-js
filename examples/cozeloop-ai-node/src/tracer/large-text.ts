@@ -21,7 +21,7 @@ export async function runLargeText() {
   await cozeLoopTracer.traceable(
     async span => {
       // Reporting of ultra-long texts will only take effect when the
-      // input satisfies the LoopTraceLLMCallInput structure
+      // input / output satisfies the LoopTraceLLMCallInput / LoopTraceLLMCallOutput structure
       const input: LoopTraceLLMCallInput = {
         messages: [
           {

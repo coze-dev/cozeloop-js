@@ -15,11 +15,6 @@ config();
 cozeLoopTracer.initialize({
   apiClient: {
     baseURL: 'https://api.coze.cn',
-    token: process.env.COZELOOP_API_TOKEN || '',
-    headers: {
-      // TODO remove
-      'x-tt-env': 'boe_commercial',
-    },
     logger: simpleConsoleLogger,
   },
   workspaceId: '7480474966061006892',

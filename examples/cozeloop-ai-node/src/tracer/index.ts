@@ -1,8 +1,10 @@
 import { cozeLoopTracer } from '@cozeloop/ai';
 
-import { runModel, runRoot, runCustom } from './simple';
+import { runRoot } from './root';
 import { runMultiModality } from './multi-modality';
+import { runModel } from './llm';
 import { runLargeText } from './large-text';
+import { runCustom } from './basic';
 
 // initialize tracer globally
 cozeLoopTracer.initialize({
@@ -11,7 +13,6 @@ cozeLoopTracer.initialize({
   apiClient: {
     // baseURL: 'https://api.coze.cn',
     // token: 'your_api_token',
-    headers: { 'x-tt-env': 'boe_commercial' }, // TODO: remove
   },
   /** Allow ultra long text report */
   ultraLargeReport: true,

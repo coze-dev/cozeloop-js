@@ -9,7 +9,6 @@ export async function run() {
     apiClient: {
       // baseURL: 'api_base_url',
       // token: 'your_api_token',
-      headers: { 'x-tt-env': 'boe_commercial' }, // TODO: remove
     },
   });
 
