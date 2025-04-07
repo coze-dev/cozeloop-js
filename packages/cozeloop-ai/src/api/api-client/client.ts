@@ -15,13 +15,13 @@ export const DEFAULT_API_BASE_URL = 'https://api.coze.cn';
 export class ApiClient extends LoopLoggable {
   private readonly _options: ApiClientOptions;
 
-  constructor(options?: ApiClientOptions) {
-    super(options?.logger, 'ApiClient');
+  constructor(options: ApiClientOptions = {}) {
+    super(options.logger, 'ApiClient');
     this._options = mergeConfig<ApiClientOptions>(options, {
       baseURL:
-        getEnvVar(EnvKeys.API_BASE_URL, options?.baseURL) ||
+        getEnvVar(EnvKeys.API_BASE_URL, options.baseURL) ||
         DEFAULT_API_BASE_URL,
-      token: options?.token ?? getEnvVar(EnvKeys.API_TOKEN),
+      token: options.token ?? getEnvVar(EnvKeys.API_TOKEN),
       axiosOptions: {
         timeout: safeNumber(getEnvVar(EnvKeys.REQUEST_TIMEOUT)),
       },
