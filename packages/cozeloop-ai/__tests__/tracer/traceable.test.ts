@@ -14,10 +14,8 @@ config();
 
 cozeLoopTracer.initialize({
   apiClient: {
-    baseURL: 'https://api.coze.cn',
     logger: simpleConsoleLogger,
   },
-  workspaceId: '7480474966061006892',
   ultraLargeReport: true,
 });
 
@@ -131,6 +129,7 @@ describe('Test Trace Report', { timeout: 50_000 }, () => {
       {
         name: 'TestParent',
         type: SpanKind.PromptTemplate,
+        userId: 'test-user-id',
         attributes: {
           string_tag: 'string',
           boolean_tag: true,

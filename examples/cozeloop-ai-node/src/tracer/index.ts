@@ -6,19 +6,19 @@ import { runModel } from './llm';
 import { runLargeText } from './large-text';
 import { runCustom } from './basic';
 
-// initialize tracer globally
-cozeLoopTracer.initialize({
-  /** workspace id, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
-  // workspaceId: 'your_workspace_id',
-  apiClient: {
-    // baseURL: 'https://api.coze.cn',
-    // token: 'your_api_token',
-  },
-  /** Allow ultra long text report */
-  ultraLargeReport: true,
-});
-
 export async function run() {
+  // initialize tracer globally
+  cozeLoopTracer.initialize({
+    /** workspace id, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
+    // workspaceId: 'your_workspace_id',
+    apiClient: {
+      // baseURL: 'https://api.coze.cn',
+      // token: 'your_api_token',
+    },
+    /** Allow ultra long text report */
+    ultraLargeReport: true,
+  });
+
   await Promise.all([
     runRoot(),
     runCustom(),
