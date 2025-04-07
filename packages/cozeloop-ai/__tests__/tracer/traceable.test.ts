@@ -4,7 +4,6 @@ import { config } from 'dotenv';
 
 import { setupLoopTracerMock } from '../mock/loop-tracer';
 import { simpleConsoleLogger } from '../../src/utils/logger';
-import { COZELOOP_TRACE_TAGS } from '../../src/tracer/constants';
 import { cozeLoopTracer, SpanKind } from '../../src/tracer';
 import {
   type LoopTraceLLMCallOutput,
@@ -92,15 +91,8 @@ describe('Test Trace Report', { timeout: 50_000 }, () => {
           ],
         };
 
-        span.setAttribute(
-          COZELOOP_TRACE_TAGS.SPAN_INPUT,
-          JSON.stringify(mockParentInput),
-        );
-
-        span.setAttribute(
-          COZELOOP_TRACE_TAGS.SPAN_OUTPUT,
-          JSON.stringify(mockParentOutput),
-        );
+        cozeLoopTracer.setInput(span, mockParentInput);
+        cozeLoopTracer.setOutput(span, mockParentOutput);
 
         await cozeLoopTracer.traceable(
           childSpan => {
@@ -129,10 +121,7 @@ describe('Test Trace Report', { timeout: 50_000 }, () => {
               ],
             };
 
-            childSpan.setAttribute(
-              COZELOOP_TRACE_TAGS.SPAN_INPUT,
-              JSON.stringify(mockChildInput),
-            );
+            cozeLoopTracer.setInput(childSpan, mockChildInput);
 
             return 'test-result2';
           },

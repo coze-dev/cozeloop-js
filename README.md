@@ -1,4 +1,4 @@
-# Loop Monorepo
+# CozeLoop Monorepo
 
 English | [简体中文](./README.zh-CN.md)
 
@@ -8,7 +8,7 @@ This monorepo contains the following packages:
 
 | Package | Description | Version |
 |---------|------------|---------|
-| [@cozeloop/ai](./packages/cozeloop-ai) | Coze API SDK | [![npm](https://img.shields.io/npm/v/@cozeloop/ai.svg)](https://www.npmjs.com/package/@cozeloop/ai) |
+| [@cozeloop/ai](./packages/cozeloop-ai) | CozeLoop API SDK | [![npm](https://img.shields.io/npm/v/@cozeloop/ai.svg)](https://www.npmjs.com/package/@cozeloop/ai) |
 
 
 ## 🎮 Examples
@@ -76,15 +76,15 @@ cd packages/<package-name>
 
 2. Start development:
 
+> use rushx instead of `pnpm run` or `npm run`
+
 ``` bash
-npm run start
+rushx start
 ```
 
 ## 📖 Documentation
 
-<!-- - [Official Documentation](https://www.coze.com/docs/developer_guides/nodejs_overview) -->
 - [Contributing Guidelines](./CONTRIBUTING.md)
-<!-- - [How to publish](./docs/publish.md) -->
 
 ## 📄 License
 

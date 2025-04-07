@@ -15,7 +15,7 @@ export const DEFAULT_API_BASE_URL = 'https://api.coze.cn';
 export class ApiClient extends LoopLoggable {
   private readonly _options: ApiClientOptions;
 
-  constructor(options: ApiClientOptions) {
+  constructor(options: ApiClientOptions = {}) {
     super(options.logger, 'ApiClient');
     this._options = mergeConfig<ApiClientOptions>(options, {
       baseURL:

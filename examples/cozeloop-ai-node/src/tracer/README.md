@@ -34,10 +34,7 @@ const hub = new PromptHub({
 await loopTracer.traceable(
   async span => {
     // set input
-    span.setAttribute(
-      LOOP_TRACE_TAGS.SPAN_INPUT,
-      JSON.stringify([{ role: 'user', content: 'hi' }]),
-    );
+    loopTracer.setInput(span, [{ role: 'user', content: 'hi' }]);
     // invoke/stream model
     const result = await fakeLLMCall();
 
@@ -59,7 +56,7 @@ await loopTracer.traceable(
 | Params | Types | Description |
 |--------|-------|-------------|
 | apiClient | LoopApiClient | The Loop API client |
-| workspaceId | string? | Coze Loop workspace ID |
+| workspaceId | string? | CozeLoop workspace ID |
 | ultraLargeReport | boolean? | Allow ultra long text report. If true, the entire content of input and output will be uploaded and reported when exceed the length limit |
 | recordInputs | boolean? | Allow input info reporting. Default: true |
 | recordOutputs | boolean? | Allow output info reporting. Default: true |
@@ -73,6 +70,11 @@ await loopTracer.traceable(
 * Methods of `loopTracer`
   * `initialize(options: LoopTraceInitializeOptions)`
   * `traceable<F extends (span: Span) => ReturnType<F>>(fn: F, options: LoopTraceWrapperOptions): ReturnType<F>`
+  * `setInput`
+  * `setOutput`
+  * `setTag`
+  * `setTags`
+  * `setError`
   * `forceFlush`
   * `shutdown`
 

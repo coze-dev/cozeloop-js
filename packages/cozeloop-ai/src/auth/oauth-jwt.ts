@@ -27,7 +27,7 @@ export interface OAuthJWTFlowOptions {
   appId?: string;
   /** Api endpoint, inferred from `baseURL` */
   aud?: string;
-  /** Public key, use process.env.COZELOOP_JWT_OAUTH_CLIENT_ID when unprovided */
+  /** Public key, use process.env.COZELOOP_JWT_OAUTH_PUBLIC_KEY_ID when unprovided */
   keyid?: string;
   /** Private key, use process.env.COZELOOP_JWT_OAUTH_PRIVATE_KEY when unprovided */
   privateKey?: string;
@@ -70,7 +70,7 @@ export class OAuthJWTFlow extends OAuthBaseFlow {
     'baseURL' | 'appId' | 'privateKey' | 'keyid' | 'aud'
   >;
 
-  constructor(options: OAuthJWTFlowOptions) {
+  constructor(options: OAuthJWTFlowOptions = {}) {
     super(options.logger, 'OAuthJWTFlow');
     const baseURL = ensureProperty({
       propName: 'baseURL',

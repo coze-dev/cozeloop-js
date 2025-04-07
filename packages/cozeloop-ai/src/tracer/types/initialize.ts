@@ -14,11 +14,11 @@ import { type LoopApiClient } from '../../api/types';
 
 export interface LoopTraceInitializeOptions {
   /**
-   * The Loop API client
+   * The CozeLoop API client
    */
   apiClient: LoopApiClient;
   /**
-   * Coze Loop workspace ID
+   * CozeLoop workspace ID
    */
   workspaceId?: string;
   /**

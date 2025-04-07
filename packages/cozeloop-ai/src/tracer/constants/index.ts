@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 export const ROOT_SPAN_PARENT_ID = '0';
 
+export const COZELOOP_LOGGER_TRACER_TAG = 'Tracer';
+
 export enum COZELOOP_TRACE_IDENTIFIER {
   LOOP = 'cozeloop-js',
 }
@@ -11,23 +13,62 @@ export enum COZELOOP_TRACE_SPAN_STATUS_CODE {
   ERROR = 1,
 }
 
-/** The Loop trace arributes */
-export enum COZELOOP_TRACE_TAGS {
+export enum COZELOOP_TRACE_BASIC_TAGS {
   SPAN_NAME = 'cozeloop_span_name',
   SPAN_TYPE = 'cozeloop_span_type',
   SPAN_INPUT = 'cozeloop_span_input',
   SPAN_OUTPUT = 'cozeloop_span_output',
   PARENT_SPAN_ID = 'cozeloop_parent_span_id',
   SPAN_WORKSPACE_ID = 'cozeloop_workspace_id',
-  // 0 -> success, non-0 -> error
-  SPAN_STATUS_CODE = 'cozeloop_status_code',
   SPAN_ULTRA_LARGE_REPORT = 'cozeloop_ultra_large_report',
 
   // Reserved tags
+  SPAN_USER_ID = 'cozeloop_user_id',
+  SPAN_MESSAGE_ID = 'cozeloop_message_id',
+  SPAN_THREAD_ID = 'cozeloop_thread_id',
   SPAN_LOG_ID = 'cozeloop_span_log_id',
   SPAN_PSM = 'cozeloop_psm',
   SPAN_METHOD = 'cozeloop_method',
   SPAN_CALL_TYPE = 'cozeloop_call_type',
+}
+
+export enum COZELOOP_TRACE_BUSINESS_TAGS {
+  // Tags for Model span
+  /** The timestamp of the model's first response when using stream response. The unit is microseconds. */
+  START_TIME_FIRST_RESP = 'start_time_first_resp',
+  MODEL_NAME = 'model_name',
+  MODEL_PROVIDER = 'model_provider',
+  INPUT_TOKENS = 'input_tokens',
+  OUTPUT_TOKENS = 'output_tokens',
+  TOKENS = 'tokens',
+  /** Used to identify option for model, like temperature, etc. Recommend use ModelCallOption struct. */
+  CALL_OPTIONS = 'call_options',
+  /** Used to identify whether it is a streaming output. */
+  STREAM = 'stream',
+  /** The token usage during the reasoning process. */
+  REASONING_TOKENS = 'reasoning_tokens',
+  /** The duration during the reasoning process. The unit is microseconds. */
+  REASONING_DURATION = 'reasoning_duration',
+
+  // Tags for Retriever span
+  /** Data retrieval providers, such as Elasticsearch (ES), VikingDB, etc. */
+  RETRIEVER_PROVIDER = 'retriever_provider',
+  /** When using VikingDB to provide retrieval capabilities, db name. */
+  VIKINGDB_NAME = 'vikingdb_name',
+  /** When using VikingDB to provide retrieval capabilities, db region. */
+  VIKINGDB_REGION = 'vikingdb_region',
+  /** When using ES to provide retrieval capabilities, es name. */
+  ES_NAME = 'es_name',
+  /** When using ES to provide retrieval capabilities, es index. */
+  ES_INDEX = 'es_index',
+  /** When using ES to provide retrieval capabilities, es cluster. */
+  ES_CLUSTER = 'es_cluster',
+
+  // Tags for Prompt span
+  /** Prompt providers, such as CozeLoop, Langsmith, etc. */
+  PROMPT_PROVIDER = 'prompt_provider',
+  PROMPT_KEY = 'prompt_key',
+  PROMPT_VERSION = 'prompt_version',
 }
 
 export enum COZELOOP_TRACE_OPTIONS {

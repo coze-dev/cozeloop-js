@@ -47,7 +47,7 @@ const MAX_POLL = 6;
 export class OAuthDeviceCodeFlow extends OAuthBaseFlow {
   private _options: OAuthDeviceCodeFlowOptions;
 
-  constructor(options: OAuthDeviceCodeFlowOptions) {
+  constructor(options: OAuthDeviceCodeFlowOptions = {}) {
     super(options.logger, 'OAuthDeviceCodeFlow');
     const baseURL = ensureProperty({
       propName: 'baseURL',

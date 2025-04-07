@@ -9,12 +9,15 @@ import { type ReadableSpan } from '@opentelemetry/sdk-trace-node';
 import { type AttributeValue, SpanStatusCode } from '@opentelemetry/api';
 
 import { convertHrTimeToMicroseconds, safeJSONParse } from '../index';
-import { type SerializedTagValue } from '../../types';
+import { SpanKind, type SerializedTagValue } from '../../types';
 import {
+  COZELOOP_LOGGER_TRACER_TAG,
   COZELOOP_TRACE_SPAN_STATUS_CODE,
-  COZELOOP_TRACE_TAGS,
+  COZELOOP_TRACE_BASIC_TAGS,
   ROOT_SPAN_PARENT_ID,
+  COZELOOP_TRACE_BUSINESS_TAGS,
 } from '../../constants';
+import { LoopLoggable, simpleConsoleLogger } from '../../../utils/logger';
 import {
   type LoopTraceLLMCallOutput,
   type LoopTraceLLMCallInput,
@@ -25,7 +28,9 @@ import {
   type LoopTraceLLMCallMessage,
   type Attachments,
   type LoopTraceLLMCallMessagePart,
+  type LoopTraceRunTime,
 } from '../../../api';
+import packageJson from '../../../../package.json';
 
 type SpanSystemTags = Pick<
   Span,
@@ -166,9 +171,10 @@ function formatObjectStorage(storage?: ObjectStorage) {
     : '';
 }
 
-export class LoopTraceSpanConverter {
+export class LoopTraceSpanConverter extends LoopLoggable {
   private readonly MAX_RETRIES = 3;
-  private readonly MAX_TEXT_SIZE = 4 * 1024 * 1024;
+  /** 1 MB */
+  private readonly MAX_TEXT_SIZE = 1 * 1024 * 1024;
   private readonly MAX_TAG_SIZE = 1024;
   private readonly MAX_TEXT_TRUNCATION_LENGTH = 1000;
   private readonly LONG_TEXT_TOS_KEY_SUFFIX = 'large_text';
@@ -181,6 +187,7 @@ export class LoopTraceSpanConverter {
   private _cutOffTagKeys: string[] = [];
 
   constructor(options: LoopTraceSpanConverterOptions) {
+    super(simpleConsoleLogger, COZELOOP_LOGGER_TRACER_TAG);
     const { span, api, workspaceId } = options;
     this._span = span;
     this._api = api;
@@ -191,7 +198,7 @@ export class LoopTraceSpanConverter {
       attachments: [],
     };
     this._ultraLargeReport = span.attributes[
-      COZELOOP_TRACE_TAGS.SPAN_ULTRA_LARGE_REPORT
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_ULTRA_LARGE_REPORT
     ] as boolean;
   }
 
@@ -223,8 +230,8 @@ export class LoopTraceSpanConverter {
         },
       );
     } catch (error) {
-      console.error(
-        `[LoopSDKTracerError]: Upload span file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
+      this.loopLogger.error(
+        `Upload span file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
       );
     }
   }
@@ -236,18 +243,23 @@ export class LoopTraceSpanConverter {
       system_tags_double: {},
     };
 
-    const { resource } = this._span;
+    const { attributes } = this._span;
 
     spanSystemTags.system_tags_string.cut_off = JSON.stringify(
       this._cutOffTagKeys,
     );
 
-    spanSystemTags.system_tags_string.run_time = JSON.stringify({
-      language: 'typescript',
-      runtime: resource.attributes['process.runtime.name'],
-      runtime_version: resource.attributes['process.runtime.version'],
-      telemetry_sdk_version: resource.attributes['telemetry.sdk.version'],
-    });
+    const spanType = attributes?.[
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE
+    ] as SpanKind;
+
+    const runtimeInfo: LoopTraceRunTime = {
+      language: 'ts',
+      loop_sdk_version: packageJson.version,
+      scene: Object.values(SpanKind).includes(spanType) ? spanType : 'custom',
+    };
+
+    spanSystemTags.system_tags_string.run_time = JSON.stringify(runtimeInfo);
 
     return spanSystemTags;
   }
@@ -294,8 +306,8 @@ export class LoopTraceSpanConverter {
     const spanCustomTags = Object.entries(this._span.attributes)
       .filter(
         ([key]) =>
-          !Object.values(COZELOOP_TRACE_TAGS).includes(
-            key as COZELOOP_TRACE_TAGS,
+          !Object.values(COZELOOP_TRACE_BASIC_TAGS).includes(
+            key as COZELOOP_TRACE_BASIC_TAGS,
           ),
       )
       .reduce((pre, [originalKey, originalValue]) => {
@@ -394,8 +406,8 @@ export class LoopTraceSpanConverter {
           tos_key: tosKey,
         });
       } catch (error) {
-        console.error(
-          `[LoopSDKTracerError]: convert base64 to file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
+        this.loopLogger.error(
+          `Convert base64 to file error, errorMessage=${error instanceof Error ? error.message : '-'}`,
         );
       }
 
@@ -419,9 +431,11 @@ export class LoopTraceSpanConverter {
         file: Buffer.from(serializedValue),
         tos_key: tosKey,
       });
+
+      return serializedValue.slice(0, this.MAX_TEXT_TRUNCATION_LENGTH);
     }
 
-    return serializedValue.slice(0, this.MAX_TEXT_TRUNCATION_LENGTH);
+    return serializedValue.slice(0, this.MAX_TEXT_SIZE);
   }
 
   private convertInput(value: SerializedTagValue) {
@@ -476,28 +490,37 @@ export class LoopTraceSpanConverter {
       this._span;
 
     const input = this.convertInput(
-      attributes[COZELOOP_TRACE_TAGS.SPAN_INPUT] as SerializedTagValue,
+      attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT] as SerializedTagValue,
     );
     const output = this.convertOutput(
-      attributes[COZELOOP_TRACE_TAGS.SPAN_OUTPUT] as SerializedTagValue,
+      attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_OUTPUT] as SerializedTagValue,
     );
 
+    const startTimeMicros = convertHrTimeToMicroseconds(startTime);
+    const startTimeFirstResp = attributes[
+      COZELOOP_TRACE_BUSINESS_TAGS.START_TIME_FIRST_RESP
+    ] as number | undefined;
+
     return {
-      started_at_micros: convertHrTimeToMicroseconds(startTime),
+      started_at_micros: startTimeMicros,
       span_id: this._span.spanContext().spanId,
       parent_id: parentSpanId || ROOT_SPAN_PARENT_ID,
       trace_id: this._span.spanContext().traceId,
       duration: Math.max(convertHrTimeToMicroseconds(duration), 0),
       workspace_id: this._workspaceId,
-      span_name: attributes[COZELOOP_TRACE_TAGS.SPAN_NAME] as string,
-      span_type: attributes[COZELOOP_TRACE_TAGS.SPAN_TYPE] as string,
+      span_name: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_NAME] as string,
+      span_type: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE] as string,
       method: '',
       status_code:
         status.code === SpanStatusCode.ERROR
           ? COZELOOP_TRACE_SPAN_STATUS_CODE.ERROR
           : COZELOOP_TRACE_SPAN_STATUS_CODE.SUCCESS,
+      error: status.message,
       input,
       output,
+      latency_first_resp: startTimeFirstResp
+        ? startTimeFirstResp - startTimeMicros
+        : undefined,
       object_storage: formatObjectStorage(this._objectStorage),
       ...this.getSpanCustomTags(),
       ...this.getSpanSystemTags(),

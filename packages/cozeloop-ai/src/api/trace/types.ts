@@ -32,10 +32,14 @@ export interface Span {
   method: string;
   /** Status code */
   status_code: number;
+  /** Error message */
+  error?: string;
   /** Input */
   input: string;
   /** Output */
   output: string;
+  /** Latency of first response */
+  latency_first_resp?: number;
   /** Object storage information */
   object_storage?: string;
   /** System tags of string type */
@@ -155,4 +159,12 @@ export interface LoopTracePromptTemplateArgument {
 export interface LoopTracePromptTemplateInput {
   templates?: LoopTraceLLMCallMessage[];
   arguments?: LoopTracePromptTemplateArgument[];
+}
+
+export interface LoopTraceRunTime {
+  language: 'go' | 'python' | 'ts';
+  loop_sdk_version?: string;
+  scene?: string;
+  library?: 'eino' | 'langchain';
+  library_version?: string;
 }

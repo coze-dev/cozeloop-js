@@ -1,4 +1,4 @@
-# Loop Monorepo
+# CozeLoop Monorepo
 
 [English](./README.md) | 简体中文
 
@@ -8,7 +8,7 @@
 
 | 包名 | 描述 | 版本 |
 |---------|------------|---------|
-| [@cozeloop/ai](./packages/cozeloop-ai) | Coze API SDK | [![npm](https://img.shields.io/npm/v/@cozeloop/ai.svg)](https://www.npmjs.com/package/@cozeloop/ai) |
+| [@cozeloop/ai](./packages/cozeloop-ai) | CozeLoop API SDK | [![npm](https://img.shields.io/npm/v/@cozeloop/ai.svg)](https://www.npmjs.com/package/@cozeloop/ai) |
 
 
 ## 🎮 示例

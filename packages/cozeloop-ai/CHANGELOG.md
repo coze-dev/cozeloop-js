@@ -3,7 +3,7 @@
 ## 1.0.0
 🌱 Initial version
 
-- PromptHub: pull prompts from Coze Loop
+- PromptHub: pull prompts from CozeLoop
 - Auth: support OAuth JWT flow
 - Trace
   - initialize: init trace report
