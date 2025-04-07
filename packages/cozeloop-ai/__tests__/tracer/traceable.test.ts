@@ -131,7 +131,9 @@ describe('Test Trace Report', { timeout: 50_000 }, () => {
       {
         name: 'TestParent',
         type: SpanKind.PromptTemplate,
-        userId: 'test-user-id',
+        baggages: {
+          user_id: 'test-user-id',
+        },
         attributes: {
           string_tag: 'string',
           boolean_tag: true,

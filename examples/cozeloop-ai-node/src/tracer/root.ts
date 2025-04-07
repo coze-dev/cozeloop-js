@@ -17,9 +17,12 @@ export async function runRoot() {
       type: 'RootSpanType',
       // you can set your own baggage fields (eg. userId),
       // these fields will be automatically passed through and set in all sub-spans
-      userId: 'uid-123',
-      messageId: 'msg-123',
-      threadId: 'thread-123',
+      baggages: {
+        user_id: 'uid-123',
+        message_id: 'msg-123',
+        thread_id: 'thread-123',
+        custom_id: 'custom-123',
+      },
     },
   );
 }
