@@ -47,27 +47,27 @@ const MAX_POLL = 6;
 export class OAuthDeviceCodeFlow extends OAuthBaseFlow {
   private _options: OAuthDeviceCodeFlowOptions;
 
-  constructor(options?: OAuthDeviceCodeFlowOptions) {
-    super(options?.logger, 'OAuthDeviceCodeFlow');
+  constructor(options: OAuthDeviceCodeFlowOptions = {}) {
+    super(options.logger, 'OAuthDeviceCodeFlow');
     const baseURL = ensureProperty({
       propName: 'baseURL',
       envKey: EnvKeys.API_BASE_URL,
       tag: this._tag,
-      value: options?.baseURL,
+      value: options.baseURL,
     });
 
     const clientId = ensureProperty({
       propName: 'clientId',
       envKey: EnvKeys.DEVICE_OAUTH_CLIENT_ID,
       tag: this._tag,
-      value: options?.clientId,
+      value: options.clientId,
     });
 
     const workspaceId = ensureProperty({
       propName: 'workspaceId',
       envKey: EnvKeys.WORKSPACE_ID,
       tag: this._tag,
-      value: options?.workspaceId,
+      value: options.workspaceId,
     });
 
     this._options = { baseURL, clientId, workspaceId };

@@ -10,12 +10,26 @@ import {
   COZELOOP_TRACE_IDENTIFIER,
 } from '../../constants';
 import { CozeLoopTraceClient } from '../../client';
-import { LoopLoggable, simpleConsoleLogger } from '../../../utils/logger';
+import {
+  LoopLoggable,
+  simpleConsoleLogger,
+  type SimpleLogger,
+} from '../../../utils/logger';
 import { type LoopApiClient } from '../../../api/types';
 
 interface LoopTraceExporterOptions {
+  /**
+   * The CozeLoop API client
+   */
   apiClient: LoopApiClient;
+  /**
+   * CozeLoop workspace ID
+   */
   workspaceId: string;
+  /**
+   * A logger function to print debug message
+   */
+  logger?: SimpleLogger;
 }
 
 export class CozeLoopTraceExporter
@@ -26,13 +40,13 @@ export class CozeLoopTraceExporter
   protected _loopTraceClient: CozeLoopTraceClient;
 
   constructor(options: LoopTraceExporterOptions) {
-    super(simpleConsoleLogger, COZELOOP_LOGGER_TRACER_TAG);
-    const { workspaceId, apiClient } = options;
-
+    const { workspaceId, apiClient, logger } = options;
+    super(logger ?? simpleConsoleLogger, COZELOOP_LOGGER_TRACER_TAG);
     this._workspaceId = workspaceId;
     this._loopTraceClient = new CozeLoopTraceClient({
       apiClient,
       workspaceId: this._workspaceId,
+      logger,
     });
   }
 
