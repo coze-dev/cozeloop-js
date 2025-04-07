@@ -76,15 +76,15 @@ cd packages/<package-name>
 
 2. Start development:
 
+> use rushx instead of `pnpm run` or `npm run`
+
 ``` bash
-npm run start
+rushx start
 ```
 
 ## 📖 Documentation
 
-<!-- - [Official Documentation](https://www.coze.com/docs/developer_guides/nodejs_overview) -->
 - [Contributing Guidelines](./CONTRIBUTING.md)
-<!-- - [How to publish](./docs/publish.md) -->
 
 ## 📄 License
 
