@@ -14,6 +14,18 @@ export interface LoopTraceWrapperOptions {
    */
   type: SpanType;
   /**
+   * Business custom user id, after setting up, the child span will automatically inherit this attribute
+   */
+  userId?: string;
+  /**
+   * Business custom message id, after setting up, the child span will automatically inherit this attribute
+   */
+  messageId?: string;
+  /**
+   * Business custom thread id, after setting up, the child span will automatically inherit this attribute
+   */
+  threadId?: string;
+  /**
    * Any tag that needs to be reported
    */
   attributes?: Attributes;
@@ -42,3 +54,8 @@ export interface LoopTraceWrapperOptions {
    */
   endWhenDone?: boolean;
 }
+
+export type BaggageAttributes = Pick<
+  LoopTraceWrapperOptions,
+  'userId' | 'messageId' | 'threadId'
+>;

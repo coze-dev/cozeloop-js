@@ -7,7 +7,13 @@ import { type Span, context } from '@opentelemetry/api';
 import { setError } from './utils/tags';
 import { getTracer, serializeTagValue } from './utils';
 import { type LoopTraceWrapperOptions } from './types';
-import { COZELOOP_TRACE_OPTIONS, COZELOOP_TRACE_BASIC_TAGS } from './constants';
+import {
+  COZELOOP_TRACE_OPTIONS,
+  COZELOOP_TRACE_BASIC_TAGS,
+  COZELOOP_TRACE_SPAN_USER_ID_KEY,
+  COZELOOP_TRACE_SPAN_MESSAGE_ID_KEY,
+  COZELOOP_TRACE_SPAN_THREAD_ID_KEY,
+} from './constants';
 
 function isAsyncFunc<F extends (...args: Parameters<F>) => ReturnType<F>>(
   fn: F,
@@ -42,6 +48,9 @@ function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
   const {
     name,
     type,
+    userId,
+    messageId,
+    threadId,
     disableTracing,
     attributes,
     ultraLargeReport,
@@ -52,9 +61,25 @@ function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
 
   let activeContext = context.active();
 
-  if (disableTracing) {
-    activeContext = suppressTracing(context.active());
-  }
+  userId &&
+    (activeContext = activeContext.setValue(
+      COZELOOP_TRACE_SPAN_USER_ID_KEY,
+      userId,
+    ));
+
+  messageId &&
+    (activeContext = activeContext.setValue(
+      COZELOOP_TRACE_SPAN_MESSAGE_ID_KEY,
+      messageId,
+    ));
+
+  threadId &&
+    (activeContext = activeContext.setValue(
+      COZELOOP_TRACE_SPAN_THREAD_ID_KEY,
+      threadId,
+    ));
+
+  disableTracing && (activeContext = suppressTracing(context.active()));
 
   return context.with(activeContext, () =>
     getTracer().startActiveSpan(
