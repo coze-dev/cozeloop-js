@@ -3,6 +3,7 @@
   "extends": "@loop-infra/ts-config/tsconfig.node.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./src",
     "moduleResolution": "node",
     "module": "ES2022",
     "lib": ["es2015", "dom"],

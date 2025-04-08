@@ -4,6 +4,7 @@
   "description": "@cozeloop/ai node examples",
   "author": "qihai <qihai@bytedance.com>",
   "scripts": {
+    "build": "tsc -b tsconfig.json",
     "lint": "eslint ./ --cache",
     "ready": "rush rebuild -T .",
     "run:all": "tsx ./src/index.ts",

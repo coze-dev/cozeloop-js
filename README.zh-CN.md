@@ -1,5 +1,7 @@
 # CozeLoop Monorepo
 
+[![CI](https://github.com/coze-dev/cozeloop-js/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coze-dev/cozeloop-js/actions/workflows/ci.yml)
+
 [English](./README.md) | 简体中文
 
 ## 📦 包列表

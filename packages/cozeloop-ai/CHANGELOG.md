@@ -1,9 +1,9 @@
 # 🕗 Change Log - @cozeloop/ai
 
-## 1.0.0
-🌱 Initial version
+## 0.0.1 ~ 0.0.4
+🌱 Early version
 
-- PromptHub: pull prompts from CozeLoop
+- PromptHub: pull prompts from CozeLoop and format prompts
 - Auth: support OAuth JWT flow
 - Trace
   - initialize: init trace report

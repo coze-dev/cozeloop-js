@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { readFile } from 'node:fs/promises';
 
 import { type SetupServerApi } from 'msw/lib/node';

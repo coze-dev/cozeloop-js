@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { setupPromptHubMock } from '../mock/prompt-hub';
 import { PromptCache } from '../../src/prompt/cache';
 import { PromptHub, type PromptVariables } from '../../src/prompt';
