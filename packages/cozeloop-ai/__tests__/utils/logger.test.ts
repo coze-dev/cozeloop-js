@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { createLoopLogger, LoopLoggable } from '../../src/utils/logger';
 
 describe.only('Test utils/logger.ts', () => {

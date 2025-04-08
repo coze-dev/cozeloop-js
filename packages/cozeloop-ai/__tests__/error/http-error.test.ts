@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { AxiosError, AxiosHeaders } from 'axios';
 
 import { HttpStatusCode, InternalApiStatusCode } from '../../src/error/types';

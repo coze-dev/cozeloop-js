@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { simpleConsoleLogger } from '../src/utils/logger';
 import { ApiClient } from '../src/api/api-client';
 import { setupBaseHttpMock } from './mock/base-http';

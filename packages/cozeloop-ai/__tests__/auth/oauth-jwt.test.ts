@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { setupJwtAuthMock } from '../mock/jwt-auth';
 import { simpleConsoleLogger } from '../../src/utils/logger';
 import { OAuthJWTFlow } from '../../src/auth';
