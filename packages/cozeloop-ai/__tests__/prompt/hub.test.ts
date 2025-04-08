@@ -16,10 +16,6 @@ describe('Test Prompt Hub', () => {
       workspaceId: '7483714249005793292',
       apiClient: {
         baseURL: 'https://api.coze.cn',
-        headers: {
-          'x-use-ppe': '1',
-          'x-tt-env': 'ppe_commercial',
-        },
       },
       traceable: true,
     });
