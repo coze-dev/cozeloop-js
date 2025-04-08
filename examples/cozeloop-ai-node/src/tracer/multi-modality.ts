@@ -14,7 +14,7 @@ export async function runMultiModality() {
   await cozeLoopTracer.traceable(
     async span => {
       // Reporting of multi modality will only take effect when the
-      // input satisfies the LoopTraceLLMCallInput structure
+      // input / output satisfies the LoopTraceLLMCallInput / LoopTraceLLMCallOutput structure
       const input: LoopTraceLLMCallInput = {
         messages: [
           {

@@ -17,7 +17,6 @@ loopTracer.initialize({
   apiClient: {
     // baseURL: 'https://api.coze.cn',
     // token: 'your_api_token',
-    headers: { 'x-tt-env': 'boe_commercial' }, // TODO: remove
   },
   /** Allow ultra long text report */
   // ultraLargeReport: true,

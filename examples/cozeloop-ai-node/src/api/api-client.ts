@@ -23,7 +23,6 @@ export async function run() {
     // axiosOptions: {},
     /** Custom headers */
     // headers: {};
-    headers: { 'x-tt-env': 'boe_commercial' }, // TODO: remove
   });
 
   const resp = await apiClient.post<{ code: number }>('/v1/loop/prompts/mget', {

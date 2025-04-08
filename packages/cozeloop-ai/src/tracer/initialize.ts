@@ -68,10 +68,23 @@ export const tracerInitModule = (function () {
       instrumentations,
     } = options;
 
-    const traceExporter =
-      exporter ?? new CozeLoopTraceExporter({ apiClient, workspaceId });
+    let cozeloopTraceExporter: CozeLoopTraceExporter | undefined;
+    let traceExporter: SpanExporter;
+
+    if (exporter) {
+      traceExporter = exporter;
+    } else {
+      cozeloopTraceExporter = new CozeLoopTraceExporter({
+        apiClient,
+        workspaceId,
+      });
+      traceExporter = cozeloopTraceExporter;
+    }
 
     _spanProcessor = instantiateProcessor(processor, traceExporter);
+
+    cozeloopTraceExporter &&
+      cozeloopTraceExporter.handleSpanStart(_spanProcessor);
 
     const spanProcessors: SpanProcessor[] = [_spanProcessor];
 
