@@ -9,6 +9,10 @@
     "sdk",
     "typescript"
   ],
+  "repository": {
+    "url": "https://github.com/coze-dev/cozeloop-js",
+    "directory": "packages/cozeloop-ai"
+  },
   "author": "qihai <mocayo@qq.com>",
   "exports": {
     ".": {

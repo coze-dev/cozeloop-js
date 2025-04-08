@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@cozeloop/ai": "workspace:*",
-    "axios": "^1.7.7"
+    "axios": "^1.7.7",
+    "openai": "^4.92.0"
   },
   "devDependencies": {
     "@loop-infra/eslint-config": "workspace:*",
