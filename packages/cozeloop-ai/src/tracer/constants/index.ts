@@ -39,6 +39,9 @@ export enum COZELOOP_TRACE_BASIC_TAGS {
 }
 
 export enum COZELOOP_TRACE_BUSINESS_TAGS {
+  // Common tags
+  ERROR_MESSAGE = 'error',
+
   // Tags for Model span
   /** The timestamp of the model's first response when using stream response. The unit is microseconds. */
   START_TIME_FIRST_RESP = 'start_time_first_resp',

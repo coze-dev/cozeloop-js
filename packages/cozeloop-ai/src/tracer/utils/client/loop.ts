@@ -317,6 +317,8 @@ export class LoopTraceSpanConverter extends LoopLoggable {
     const spanCustomTags = Object.entries({
       ...baggages,
       ...this._span.attributes,
+      //  report error message
+      [COZELOOP_TRACE_BUSINESS_TAGS.ERROR_MESSAGE]: this._span.status.message,
     })
       .filter(
         ([key]) =>
@@ -538,7 +540,6 @@ export class LoopTraceSpanConverter extends LoopLoggable {
         status.code === SpanStatusCode.ERROR
           ? COZELOOP_TRACE_SPAN_STATUS_CODE.ERROR
           : COZELOOP_TRACE_SPAN_STATUS_CODE.SUCCESS,
-      error: status.message,
       input,
       output,
       latency_first_resp: startTimeFirstResp
