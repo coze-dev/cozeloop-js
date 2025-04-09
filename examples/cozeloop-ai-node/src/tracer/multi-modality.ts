@@ -1,14 +1,10 @@
-import { setTimeout } from 'node:timers/promises';
-
 import {
   cozeLoopTracer,
   SpanKind,
   type LoopTraceLLMCallInput,
 } from '@cozeloop/ai';
 
-async function doSomething() {
-  await setTimeout(2000, 'result');
-}
+import { doSomething } from './utils';
 
 export async function runMultiModality() {
   await cozeLoopTracer.traceable(

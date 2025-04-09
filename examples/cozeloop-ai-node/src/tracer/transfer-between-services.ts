@@ -1,14 +1,10 @@
-import { setTimeout } from 'node:timers/promises';
-
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import axios, { type AxiosRequestConfig } from 'axios';
 import { context, propagation, ROOT_CONTEXT } from '@opentelemetry/api';
 import { cozeLoopTracer } from '@cozeloop/ai';
 
-async function doSomething() {
-  return await setTimeout(2000, 'result');
-}
+import { doSomething } from './utils';
 
 function setupMockServer() {
   const mockServer = setupServer(
