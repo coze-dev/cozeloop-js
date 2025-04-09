@@ -9,6 +9,13 @@ export enum COZELOOP_TRACE_IDENTIFIER {
   LOOP = 'cozeloop-js',
 }
 
+export enum COZELOOP_TRACE_PROPAGATION_HEADERS {
+  W3C_TRACEPARENT = 'traceparent',
+  W3C_TRACESTATE = 'tracestate',
+  COZELOOP_TRACEPARENT = 'X-Cozeloop-Traceparent',
+  COZELOOP_TRACESTATE = 'X-Cozeloop-Tracestate',
+}
+
 export enum COZELOOP_TRACE_SPAN_STATUS_CODE {
   SUCCESS = 0,
   ERROR = 1,
