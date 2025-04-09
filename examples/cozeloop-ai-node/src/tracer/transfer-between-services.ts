@@ -1,8 +1,13 @@
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import axios, { type AxiosRequestConfig } from 'axios';
-import { context, propagation, ROOT_CONTEXT } from '@opentelemetry/api';
-import { cozeLoopTracer } from '@cozeloop/ai';
+import { ROOT_CONTEXT } from '@opentelemetry/api';
+import {
+  cozeLoopTracer,
+  injectWithCozeLoopHeaders,
+  context,
+  extractWithCozeLoopHeaders,
+} from '@cozeloop/ai';
 
 import { doSomething } from './utils';
 
@@ -32,8 +37,12 @@ function setupMockServer() {
 }
 
 async function mockService(req: { headers: Record<string, string> }) {
-  // Inject the context information passed
-  const extractedContext = propagation.extract(context.active(), req.headers);
+  // Read the information of the current context from the headers
+
+  const extractedContext = extractWithCozeLoopHeaders(
+    context.active(),
+    req.headers,
+  );
 
   // Use the extracted context
   return await context.with(
@@ -69,8 +78,8 @@ export async function runTransferBetweenServices() {
 
       const headers: AxiosRequestConfig['headers'] = {};
 
-      // Get the current context information
-      propagation.inject(context.active(), headers);
+      // Generate the information in the current context as headers
+      injectWithCozeLoopHeaders(context.active(), headers);
 
       const resp = await axios.post(
         'http://mock/service/api/endpoint',
