@@ -22,7 +22,7 @@ import {
   type LoopTraceLLMCallOutput,
   type LoopTraceLLMCallInput,
   type ObjectStorage,
-  type Span,
+  type CozeLoopTraceSpan,
   type TraceApi,
   type UploadFileReq,
   type LoopTraceLLMCallMessage,
@@ -33,12 +33,12 @@ import {
 import packageJson from '../../../../package.json';
 
 type SpanSystemTags = Pick<
-  Span,
+  CozeLoopTraceSpan,
   'system_tags_string' | 'system_tags_long' | 'system_tags_double'
 >;
 
 type SpanCustomTags = Pick<
-  Span,
+  CozeLoopTraceSpan,
   'tags_bool' | 'tags_long' | 'tags_double' | 'tags_string' | 'tags_bytes'
 >;
 
@@ -303,7 +303,21 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       tags_bytes: {},
     };
 
-    const spanCustomTags = Object.entries(this._span.attributes)
+    const baggages: Record<string, string> = {};
+    this._span
+      .spanContext()
+      .traceState?.serialize()
+      .split(',')
+      .reduce((pre, item) => {
+        const [key, value] = item.split('=');
+        pre[key] = value;
+        return pre;
+      }, baggages);
+
+    const spanCustomTags = Object.entries({
+      ...baggages,
+      ...this._span.attributes,
+    })
       .filter(
         ([key]) =>
           !Object.values(COZELOOP_TRACE_BASIC_TAGS).includes(
@@ -485,9 +499,18 @@ export class LoopTraceSpanConverter extends LoopLoggable {
     return this.processingLongText('output', output);
   }
 
-  toLoopSpan(): Span {
+  toLoopSpan(): CozeLoopTraceSpan {
     const { attributes, status, parentSpanId, startTime, duration } =
       this._span;
+
+    const customRootSpanId = attributes[
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_CUSTOM_ROOT_SPAN_ID
+    ] as string | undefined;
+
+    const practicalParentSpanId =
+      parentSpanId === customRootSpanId
+        ? ROOT_SPAN_PARENT_ID
+        : parentSpanId || ROOT_SPAN_PARENT_ID;
 
     const input = this.convertInput(
       attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT] as SerializedTagValue,
@@ -504,7 +527,7 @@ export class LoopTraceSpanConverter extends LoopLoggable {
     return {
       started_at_micros: startTimeMicros,
       span_id: this._span.spanContext().spanId,
-      parent_id: parentSpanId || ROOT_SPAN_PARENT_ID,
+      parent_id: practicalParentSpanId,
       trace_id: this._span.spanContext().traceId,
       duration: Math.max(convertHrTimeToMicroseconds(duration), 0),
       workspace_id: this._workspaceId,

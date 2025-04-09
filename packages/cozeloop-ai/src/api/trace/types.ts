@@ -5,7 +5,7 @@ import type { Blob } from 'buffer';
 
 import type { BaseApiResp } from '../base';
 
-export interface Span {
+export interface CozeLoopTraceSpan {
   /** Span start time */
   started_at_micros: number;
   /** LogID */
@@ -134,7 +134,7 @@ export interface LoopTraceLLMCallOutput {
 }
 
 export interface ReportTraceReq {
-  spans: Span[];
+  spans: CozeLoopTraceSpan[];
 }
 
 export type ReportTraceResp = BaseApiResp;

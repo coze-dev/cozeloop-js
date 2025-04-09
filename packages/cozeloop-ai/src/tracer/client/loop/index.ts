@@ -16,7 +16,7 @@ interface LoopTraceClientInitOptions {
   /**
    * The CozeLoop API client
    */
-  apiClient: LoopApiClient;
+  apiClient?: LoopApiClient;
   /**
    * CozeLoop workspace ID
    */

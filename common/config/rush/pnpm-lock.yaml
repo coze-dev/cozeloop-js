@@ -218,6 +218,9 @@ importers:
       '@cozeloop/ai':
         specifier: workspace:*
         version: link:../../packages/cozeloop-ai
+      '@opentelemetry/api':
+        specifier: ~1.9.0
+        version: 1.9.0
       axios:
         specifier: ^1.7.7
         version: 1.8.1
@@ -240,6 +243,9 @@ importers:
       dotenv:
         specifier: ~16.4.7
         version: 16.4.7
+      msw:
+        specifier: ^2.7.3
+        version: 2.7.3(@types/node@20.17.22)(typescript@5.8.2)
       tsx:
         specifier: ^4.19.3
         version: 4.19.3

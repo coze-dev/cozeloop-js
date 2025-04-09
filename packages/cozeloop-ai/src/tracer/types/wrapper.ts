@@ -14,18 +14,6 @@ export interface LoopTraceWrapperOptions {
    */
   type: SpanType;
   /**
-   * Business custom user id, after setting up, the child span will automatically inherit this attribute
-   */
-  userId?: string;
-  /**
-   * Business custom message id, after setting up, the child span will automatically inherit this attribute
-   */
-  messageId?: string;
-  /**
-   * Business custom thread id, after setting up, the child span will automatically inherit this attribute
-   */
-  threadId?: string;
-  /**
    * Any tag that needs to be reported
    */
   attributes?: Attributes;
@@ -34,6 +22,15 @@ export interface LoopTraceWrapperOptions {
    * If true, the entire content of input and output will be uploaded and reported when exceed the length limit
    */
   ultraLargeReport?: boolean;
+  /**
+   * Business custom baggage fields, after setting up, the child span will automatically inherit this attribute
+   */
+  baggages?: {
+    user_id?: string;
+    message_id?: string;
+    thread_id?: string;
+    [key: string]: string | undefined;
+  };
   /**
    * Allow input info reporting
    * @default true
@@ -54,8 +51,3 @@ export interface LoopTraceWrapperOptions {
    */
   endWhenDone?: boolean;
 }
-
-export type BaggageAttributes = Pick<
-  LoopTraceWrapperOptions,
-  'userId' | 'messageId' | 'threadId'
->;

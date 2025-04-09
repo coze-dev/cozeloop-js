@@ -18,6 +18,8 @@ export {
   COZELOOP_TRACE_BUSINESS_TAGS,
 } from './constants';
 
+export type { Span } from '@opentelemetry/api';
+
 /**
  * LoopTracer Object
  */
