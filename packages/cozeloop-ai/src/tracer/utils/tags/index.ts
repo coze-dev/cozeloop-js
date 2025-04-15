@@ -3,7 +3,7 @@
 import { type ReadableSpan } from '@opentelemetry/sdk-trace-base';
 import { type Span, SpanStatusCode } from '@opentelemetry/api';
 
-import { serializeTagValue } from '../index';
+import { serializeTagValue } from '../common';
 import {
   COZELOOP_LOGGER_TRACER_TAG,
   COZELOOP_TRACE_BASIC_TAGS,

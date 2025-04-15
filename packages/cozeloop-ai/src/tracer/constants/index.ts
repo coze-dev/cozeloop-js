@@ -1,6 +1,6 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
-
 // SPDX-License-Identifier: MIT
+
 export const ROOT_SPAN_PARENT_ID = '0';
 
 export const COZELOOP_LOGGER_TRACER_TAG = 'Tracer';

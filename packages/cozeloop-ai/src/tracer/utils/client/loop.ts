@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid';
 import { type ReadableSpan } from '@opentelemetry/sdk-trace-node';
 import { type AttributeValue, SpanStatusCode } from '@opentelemetry/api';
 
-import { convertHrTimeToMicroseconds, safeJSONParse } from '../index';
+import { convertHrTimeToMicroseconds, safeJSONParse } from '../common';
 import { type SerializedTagValue } from '../../types';
 import {
   COZELOOP_LOGGER_TRACER_TAG,
@@ -531,7 +531,7 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       span_id: this._span.spanContext().spanId,
       parent_id: practicalParentSpanId,
       trace_id: this._span.spanContext().traceId,
-      duration: Math.max(convertHrTimeToMicroseconds(duration), 0),
+      duration_micros: Math.max(convertHrTimeToMicroseconds(duration), 0),
       workspace_id: this._workspaceId,
       span_name: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_NAME] as string,
       span_type: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE] as string,

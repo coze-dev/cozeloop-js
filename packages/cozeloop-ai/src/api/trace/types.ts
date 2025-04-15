@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import type { ReadStream } from 'node:fs';
-import type { Blob } from 'buffer';
+import type { Blob } from 'node:buffer';
 
 import type { BaseApiResp } from '../base';
 
@@ -17,7 +17,7 @@ export interface CozeLoopTraceSpan {
   /** TraceID */
   trace_id: string;
   /** Span duration */
-  duration: number;
+  duration_micros: number;
   /** PSM */
   psm?: string;
   /** CallType */
