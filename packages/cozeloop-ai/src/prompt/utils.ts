@@ -1,7 +1,13 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import { stringifyVal } from '../utils/common';
-import type { Message, PromptQuery, PromptTemplate, VariableDef } from '../api';
+import type {
+  FormattedMessage,
+  Message,
+  PromptQuery,
+  PromptTemplate,
+  VariableDef,
+} from '../api';
 import type { PromptVariableMap, PromptVariables } from './types';
 
 function buildVariableMap(
@@ -41,7 +47,7 @@ export function formatPromptTemplate(
     formattedMessages.push(...formatMessage(it, template_type, variableMap));
   });
 
-  return formattedMessages;
+  return formattedMessages as FormattedMessage[];
 }
 
 function formatMessage(

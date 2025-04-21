@@ -1,6 +1,6 @@
 {
   "name": "@cozeloop/ai",
-  "version": "0.0.3",
+  "version": "0.0.4-beta.4",
   "description": "Official Node.js SDK of CozeLoop | 扣子罗盘官方 Node.js SDK",
   "keywords": [
     "cozeloop",
@@ -9,6 +9,16 @@
     "sdk",
     "typescript"
   ],
+  "homepage": "https://github.com/coze-dev/cozeloop-js/tree/main/packages/cozeloop-ai",
+  "bugs": {
+    "url": "https://github.com/coze-dev/cozeloop-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coze-dev/cozeloop-js.git",
+    "directory": "packages/cozeloop-ai"
+  },
+  "license": "MIT",
   "author": "qihai <mocayo@qq.com>",
   "exports": {
     ".": {

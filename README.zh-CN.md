@@ -26,7 +26,7 @@
 
 - Node.js 18+ (推荐 LTS/Hydrogen)
 - pnpm 9.12.0
-- Rush 5.140.0
+- Rush 5.150.0
 
 ### 安装步骤
 
@@ -41,13 +41,13 @@ nvm use lts/hydrogen
 2. **克隆仓库**
 
 ```bash
-git clone git@github.com:coze-dev/coze-js.git
+git clone git@github.com:coze-dev/cozeloop-js.git
 ```
 
 3. **安装必需的全局依赖**
 
 ```bash
-npm i -g pnpm@9.12.0 @microsoft/rush@5.140.0
+npm i -g pnpm@9.12.0 @microsoft/rush@5.150.0
 ```
 
 4. **安装项目依赖**

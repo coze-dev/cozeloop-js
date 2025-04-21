@@ -1,18 +1,14 @@
-import { setTimeout } from 'node:timers/promises';
-
 import {
   cozeLoopTracer,
   SpanKind,
   type LoopTraceLLMCallInput,
 } from '@cozeloop/ai';
 
+import { doSomething } from './utils';
+
 function generateLargeString(sizeInMB: number) {
   const repeats = sizeInMB * 1024 * 1024;
   return 'x'.repeat(repeats);
-}
-
-async function doSomething() {
-  await setTimeout(2000, 'result');
 }
 
 // You can enable the reporting of ultra-long texts by setting

@@ -17,7 +17,7 @@ export type BaseApiResp<T = never> = [T] extends [never]
 export abstract class BaseApi {
   protected _client: ApiClient;
 
-  constructor(client: LoopApiClient) {
+  constructor(client: LoopApiClient = {}) {
     this._client = client instanceof ApiClient ? client : new ApiClient(client);
   }
 }

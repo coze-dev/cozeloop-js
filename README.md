@@ -26,7 +26,7 @@ Find usage examples for each package in the [examples](./examples) directory:
 
 - Node.js 18+ (LTS/Hydrogen recommended)
 - pnpm 9.12.0
-- Rush 5.140.0
+- Rush 5.150.0
 
 ### Installation
 
@@ -41,13 +41,13 @@ nvm use lts/hydrogen
 2. **Clone the repository**
 
 ``` bash
-git clone git@github.com:coze-dev/coze-js.git
+git clone git@github.com:coze-dev/cozeloop-js.git
 ```
 
 3. **Install required global dependencies**
 
 ``` bash
-npm i -g pnpm@9.12.0 @microsoft/rush@5.140.0
+npm i -g pnpm@9.12.0 @microsoft/rush@5.150.0
 ```
 
 4. **Install project dependencies**

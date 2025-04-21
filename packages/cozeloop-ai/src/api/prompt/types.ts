@@ -7,6 +7,11 @@ export interface Message {
   content: string;
 }
 
+export interface FormattedMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
 export interface VariableDef {
   key: string;
   type: 'string' | 'placeholder';

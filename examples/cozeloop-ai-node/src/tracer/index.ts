@@ -1,5 +1,6 @@
 import { cozeLoopTracer } from '@cozeloop/ai';
 
+import { runTransferBetweenServices } from './transfer-between-services';
 import { runRoot } from './root';
 import { runMultiModality } from './multi-modality';
 import { runModel } from './llm';
@@ -25,5 +26,6 @@ export async function run() {
     runModel(),
     runMultiModality(),
     runLargeText(),
+    runTransferBetweenServices(),
   ]);
 }

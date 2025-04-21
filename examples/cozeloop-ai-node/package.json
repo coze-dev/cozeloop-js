@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@cozeloop/ai": "workspace:*",
-    "axios": "^1.7.7"
+    "@opentelemetry/api": "~1.9.0",
+    "axios": "^1.7.7",
+    "openai": "^4.92.0"
   },
   "devDependencies": {
     "@loop-infra/eslint-config": "workspace:*",
@@ -21,6 +23,7 @@
     "@loop-infra/vitest-config": "workspace:*",
     "@types/node": "^20",
     "dotenv": "~16.4.7",
+    "msw": "^2.7.3",
     "tsx": "^4.19.3",
     "typescript": "^5.5.3"
   }

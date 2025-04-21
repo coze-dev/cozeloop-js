@@ -1,40 +1,16 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { type HrTime, trace } from '@opentelemetry/api';
+import { trace } from '@opentelemetry/api';
 
-import { type SerializedTagValue } from '../types';
 import { COZELOOP_TRACE_IDENTIFIER } from '../constants';
 
 export function getTracer() {
   return trace.getTracer(COZELOOP_TRACE_IDENTIFIER.LOOP);
 }
 
-export function serializeTagValue(value: unknown) {
-  if (typeof value === 'object' && value !== null) {
-    if (value instanceof Date) {
-      return value.toISOString();
-    }
-    return JSON.stringify(value);
-  }
-  return value as SerializedTagValue;
-}
-
-export function convertHrTimeToMicroseconds(hrTime: HrTime): number {
-  const [seconds, nanoseconds] = hrTime || [];
-
-  const timeInMicroseconds = Math.floor(
-    seconds * 1_000_000 + nanoseconds / 1000,
-  );
-
-  return timeInMicroseconds;
-}
-
-export function safeJSONParse<T>(text: string, defaultValue: T): T {
-  try {
-    const parsed = JSON.parse(text);
-    return parsed as T;
-  } catch (error) {
-    return defaultValue;
-  }
-}
+export {
+  safeJSONParse,
+  convertHrTimeToMicroseconds,
+  serializeTagValue,
+} from './common';

@@ -1,19 +1,21 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
+import { randomBytes } from 'node:crypto';
+
 import { type ReadableSpan } from '@opentelemetry/sdk-trace-base';
-import { suppressTracing } from '@opentelemetry/core';
-import { type Span, context } from '@opentelemetry/api';
+import { suppressTracing, TraceState } from '@opentelemetry/core';
+import {
+  type Context,
+  type Span,
+  TraceFlags,
+  context,
+  trace,
+} from '@opentelemetry/api';
 
 import { setError } from './utils/tags';
 import { getTracer, serializeTagValue } from './utils';
 import { type LoopTraceWrapperOptions } from './types';
-import {
-  COZELOOP_TRACE_OPTIONS,
-  COZELOOP_TRACE_BASIC_TAGS,
-  COZELOOP_TRACE_SPAN_USER_ID_KEY,
-  COZELOOP_TRACE_SPAN_MESSAGE_ID_KEY,
-  COZELOOP_TRACE_SPAN_THREAD_ID_KEY,
-} from './constants';
+import { COZELOOP_TRACE_OPTIONS, COZELOOP_TRACE_BASIC_TAGS } from './constants';
 
 function isAsyncFunc<F extends (...args: Parameters<F>) => ReturnType<F>>(
   fn: F,
@@ -39,6 +41,30 @@ function reportTraceExecuteError({
   }
 }
 
+function injectBaggages(
+  activeContext: Context,
+  baggages: NonNullable<LoopTraceWrapperOptions['baggages']>,
+  rootSpanId: string,
+): Context {
+  const { spanId, traceId, traceFlags, traceState } =
+    trace.getSpanContext(activeContext) || {};
+
+  let updatedTraceState = traceState ?? new TraceState();
+
+  for (const [key, value] of Object.entries(baggages)) {
+    value && (updatedTraceState = updatedTraceState.set(key, value));
+  }
+
+  activeContext = trace.setSpanContext(activeContext, {
+    traceId: traceId || randomBytes(16).toString('hex'),
+    spanId: spanId || rootSpanId,
+    traceFlags: traceFlags || TraceFlags.SAMPLED,
+    traceState: updatedTraceState,
+  });
+
+  return activeContext;
+}
+
 // eslint-disable-next-line max-lines-per-function
 function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
   options: LoopTraceWrapperOptions,
@@ -48,9 +74,7 @@ function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
   const {
     name,
     type,
-    userId,
-    messageId,
-    threadId,
+    baggages,
     disableTracing,
     attributes,
     ultraLargeReport,
@@ -61,26 +85,16 @@ function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
 
   let activeContext = context.active();
 
-  userId &&
-    (activeContext = activeContext.setValue(
-      COZELOOP_TRACE_SPAN_USER_ID_KEY,
-      userId,
-    ));
-
-  messageId &&
-    (activeContext = activeContext.setValue(
-      COZELOOP_TRACE_SPAN_MESSAGE_ID_KEY,
-      messageId,
-    ));
-
-  threadId &&
-    (activeContext = activeContext.setValue(
-      COZELOOP_TRACE_SPAN_THREAD_ID_KEY,
-      threadId,
-    ));
-
   disableTracing && (activeContext = suppressTracing(context.active()));
 
+  let customRootSpanId: string | undefined;
+
+  if (baggages) {
+    customRootSpanId = randomBytes(8).toString('hex');
+    activeContext = injectBaggages(activeContext, baggages, customRootSpanId);
+  }
+
+  // eslint-disable-next-line max-lines-per-function
   return context.with(activeContext, () =>
     getTracer().startActiveSpan(
       `${name}.${type}`,
@@ -92,6 +106,12 @@ function traceData<F extends (...args: Parameters<F>) => ReturnType<F>>(
       },
       activeContext,
       (span: Span) => {
+        customRootSpanId &&
+          span.setAttribute(
+            COZELOOP_TRACE_BASIC_TAGS.SPAN_CUSTOM_ROOT_SPAN_ID,
+            customRootSpanId,
+          );
+
         const collectAttributes = (result: ReturnType<F>) => {
           if (attributes) {
             for (const [key, value] of Object.entries(attributes)) {

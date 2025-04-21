@@ -1,11 +1,11 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import type { ReadStream } from 'node:fs';
-import type { Blob } from 'buffer';
+import type { Blob } from 'node:buffer';
 
 import type { BaseApiResp } from '../base';
 
-export interface Span {
+export interface CozeLoopTraceSpan {
   /** Span start time */
   started_at_micros: number;
   /** LogID */
@@ -17,7 +17,7 @@ export interface Span {
   /** TraceID */
   trace_id: string;
   /** Span duration */
-  duration: number;
+  duration_micros: number;
   /** PSM */
   psm?: string;
   /** CallType */
@@ -32,8 +32,6 @@ export interface Span {
   method: string;
   /** Status code */
   status_code: number;
-  /** Error message */
-  error?: string;
   /** Input */
   input: string;
   /** Output */
@@ -134,7 +132,7 @@ export interface LoopTraceLLMCallOutput {
 }
 
 export interface ReportTraceReq {
-  spans: Span[];
+  spans: CozeLoopTraceSpan[];
 }
 
 export type ReportTraceResp = BaseApiResp;

@@ -16,7 +16,7 @@ export interface LoopTraceInitializeOptions {
   /**
    * The CozeLoop API client
    */
-  apiClient: LoopApiClient;
+  apiClient?: LoopApiClient;
   /**
    * CozeLoop workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided
    */

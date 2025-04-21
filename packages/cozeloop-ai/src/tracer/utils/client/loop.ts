@@ -8,8 +8,8 @@ import { nanoid } from 'nanoid';
 import { type ReadableSpan } from '@opentelemetry/sdk-trace-node';
 import { type AttributeValue, SpanStatusCode } from '@opentelemetry/api';
 
-import { convertHrTimeToMicroseconds, safeJSONParse } from '../index';
-import { SpanKind, type SerializedTagValue } from '../../types';
+import { convertHrTimeToMicroseconds, safeJSONParse } from '../common';
+import { type SerializedTagValue } from '../../types';
 import {
   COZELOOP_LOGGER_TRACER_TAG,
   COZELOOP_TRACE_SPAN_STATUS_CODE,
@@ -22,7 +22,7 @@ import {
   type LoopTraceLLMCallOutput,
   type LoopTraceLLMCallInput,
   type ObjectStorage,
-  type Span,
+  type CozeLoopTraceSpan,
   type TraceApi,
   type UploadFileReq,
   type LoopTraceLLMCallMessage,
@@ -33,12 +33,12 @@ import {
 import packageJson from '../../../../package.json';
 
 type SpanSystemTags = Pick<
-  Span,
+  CozeLoopTraceSpan,
   'system_tags_string' | 'system_tags_long' | 'system_tags_double'
 >;
 
 type SpanCustomTags = Pick<
-  Span,
+  CozeLoopTraceSpan,
   'tags_bool' | 'tags_long' | 'tags_double' | 'tags_string' | 'tags_bytes'
 >;
 
@@ -249,17 +249,17 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       this._cutOffTagKeys,
     );
 
-    const spanType = attributes?.[
-      COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE
-    ] as SpanKind;
+    const spanRuntimeScene = attributes?.[
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_RUNTIME_SCENE
+    ] as string | undefined;
 
     const runtimeInfo: LoopTraceRunTime = {
       language: 'ts',
       loop_sdk_version: packageJson.version,
-      scene: Object.values(SpanKind).includes(spanType) ? spanType : 'custom',
+      scene: spanRuntimeScene ?? 'custom',
     };
 
-    spanSystemTags.system_tags_string.run_time = JSON.stringify(runtimeInfo);
+    spanSystemTags.system_tags_string.runtime = JSON.stringify(runtimeInfo);
 
     return spanSystemTags;
   }
@@ -303,7 +303,23 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       tags_bytes: {},
     };
 
-    const spanCustomTags = Object.entries(this._span.attributes)
+    const baggages: Record<string, string> = {};
+    this._span
+      .spanContext()
+      .traceState?.serialize()
+      .split(',')
+      .reduce((pre, item) => {
+        const [key, value] = item.split('=');
+        pre[key] = value;
+        return pre;
+      }, baggages);
+
+    const spanCustomTags = Object.entries({
+      ...baggages,
+      ...this._span.attributes,
+      //  report error message
+      [COZELOOP_TRACE_BUSINESS_TAGS.ERROR_MESSAGE]: this._span.status.message,
+    })
       .filter(
         ([key]) =>
           !Object.values(COZELOOP_TRACE_BASIC_TAGS).includes(
@@ -485,9 +501,18 @@ export class LoopTraceSpanConverter extends LoopLoggable {
     return this.processingLongText('output', output);
   }
 
-  toLoopSpan(): Span {
+  toLoopSpan(): CozeLoopTraceSpan {
     const { attributes, status, parentSpanId, startTime, duration } =
       this._span;
+
+    const customRootSpanId = attributes[
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_CUSTOM_ROOT_SPAN_ID
+    ] as string | undefined;
+
+    const practicalParentSpanId =
+      parentSpanId === customRootSpanId
+        ? ROOT_SPAN_PARENT_ID
+        : parentSpanId || ROOT_SPAN_PARENT_ID;
 
     const input = this.convertInput(
       attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT] as SerializedTagValue,
@@ -504,9 +529,9 @@ export class LoopTraceSpanConverter extends LoopLoggable {
     return {
       started_at_micros: startTimeMicros,
       span_id: this._span.spanContext().spanId,
-      parent_id: parentSpanId || ROOT_SPAN_PARENT_ID,
+      parent_id: practicalParentSpanId,
       trace_id: this._span.spanContext().traceId,
-      duration: Math.max(convertHrTimeToMicroseconds(duration), 0),
+      duration_micros: Math.max(convertHrTimeToMicroseconds(duration), 0),
       workspace_id: this._workspaceId,
       span_name: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_NAME] as string,
       span_type: attributes[COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE] as string,
@@ -515,7 +540,6 @@ export class LoopTraceSpanConverter extends LoopLoggable {
         status.code === SpanStatusCode.ERROR
           ? COZELOOP_TRACE_SPAN_STATUS_CODE.ERROR
           : COZELOOP_TRACE_SPAN_STATUS_CODE.SUCCESS,
-      error: status.message,
       input,
       output,
       latency_first_resp: startTimeFirstResp

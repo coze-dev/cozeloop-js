@@ -9,6 +9,7 @@ import {
 } from '@opentelemetry/sdk-trace-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { Resource } from '@opentelemetry/resources';
+import { W3CTraceContextPropagator } from '@opentelemetry/core';
 
 import { COZELOOP_LOGGER_TAG } from '../utils/logger';
 import { ensureProperty, EnvKeys } from '../utils/env';
@@ -41,7 +42,7 @@ export const tracerInitModule = (function () {
   let _tracer: NodeSDK | undefined;
   let _spanProcessor: SpanProcessor | undefined;
 
-  function initialize(options: LoopTraceInitializeOptions) {
+  function initialize(options: LoopTraceInitializeOptions = {}) {
     if (_tracer) {
       return;
     }
@@ -68,23 +69,10 @@ export const tracerInitModule = (function () {
       instrumentations,
     } = options;
 
-    let cozeloopTraceExporter: CozeLoopTraceExporter | undefined;
-    let traceExporter: SpanExporter;
-
-    if (exporter) {
-      traceExporter = exporter;
-    } else {
-      cozeloopTraceExporter = new CozeLoopTraceExporter({
-        apiClient,
-        workspaceId,
-      });
-      traceExporter = cozeloopTraceExporter;
-    }
+    const traceExporter =
+      exporter ?? new CozeLoopTraceExporter({ apiClient, workspaceId });
 
     _spanProcessor = instantiateProcessor(processor, traceExporter);
-
-    cozeloopTraceExporter &&
-      cozeloopTraceExporter.handleSpanStart(_spanProcessor);
 
     const spanProcessors: SpanProcessor[] = [_spanProcessor];
 
@@ -100,7 +88,7 @@ export const tracerInitModule = (function () {
       }),
       spanProcessors,
       contextManager,
-      textMapPropagator: propagator,
+      textMapPropagator: propagator ?? new W3CTraceContextPropagator(),
       traceExporter,
       instrumentations,
     });

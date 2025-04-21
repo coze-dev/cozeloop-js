@@ -12,11 +12,18 @@ export {
 
 export { CozeLoopTraceClient } from './client';
 export { CozeLoopTraceExporter } from './exporter';
+export {
+  injectWithCozeLoopHeaders,
+  extractWithCozeLoopHeaders,
+} from './utils/propagation';
 
 export {
   COZELOOP_TRACE_BASIC_TAGS,
   COZELOOP_TRACE_BUSINESS_TAGS,
 } from './constants';
+
+export { context } from '@opentelemetry/api';
+export type { Span } from '@opentelemetry/api';
 
 /**
  * LoopTracer Object

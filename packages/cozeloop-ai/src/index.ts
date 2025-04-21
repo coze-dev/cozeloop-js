@@ -14,11 +14,14 @@ export type * from './prompt';
 
 // tracer
 export {
+  context,
   SpanKind,
   COZELOOP_TRACE_BASIC_TAGS,
   COZELOOP_TRACE_BUSINESS_TAGS,
   CozeLoopTraceClient,
   CozeLoopTraceExporter,
   cozeLoopTracer,
+  injectWithCozeLoopHeaders,
+  extractWithCozeLoopHeaders,
 } from './tracer';
 export type * from './tracer';

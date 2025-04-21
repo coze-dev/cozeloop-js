@@ -3,8 +3,8 @@
 ## 0.0.1 ~ 0.0.4
 🌱 Early version
 
-- PromptHub: pull prompts from CozeLoop and format prompts
+- PromptHub: pull and format prompts from [CozeLoop](https://loop.coze.cn)
 - Auth: support OAuth JWT flow
-- Trace
+- Trace with cozeLoopTracer
   - initialize: init trace report
   - traceable: high-level function that warps any function
