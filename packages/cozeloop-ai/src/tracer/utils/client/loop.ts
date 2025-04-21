@@ -9,7 +9,7 @@ import { type ReadableSpan } from '@opentelemetry/sdk-trace-node';
 import { type AttributeValue, SpanStatusCode } from '@opentelemetry/api';
 
 import { convertHrTimeToMicroseconds, safeJSONParse } from '../index';
-import { SpanKind, type SerializedTagValue } from '../../types';
+import { type SerializedTagValue } from '../../types';
 import {
   COZELOOP_LOGGER_TRACER_TAG,
   COZELOOP_TRACE_SPAN_STATUS_CODE,
@@ -249,17 +249,17 @@ export class LoopTraceSpanConverter extends LoopLoggable {
       this._cutOffTagKeys,
     );
 
-    const spanType = attributes?.[
-      COZELOOP_TRACE_BASIC_TAGS.SPAN_TYPE
-    ] as SpanKind;
+    const spanRuntimeScene = attributes?.[
+      COZELOOP_TRACE_BASIC_TAGS.SPAN_RUNTIME_SCENE
+    ] as string | undefined;
 
     const runtimeInfo: LoopTraceRunTime = {
       language: 'ts',
       loop_sdk_version: packageJson.version,
-      scene: Object.values(SpanKind).includes(spanType) ? spanType : 'custom',
+      scene: spanRuntimeScene ?? 'custom',
     };
 
-    spanSystemTags.system_tags_string.run_time = JSON.stringify(runtimeInfo);
+    spanSystemTags.system_tags_string.runtime = JSON.stringify(runtimeInfo);
 
     return spanSystemTags;
   }

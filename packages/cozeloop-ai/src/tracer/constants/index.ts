@@ -30,6 +30,7 @@ export enum COZELOOP_TRACE_BASIC_TAGS {
   SPAN_WORKSPACE_ID = 'cozeloop_workspace_id',
   SPAN_ULTRA_LARGE_REPORT = 'cozeloop_ultra_large_report',
   SPAN_CUSTOM_ROOT_SPAN_ID = 'cozeloop_custom_root_span_id',
+  SPAN_RUNTIME_SCENE = 'cozeloop_span_runtime_scene',
 
   // Reserved tags
   SPAN_LOG_ID = 'cozeloop_span_log_id',
