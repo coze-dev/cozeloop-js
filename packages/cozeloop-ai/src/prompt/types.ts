@@ -19,7 +19,7 @@ export interface PromptHubOptions {
   /** Workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
   workspaceId?: string;
   /** The Loop {@link ApiClient} instance or {@link ApiClientOptions} */
-  apiClient: ApiClient | ApiClientOptions;
+  apiClient?: ApiClient | ApiClientOptions;
   /** Prompt cache options, see {@link PromptCacheOptions } */
   cacheOptions?: PromptCacheOptions;
   /** Enavle trace report for `getPrompt` and `formatPrompt` */
