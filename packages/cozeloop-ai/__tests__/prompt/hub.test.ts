@@ -1,26 +1,44 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
+import { setTimeout } from 'node:timers/promises';
+
+import { config } from 'dotenv';
+
 import { setupPromptHubMock } from '../mock/prompt-hub';
+import { simpleConsoleLogger } from '../../src/utils/logger';
+import { cozeLoopTracer } from '../../src/tracer';
 import { PromptCache } from '../../src/prompt/cache';
 import { PromptHub, type PromptVariables } from '../../src/prompt';
 import { PromptApi, type Message } from '../../src/api';
 
+config();
+
+cozeLoopTracer.initialize({
+  apiClient: {
+    logger: simpleConsoleLogger,
+  },
+  ultraLargeReport: true,
+  processor: 'simple',
+});
+
 describe('Test Prompt Hub', () => {
   const httpMock = setupPromptHubMock();
-  beforeAll(() => httpMock.start());
-  afterAll(() => httpMock.close());
+  beforeAll(async () => {
+    httpMock.start();
+    await setTimeout(1000, 1);
+  });
+  afterAll(async () => {
+    await setTimeout(1000, 1);
+    httpMock.close();
+  });
   afterEach(() => httpMock.reset());
 
   it.only('#1 getPrompt and formatPrompt', async () => {
     const hub = new PromptHub({
-      workspaceId: '7483714249005793292',
-      apiClient: {
-        baseURL: 'https://api.coze.cn',
-      },
       traceable: true,
     });
 
-    const key = 'loop';
+    const key = 'loop1';
     const version = '0.0.2';
     const prompt = await hub.getPrompt(key, version);
 

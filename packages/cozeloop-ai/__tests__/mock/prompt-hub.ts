@@ -11,7 +11,7 @@ export function setupPromptHubMock() {
       successResp({
         items: [
           {
-            query: { prompt_key: 'loop', version: '0.0.2' },
+            query: { prompt_key: 'loop1', version: '0.0.2' },
             prompt: {
               llm_config: {
                 temperature: 0.7,
@@ -19,7 +19,7 @@ export function setupPromptHubMock() {
                 top_p: 1,
               },
               workspace_id: '7306823955623854124',
-              prompt_key: 'loop',
+              prompt_key: 'loop1',
               version: '0.0.2',
               prompt_template: {
                 template_type: 'normal',
