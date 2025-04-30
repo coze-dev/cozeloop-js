@@ -1,4 +1,4 @@
-# CozeLoop SDK
+# 🧭 CozeLoop SDK
 
 [![npm version](https://img.shields.io/npm/v/%40cozeloop%2Fai)](https://www.npmjs.com/package/@cozeloop/ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -41,7 +41,7 @@ const prompt = await promptHub.getPrompt(
 ```
 
 ## Key Features
-- 🗄️ **Prompt Hub**: Develop, submit and publish prompts on [CozeLoop](https://coze.loop.cn), and access them it via `PromptHub`
+- 🗄️ **Prompt Hub**: Develop, submit and publish prompts on [CozeLoop](https://loop.coze.cn), and access them it via `PromptHub`
 - 🔐 **Authentication Methods**: PAT and JWT
 - ⚙️ **Configurable**: Timeout, headers, signal, debug options
 
@@ -62,7 +62,7 @@ const authFlow = new OAuthJWTFlow({
   appId: '1177045121217', // Auth App Id
   aud: 'api.coze.cn', // just use api.coze.cn
   keyid: 'public_key_id of Auth App',
-  privateKey: 'priveate_key_content',
+  privateKey: 'private_key_content',
 });
 
 const tokenResp = await authFlow.getToken();
