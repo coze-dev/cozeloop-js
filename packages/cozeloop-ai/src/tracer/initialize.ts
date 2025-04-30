@@ -17,6 +17,7 @@ import { type LoopTraceInitializeOptions } from './types';
 import { CozeLoopTraceExporter } from './exporter';
 import {
   COZELOOP_LOGGER_TRACER_TAG,
+  COZELOOP_MAX_EXPORT_BATCH_SIZE,
   COZELOOP_TRACE_OPTIONS,
 } from './constants';
 
@@ -27,7 +28,9 @@ function instantiateProcessor(
   switch (processor) {
     case 'batch':
     case undefined:
-      return new BatchSpanProcessor(exporter);
+      return new BatchSpanProcessor(exporter, {
+        maxExportBatchSize: COZELOOP_MAX_EXPORT_BATCH_SIZE,
+      });
     case 'noop':
       return new NoopSpanProcessor();
     case 'simple':
