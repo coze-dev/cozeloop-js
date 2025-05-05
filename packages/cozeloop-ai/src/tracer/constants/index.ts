@@ -5,6 +5,9 @@ export const ROOT_SPAN_PARENT_ID = '0';
 
 export const COZELOOP_LOGGER_TRACER_TAG = 'Tracer';
 
+/** Default export batch size 100 (according to the server) */
+export const COZELOOP_MAX_EXPORT_BATCH_SIZE = 100;
+
 export enum COZELOOP_TRACE_IDENTIFIER {
   LOOP = 'cozeloop-js',
 }

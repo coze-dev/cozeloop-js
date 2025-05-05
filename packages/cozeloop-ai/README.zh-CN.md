@@ -1,4 +1,4 @@
-# CozeLoop SDK
+# 🧭 扣子罗盘 SDK
 
 [![npm version](https://img.shields.io/npm/v/%40cozeloop%2Fai)](https://www.npmjs.com/package/@cozeloop/ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -41,7 +41,7 @@ const prompt = await promptHub.getPrompt(
 ```
 
 ## 主要特性
-- 🗄️ **Prompt Hub**: 在 [CozeLoop](https://coze.loop.cn) 平台开发、提交和发布 Prompt，使用 `PromptHub` 访问 Prompt。
+- 🗄️ **Prompt Hub**: 在 [CozeLoop](https://loop.coze.cn) 平台开发、提交和发布 Prompt，使用 `PromptHub` 访问 Prompt。
 - 🔐 **多种鉴权方式**: PAT and JWT
 - ⚙️ **可配置**: 超时、请求头、信号、调试
 
@@ -62,7 +62,7 @@ const authFlow = new OAuthJWTFlow({
   appId: '1177045121217', // 授权应用 App Id
   aud: 'api.coze.cn', //  使用 api.coze.cn
   keyid: 'public_key_id of Auth App',
-  privateKey: 'priveate_key_content',
+  privateKey: 'private_key_content',
 });
 
 const tokenResp = await authFlow.getToken();

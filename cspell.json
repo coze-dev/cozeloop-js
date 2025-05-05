@@ -4,7 +4,18 @@
   "dictionaryDefinitions": [],
   "dictionaries": [],
   "caseSensitive": false,
-  "words": ["packagejson", "preinstall", "websockets"],
+  "words": [
+    "autoinstallers",
+    "Bytedance",
+    "cozeloop",
+    "Langsmith",
+    "packagejson",
+    "preinstall",
+    "traceparent",
+    "tracestate",
+    "vikingdb",
+    "websockets"
+  ],
   "ignoreWords": [],
   "import": []
 }
