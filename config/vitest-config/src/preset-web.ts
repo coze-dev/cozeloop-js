@@ -1,7 +1,7 @@
 import { mergeConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
-import { defaultVitestConfig } from './preset-default.ts';
+import { defaultVitestConfig } from './preset-default';
 
 export const webPreset = mergeConfig(defaultVitestConfig, {
   plugins: [react()],

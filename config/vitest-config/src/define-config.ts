@@ -1,8 +1,8 @@
 import { mergeConfig, type ViteUserConfig } from 'vitest/config';
 
-import { webPreset } from './preset-web.ts';
-import { nodePreset } from './preset-node.ts';
-import { defaultVitestConfig } from './preset-default.ts';
+import { webPreset } from './preset-web';
+import { nodePreset } from './preset-node';
+import { defaultVitestConfig } from './preset-default';
 
 export interface VitestConfig extends ViteUserConfig {
   /**
