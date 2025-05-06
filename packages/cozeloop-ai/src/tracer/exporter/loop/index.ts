@@ -60,10 +60,10 @@ export class CozeLoopTraceExporter
   }
 
   async shutdown(): Promise<void> {
-    await this.loopLogger.warn('Shutdown CozeLoopTraceExporter');
+    await this.loopLogger.info('Shutdown CozeLoopTraceExporter');
   }
 
   async forceFlush(): Promise<void> {
-    await this.loopLogger.warn('Forces to export all finished spans');
+    await this.loopLogger.info('Forces to export all finished spans');
   }
 }

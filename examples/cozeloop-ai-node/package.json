@@ -8,7 +8,8 @@
     "lint": "eslint ./ --cache",
     "ready": "rush rebuild -T .",
     "run:all": "tsx ./src/index.ts",
-    "test": "echo \"skip test\"",
+    "test": "echo 0",
+    "test:cov": "exit 0",
     "tsx": "tsx"
   },
   "dependencies": {

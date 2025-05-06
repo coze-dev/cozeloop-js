@@ -100,7 +100,7 @@ export const tracerInitModule = (function () {
   }
 
   function forceFlush() {
-    console.warn(
+    console.info(
       `[${COZELOOP_LOGGER_TAG}] [${COZELOOP_LOGGER_TRACER_TAG}] Forces to export all finished spans`,
     );
     _spanProcessor?.forceFlush();

@@ -4,7 +4,7 @@ import { setTimeout } from 'node:timers/promises';
 
 import { config } from 'dotenv';
 
-import { setupPromptHubMock } from '../mock/prompt-hub';
+import { setupPromptHubMock } from '../__mock__/prompt-hub';
 import { simpleConsoleLogger } from '../../src/utils/logger';
 import { cozeLoopTracer } from '../../src/tracer';
 import { PromptCache } from '../../src/prompt/cache';

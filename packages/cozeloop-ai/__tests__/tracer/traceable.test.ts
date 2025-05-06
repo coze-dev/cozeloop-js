@@ -4,7 +4,7 @@ import { setTimeout } from 'node:timers/promises';
 
 import { config } from 'dotenv';
 
-import { setupLoopTracerMock } from '../mock/loop-tracer';
+import { setupLoopTracerMock } from '../__mock__/loop-tracer';
 import { simpleConsoleLogger } from '../../src/utils/logger';
 import { cozeLoopTracer, SpanKind } from '../../src/tracer';
 import {
