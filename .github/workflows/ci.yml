@@ -42,5 +42,16 @@ jobs:
       - name: Install Dependencies
         run: node common/scripts/install-run-rush.js install
 
-      - name: Rush rebuild
+      - name: Build All
         run: node common/scripts/install-run-rush.js rebuild --verbose --timeline
+
+      - name: Test:cov All
+        run: node common/scripts/install-run-rush.js test:cov --verbose --timeline
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: coze-dev/cozeloop-js
+          fail_ci_if_error: false
+          verbose: true
