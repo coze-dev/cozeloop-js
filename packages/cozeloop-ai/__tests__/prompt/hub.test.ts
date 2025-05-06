@@ -33,7 +33,7 @@ describe('Test Prompt Hub', () => {
   });
   afterEach(() => httpMock.reset());
 
-  it.only('#1 getPrompt and formatPrompt', async () => {
+  it('#1 getPrompt and formatPrompt', async () => {
     const hub = new PromptHub({
       traceable: true,
     });
