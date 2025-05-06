@@ -1,11 +1,11 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
-import { setupJwtAuthMock } from '../mock/jwt-auth';
+import { setupJwtAuthMock } from '../__mock__/jwt-auth';
 import { simpleConsoleLogger } from '../../src/utils/logger';
 import { OAuthJWTFlow } from '../../src/auth';
 
-// this is a FAKE private key, DO NOT USE IT EXCEPTE FOR TEST
-const FAKE_PRAIVTE_KEY = `-----BEGIN PRIVATE KEY-----
+// this is a FAKE private key, DO NOT USE IT EXCEPT FOR TEST
+const FAKE_PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDe21/51r0YRcok
 fvq6G8FnJtj7QyRXF5CzCENmdgQt4OhjvhzQX9t6J10n3y93q9yI283Y6hrShNAJ
 RrpoGfwOmBGut3feF/shoDqes8ZrgpdDkhV0E4QFRySxmH8I6oSHFN2Mo/8Wvjz1
@@ -46,7 +46,7 @@ describe('Test oauth-jwt <JWT Authorization>', () => {
       appId: 'fake_app_id',
       aud: 'api.coze.cn',
       keyid: 'mbt6VMdJ08b1UXN3Ju3NeFandJJ-E2csIany35A4QC0',
-      privateKey: FAKE_PRAIVTE_KEY,
+      privateKey: FAKE_PRIVATE_KEY,
       logger: simpleConsoleLogger,
     });
 

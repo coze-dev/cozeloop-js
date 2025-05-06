@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { simpleConsoleLogger } from '../src/utils/logger';
 import { ApiClient } from '../src/api/api-client';
-import { setupBaseHttpMock } from './mock/base-http';
+import { setupBaseHttpMock } from './__mock__/base-http';
 
 interface BaseHttpResp {
   method: string;

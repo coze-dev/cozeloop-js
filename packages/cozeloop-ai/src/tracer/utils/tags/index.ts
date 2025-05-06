@@ -72,7 +72,7 @@ export function setError(span: Span, errorMessage?: string): Span {
 
   const { attributes } = span as unknown as ReadableSpan;
 
-  console.error(
+  console.info(
     `[${COZELOOP_LOGGER_TAG}] [${COZELOOP_LOGGER_TRACER_TAG}]
     Business custom function execution error, errorMessage=${errorMessage}, spanName=${
       attributes?.[COZELOOP_TRACE_BASIC_TAGS.SPAN_NAME]

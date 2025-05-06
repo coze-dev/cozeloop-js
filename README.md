@@ -1,5 +1,6 @@
 # CozeLoop Monorepo
 
+[![codecov](https://codecov.io/gh/coze-dev/cozeloop-js/branch/main/graph/badge.svg)](https://codecov.io/gh/coze-dev/cozeloop-js)
 [![CI](https://github.com/coze-dev/cozeloop-js/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coze-dev/cozeloop-js/actions/workflows/ci.yml)
 
 English | [简体中文](./README.zh-CN.md)

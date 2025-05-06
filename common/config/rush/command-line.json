@@ -26,6 +26,27 @@
       "safeForSimultaneousRushProcesses": true,
       "autoinstallerName": "rush-commitlint",
       "shellCommand": "commitlint"
+    },
+    {
+      "commandKind": "bulk",
+      "name": "test",
+      "description": "Executes automated tests.",
+      "allowWarningsInSuccessfulBuild": true,
+      "ignoreMissingScript": true,
+      "enableParallelism": true,
+      "summary": "⭐️️ Run test command for each package"
+    },
+    {
+      "commandKind": "bulk",
+      "name": "test:cov",
+      "allowWarningsInSuccessfulBuild": true,
+      "description": "Executes automated tests with coverage collection.",
+      "ignoreMissingScript": true,
+      "enableParallelism": true,
+      "incremental": true,
+      "ignoreDependencyOrder": true,
+      "safeForSimultaneousRushProcesses": true,
+      "summary": "⭐️️ Run coverage command for each package"
     }
     // {
     //   /**

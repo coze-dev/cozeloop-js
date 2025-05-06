@@ -8,7 +8,9 @@
   "scripts": {
     "build": "exit",
     "dev": "npm run build -- -w",
-    "lint": "eslint ./ --cache --quiet"
+    "lint": "eslint ./ --cache --quiet",
+    "test": "exit 0",
+    "test:cov": "exit 0"
   },
   "dependencies": {
     "vite-tsconfig-paths": "^4.2.1"

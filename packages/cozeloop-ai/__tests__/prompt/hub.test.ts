@@ -4,7 +4,7 @@ import { setTimeout } from 'node:timers/promises';
 
 import { config } from 'dotenv';
 
-import { setupPromptHubMock } from '../mock/prompt-hub';
+import { setupPromptHubMock } from '../__mock__/prompt-hub';
 import { simpleConsoleLogger } from '../../src/utils/logger';
 import { cozeLoopTracer } from '../../src/tracer';
 import { PromptCache } from '../../src/prompt/cache';
@@ -33,7 +33,7 @@ describe('Test Prompt Hub', () => {
   });
   afterEach(() => httpMock.reset());
 
-  it.only('#1 getPrompt and formatPrompt', async () => {
+  it('#1 getPrompt and formatPrompt', async () => {
     const hub = new PromptHub({
       traceable: true,
     });

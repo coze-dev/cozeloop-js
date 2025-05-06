@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { createLoopLogger, LoopLoggable } from '../../src/utils/logger';
 
-describe.only('Test utils/logger.ts', () => {
+describe('Test utils/logger.ts', () => {
   describe('🧪 createLoopLogger', () => {
     it('should create a LoopLogger with all expected methods', () => {
       const logger = createLoopLogger();

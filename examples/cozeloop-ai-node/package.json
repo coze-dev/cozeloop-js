@@ -8,13 +8,14 @@
     "lint": "eslint ./ --cache",
     "ready": "rush rebuild -T .",
     "run:all": "tsx ./src/index.ts",
-    "test": "echo \"skip test\"",
+    "test": "echo 0",
+    "test:cov": "exit 0",
     "tsx": "tsx"
   },
   "dependencies": {
     "@cozeloop/ai": "workspace:*",
     "@opentelemetry/api": "~1.9.0",
-    "axios": "^1.7.7",
+    "axios": "^1.8.2",
     "openai": "^4.92.0"
   },
   "devDependencies": {
