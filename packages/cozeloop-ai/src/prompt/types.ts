@@ -22,7 +22,7 @@ export interface PromptHubOptions {
   apiClient?: ApiClient | ApiClientOptions;
   /** Prompt cache options, see {@link PromptCacheOptions } */
   cacheOptions?: PromptCacheOptions;
-  /** Enavle trace report for `getPrompt` and `formatPrompt` */
+  /** Enable trace report for `getPrompt` and `formatPrompt` */
   traceable?: boolean;
   /** A logger function to print debug message */
   logger?: SimpleLogger;

@@ -22,7 +22,7 @@ export class PromptHub {
   private readonly _cache: PromptCache;
   private _api: PromptApi;
 
-  /** Promopt cache instance */
+  /** Prompt cache instance */
   get cache() {
     return this._cache;
   }
