@@ -426,6 +426,10 @@
       "projectFolder": "packages/cozeloop-langchain"
     },
     {
+      "packageName": "@cozeloop/ci-tools",
+      "projectFolder": "packages/ci-tools"
+    },
+    {
       "packageName": "@cozeloop/ai-node-example",
       "projectFolder": "examples/cozeloop-ai-node"
     }
