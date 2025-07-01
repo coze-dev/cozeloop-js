@@ -44,7 +44,6 @@ export class TreeLogSpanProcessor implements SpanProcessor {
   }
 
   onEnd(span: ReadableSpan): void {
-    // no op
     this._treeSpans.push({
       name: span.name,
       id: span.spanContext().spanId,

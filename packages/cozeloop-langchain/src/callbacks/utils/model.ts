@@ -1,48 +1,7 @@
-import { randomBytes } from 'node:crypto';
-
+import { type LLMResult } from '@langchain/core/outputs';
 import { type Serialized } from '@langchain/core/dist/load/serializable';
 
-export function generateUUID(): string {
-  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, it => {
-    const v = Number(it);
-
-    return (v ^ (randomBytes(1)[0] & (15 >> (v / 4)))).toString(16);
-  });
-}
-
-export function stringifyVal(val: unknown): string {
-  switch (typeof val) {
-    case 'number':
-    case 'bigint':
-      return `${val}`;
-    case 'boolean':
-      return val ? 'true' : 'false';
-    case 'string':
-    case 'symbol':
-      return val.toString();
-    case 'object': {
-      if (val === null) {
-        return '';
-      }
-      if (val instanceof Date) {
-        return val.toISOString();
-      }
-      if (val instanceof Error) {
-        return val.message;
-      }
-      if (Array.isArray(val)) {
-        return val.map(it => stringifyVal(it)).join(',');
-      }
-      return JSON.stringify(val);
-    }
-    case 'undefined':
-      return '';
-    case 'function':
-      return `function@${val.name}`;
-    default:
-      return '';
-  }
-}
+import { parseRawMessage } from './message';
 
 export function guessModelProvider(modelName: string) {
   if (!modelName) {
@@ -98,5 +57,54 @@ export function extractLLMAttributes(
     frequency_penalty: mixed.frequency_penalty as number,
     presence_penalty: mixed.presence_penalty as number,
     max_tokens: mixed.max_tokens as number,
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- skip
+function parseUsage(usage: any = {}) {
+  const prompt_tokens = usage.promptTokens ?? usage.prompt_tokens ?? 0;
+  const completion_tokens =
+    usage.completionTokens ?? usage.completion_tokens ?? 0;
+  const total_tokens = usage.totalTokens ?? usage.total_tokens ?? 0;
+
+  return { prompt_tokens, completion_tokens, total_tokens };
+}
+
+export function parseLLMResult(result?: LLMResult) {
+  if (!result) {
+    return undefined;
+  }
+
+  const { generations, llmOutput } = result;
+
+  if (!generations?.length || !generations[0].length) {
+    return undefined;
+  }
+
+  const choices: unknown[] = [];
+  // 🌰 llmOutput {
+  //   tokenUsage: { promptTokens: 81, completionTokens: 39, totalTokens: 120 }
+  // }
+  const usage = parseUsage(llmOutput?.tokenUsage);
+
+  let model_name: string | undefined;
+
+  let cnt = 0;
+  for (const list of generations) {
+    for (const it of list) {
+      cnt++;
+      model_name = model_name ?? it.generationInfo?.model_name;
+      choices.push({
+        index: cnt,
+        message: parseRawMessage(it),
+        finish_reason: it.generationInfo?.finish_reason,
+      });
+    }
+  }
+
+  return {
+    model_name,
+    choices,
+    usage,
   };
 }

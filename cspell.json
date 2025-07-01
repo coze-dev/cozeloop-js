@@ -15,6 +15,7 @@
     "langsmith",
     "loggable",
     "packagejson",
+    "prefault",
     "preinstall",
     "remeda",
     "traceparent",

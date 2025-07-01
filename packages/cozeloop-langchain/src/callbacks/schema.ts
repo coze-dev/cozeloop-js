@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 function formatPropertyUnprovidedError(propName: string, envKey: string) {
   return `${propName} not provided, neither pass it or set it via process.env.${envKey}`;
@@ -11,7 +11,7 @@ export const CozeloopSpanProcessorOptionsSchema = z.object({
   /** Workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
   workspaceId: z
     .string()
-    .default(process.env.COZELOOP_WORKSPACE_ID || '')
+    .prefault(process.env.COZELOOP_WORKSPACE_ID || '')
     .refine(val => Boolean(val), {
       message: formatPropertyUnprovidedError(
         'workspaceId',
@@ -21,7 +21,7 @@ export const CozeloopSpanProcessorOptionsSchema = z.object({
   /** Endpoint to export traces, use process.env.OTEL_EXPORTER_OTLP_ENDPOINT when unprovided */
   traceEndpoint: z
     .string()
-    .default(process.env.OTEL_EXPORTER_OTLP_ENDPOINT || '')
+    .prefault(process.env.OTEL_EXPORTER_OTLP_ENDPOINT || '')
     .refine(val => Boolean(val), {
       message: formatPropertyUnprovidedError(
         'traceEndpoint',
@@ -31,16 +31,16 @@ export const CozeloopSpanProcessorOptionsSchema = z.object({
   /** CozeLoop API token, use process.env.COZELOOP_API_TOKEN when unprovided */
   token: z
     .string()
-    .default(process.env.COZELOOP_API_TOKEN || '')
+    .prefault(process.env.COZELOOP_API_TOKEN || '')
     .refine(val => Boolean(val), {
       message: formatPropertyUnprovidedError('token', 'COZELOOP_API_TOKEN'),
     }),
   /** Export passthrough headers */
-  headers: z.record(z.string(), z.string()).default({}),
+  headers: z.record(z.string(), z.string()).prefault({}),
   /** Export batch size, default to `100` */
-  batchSize: z.number().gt(0).default(DEFAULT_BATCH_SIZE),
+  batchSize: z.number().gt(0).prefault(DEFAULT_BATCH_SIZE),
   /** Export batch report delay, default to `20`ms */
-  scheduleDelay: z.number().gt(0).default(DEFAULT_SCHEDULE_DELAY),
+  scheduleDelay: z.number().gt(0).prefault(DEFAULT_SCHEDULE_DELAY),
 });
 
 export type CozeloopSpanProcessorOptions = z.infer<

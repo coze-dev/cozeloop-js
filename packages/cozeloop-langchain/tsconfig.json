@@ -9,7 +9,8 @@
     "types": ["node", "vitest/globals"],
     "target": "es2022",
     "paths": {
-      "@cozeloop/langchain": ["./src/core/index.ts"]
+      "@cozeloop/langchain": ["./src/index.ts"],
+      "@cozeloop/langchain/*": ["./src/*"]
     },
     "experimentalDecorators": true,
     "tsBuildInfoFile": "./temp/.tsbuildinfo"

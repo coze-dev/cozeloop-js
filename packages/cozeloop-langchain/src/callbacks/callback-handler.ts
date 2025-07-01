@@ -24,7 +24,16 @@ import {
   type HandleLLMNewTokenCallbackFields,
 } from '@langchain/core/callbacks/base';
 
-import { extractLLMAttributes, generateUUID, stringifyVal } from './utils';
+import { parseLLMPrompts } from './utils/message';
+import {
+  extractLLMAttributes,
+  generateUUID,
+  guessChainInput,
+  guessChainOutput,
+  parseBaseMessages,
+  parseLLMResult,
+  stringifyVal,
+} from './utils';
 import { TreeLogSpanProcessor } from './tree-log-processor';
 import { type CozeloopSpanProcessorOptions } from './schema';
 import { CozeloopSpanProcessor } from './processor';
@@ -34,22 +43,6 @@ export interface CozeloopCallbackHandlerInput extends BaseCallbackHandlerInput {
   /** Weather to ignore prompt node like {@link ChatPromptTemplate} */
   ignorePrompt?: boolean;
   spanProcessor?: Partial<CozeloopSpanProcessorOptions>;
-}
-
-// TODO: remove
-export function logMethod(
-  target: any,
-  propertyKey: string,
-  descriptor: PropertyDescriptor,
-) {
-  const originalMethod = descriptor.value;
-
-  descriptor.value = function (...args: any[]) {
-    console.log('🟢', propertyKey, args);
-    return originalMethod.apply(this, args);
-  };
-
-  return descriptor;
 }
 
 export class CozeloopCallbackHandler
@@ -126,7 +119,7 @@ export class CozeloopCallbackHandler
         [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.AGENT,
         [CozeloopAttr.INPUT]: stringifyVal(
           // @ts-expect-error action has messageLog
-          stringifyVal(action.messageLog || action.log),
+          action.messageLog || action.log,
         ),
       });
     });
@@ -139,7 +132,10 @@ export class CozeloopCallbackHandler
     tags?: string[],
   ): Promise<void> | void {
     this._endSpan(runId, undefined, span => {
-      span.setAttribute(CozeloopAttr.OUTPUT, stringifyVal(action.returnValues));
+      span.setAttribute(
+        CozeloopAttr.OUTPUT,
+        stringifyVal(guessChainOutput(action.returnValues)),
+      );
     });
   }
 
@@ -177,6 +173,9 @@ export class CozeloopCallbackHandler
     this._startSpan(spanName, runId, parentRunId, span => {
       span.setAttributes({
         [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.MODEL,
+        [CozeloopAttr.INPUT]: stringifyVal({
+          messages: parseBaseMessages(messages),
+        }),
         [CozeloopAttr.MODEL_PROVIDER]: model_provider,
         [CozeloopAttr.REQUEST_MODEL]: model_name,
         [CozeloopAttr.RESPONSE_MODEL]: model_name,
@@ -188,7 +187,6 @@ export class CozeloopCallbackHandler
         [CozeloopAttr.PRESENCE_PENALTY]: callOptions.presence_penalty,
       });
     });
-    this._endSpan(runId, undefined);
   }
 
   handleLLMStart(
@@ -211,6 +209,7 @@ export class CozeloopCallbackHandler
     const spanName = `${runName || model_name || 'LLMStart'}`;
     this._startSpan(spanName, runId, parentRunId, span => {
       span.setAttributes({
+        [CozeloopAttr.INPUT]: stringifyVal(parseLLMPrompts(prompts)),
         [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.MODEL,
         [CozeloopAttr.MODEL_PROVIDER]: model_provider,
         [CozeloopAttr.REQUEST_MODEL]: model_name,
@@ -256,13 +255,17 @@ export class CozeloopCallbackHandler
     tags?: string[],
     extraParams?: Record<string, unknown>,
   ) {
+    console.info(output.generations);
     this._endSpan(runId, undefined, span => {
+      const result = parseLLMResult(output);
+
       span.setAttributes({
-        [CozeloopAttr.OUTPUT]: stringifyVal(output?.generations),
-        // TODO
-        // [CozeloopAttr.INPUT_TOKENS]: stringifyVal(output?.llmOutput),
-        // [CozeloopAttr.OUTPUT_TOKENS]: stringifyVal(output.generations),
-        // [CozeloopAttr.TOTAL_TOKENS]: stringifyVal(output.generations),
+        [CozeloopAttr.OUTPUT]: stringifyVal(result),
+        [CozeloopAttr.INPUT_TOKENS]: stringifyVal(result?.usage.prompt_tokens),
+        [CozeloopAttr.OUTPUT_TOKENS]: stringifyVal(
+          result?.usage.completion_tokens,
+        ),
+        [CozeloopAttr.TOTAL_TOKENS]: stringifyVal(result?.usage.total_tokens),
       });
     });
   }
@@ -306,7 +309,7 @@ export class CozeloopCallbackHandler
     this._startSpan(spanName, runId, parentRunId, span => {
       span.setAttributes({
         [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.CHAIN,
-        [CozeloopAttr.INPUT]: stringifyVal(inputs),
+        [CozeloopAttr.INPUT]: stringifyVal(guessChainInput(inputs)),
       });
     });
   }
@@ -324,7 +327,7 @@ export class CozeloopCallbackHandler
     }
     this._endSpan(runId, undefined, span => {
       span.setAttributes({
-        [CozeloopAttr.OUTPUT]: stringifyVal(outputs),
+        [CozeloopAttr.OUTPUT]: stringifyVal(guessChainOutput(outputs)),
       });
     });
   }
@@ -367,7 +370,7 @@ export class CozeloopCallbackHandler
     parentRunId?: string,
     tags?: string[],
   ) {
-    this._endSpan(runId, parentRunId, span => {
+    this._endSpan(runId, undefined, span => {
       span.setAttributes({
         [CozeloopAttr.OUTPUT]: stringifyVal(output),
       });
@@ -392,7 +395,13 @@ export class CozeloopCallbackHandler
     metadata?: Record<string, unknown>,
     name?: string,
   ) {
-    console.info('handleRetrieverStart');
+    const spanName = retriever.name ?? name ?? 'Retriever';
+    this._startSpan(spanName, runId, parentRunId, span => {
+      span.setAttributes({
+        [CozeloopAttr.INPUT]: query,
+        [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.RETRIEVER,
+      });
+    });
   }
 
   handleRetrieverEnd(
@@ -401,7 +410,11 @@ export class CozeloopCallbackHandler
     parentRunId?: string,
     tags?: string[],
   ) {
-    console.info('handleRetrieverEnd');
+    this._endSpan(runId, undefined, span => {
+      span.setAttributes({
+        [CozeloopAttr.OUTPUT]: stringifyVal(documents),
+      });
+    });
   }
 
   handleRetrieverError(
@@ -410,7 +423,7 @@ export class CozeloopCallbackHandler
     parentRunId?: string,
     tags?: string[],
   ) {
-    console.info('handleRetrieverError');
+    this._endSpan(runId, err || '');
   }
 
   private handlePromptStart(
@@ -427,7 +440,7 @@ export class CozeloopCallbackHandler
     this._startSpan(runName || 'Prompt', runId, parentRunId, span => {
       span.setAttributes({
         [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.PROMPT,
-        [CozeloopAttr.INPUT]: stringifyVal(inputs),
+        [CozeloopAttr.INPUT]: stringifyVal(guessChainInput(inputs)),
         [CozeloopAttr.PROMPT_KEY]: '',
         [CozeloopAttr.PROMPT_VERSION]: '',
         [CozeloopAttr.PROMPT_PROVIDER]: 'LangChain',
@@ -448,7 +461,7 @@ export class CozeloopCallbackHandler
     this._promptChain.delete(runId);
     this._endSpan(runId, undefined, span => {
       span.setAttributes({
-        [CozeloopAttr.OUTPUT]: stringifyVal(outputs),
+        [CozeloopAttr.OUTPUT]: stringifyVal(guessChainOutput(outputs)),
       });
     });
   }
@@ -467,6 +480,13 @@ export class CozeloopCallbackHandler
     this._endSpan(runId, err || '');
   }
 
+  /**
+   * Starts span
+   * @param name - span name
+   * @param runId - run id
+   * @param parentRunId - parent run id
+   * @param cb - span operation
+   */
   private _startSpan(
     name: string,
     runId: string,
@@ -487,6 +507,12 @@ export class CozeloopCallbackHandler
     });
   }
 
+  /**
+   * Ends span
+   * @param runId - run id
+   * @param err - `undefined` → ok, else → error
+   * @param cb - span operation
+   */
   private _endSpan(runId: string, err: unknown, cb?: (span: Span) => void) {
     const span = this._runMap.get(runId);
 
