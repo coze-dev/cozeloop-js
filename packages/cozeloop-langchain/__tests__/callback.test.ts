@@ -4,11 +4,16 @@ import {
   CozeloopCallbackHandler,
   type CozeloopCallbackHandlerInput,
 } from '@cozeloop/langchain';
-import { CustomLLM, CustomRetriever, reactAgentExecutor } from './__mock__';
+import {
+  CustomLLM,
+  CustomRetriever,
+  reactAgentExecutor,
+  graphAgent,
+} from './__mock__';
 
 const makeCallback = (input?: CozeloopCallbackHandlerInput) =>
   new CozeloopCallbackHandler({
-    spanProcessor: {
+    spanExporter: {
       traceEndpoint:
         'https://api-bot-boe.bytedance.net/v1/loop/opentelemetry/v1/traces',
       headers: {
@@ -18,7 +23,7 @@ const makeCallback = (input?: CozeloopCallbackHandlerInput) =>
     ...input,
   });
 
-describe('Callback Test', () => {
+describe('Callback with langchain', () => {
   it('🧪 invoke model', async () => {
     const prompt = ChatPromptTemplate.fromTemplate('What is 1 + {number}?');
     const model = new CustomLLM({});
@@ -32,20 +37,23 @@ describe('Callback Test', () => {
         callbacks: [callback],
       },
     );
-    console.info(resp);
-    // to ensure report success
+
+    expect(resp).toBeTruthy();
+
     await callback.shutdown();
   });
 
-  it.only('🧪 stream model', async () => {
+  it('🧪 stream model', async () => {
     const callback = makeCallback();
     const model = new CustomLLM({});
     const resp = await model.stream(['hi', '你好'], {
       callbacks: [callback],
     });
+
     for await (const chunk of resp) {
       expect(chunk).not.toBeUndefined();
     }
+
     await callback.shutdown();
   });
 
@@ -56,7 +64,7 @@ describe('Callback Test', () => {
       { callbacks: [callback] },
     );
 
-    console.info(resp);
+    expect(resp).toBeTruthy();
 
     await callback.shutdown();
   });
@@ -69,7 +77,27 @@ describe('Callback Test', () => {
       callbacks: [callback],
       runName: '🧑‍🍳 烹饪大家',
     });
-    console.info(resp);
+    expect(resp.length).toBeGreaterThan(1);
+
+    await callback.shutdown();
+  });
+});
+
+describe('Callback with langgraph', () => {
+  it('🧪 graph agent', async () => {
+    const callback = makeCallback();
+    const resp = await graphAgent.invoke(
+      {
+        messages: [
+          {
+            role: 'user',
+            content: 'what is the weather in sf',
+          },
+        ],
+      },
+      { callbacks: [callback] },
+    );
+    expect(resp.messages.length).toBeGreaterThan(1);
 
     await callback.shutdown();
   });

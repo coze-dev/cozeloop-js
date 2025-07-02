@@ -1,4 +1,4 @@
-import { BatchingQueue } from '../src/callbacks/batching-queue';
+import { BatchingQueue } from '@cozeloop/langchain/otel';
 
 describe('BatchingQueue', () => {
   it('🧪 should dequeue after delay', async () => {

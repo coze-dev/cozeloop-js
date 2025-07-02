@@ -7,7 +7,7 @@ function formatPropertyUnprovidedError(propName: string, envKey: string) {
 const DEFAULT_BATCH_SIZE = 100;
 const DEFAULT_SCHEDULE_DELAY = 30_000;
 
-export const CozeloopSpanProcessorOptionsSchema = z.object({
+export const CozeloopSpanExporterOptionsSchema = z.object({
   /** Workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
   workspaceId: z
     .string()
@@ -43,6 +43,6 @@ export const CozeloopSpanProcessorOptionsSchema = z.object({
   scheduleDelay: z.number().gt(0).prefault(DEFAULT_SCHEDULE_DELAY),
 });
 
-export type CozeloopSpanProcessorOptions = z.infer<
-  typeof CozeloopSpanProcessorOptionsSchema
+export type CozeloopSpanExporterOptions = Partial<
+  z.infer<typeof CozeloopSpanExporterOptionsSchema>
 >;

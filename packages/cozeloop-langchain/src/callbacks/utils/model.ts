@@ -1,5 +1,5 @@
 import { type LLMResult } from '@langchain/core/outputs';
-import { type Serialized } from '@langchain/core/dist/load/serializable';
+import { type Serialized } from '@langchain/core/load/serializable';
 
 import { parseRawMessage } from './message';
 

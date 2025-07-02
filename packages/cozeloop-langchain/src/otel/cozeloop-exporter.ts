@@ -1,25 +1,20 @@
-import {
-  type ReadableSpan,
-  type Span,
-  type SpanProcessor,
-} from '@opentelemetry/sdk-trace-base';
+import type { ReadableSpan } from '@opentelemetry/sdk-trace-base';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { globalErrorHandler } from '@opentelemetry/core';
-import { type Context } from '@opentelemetry/api';
 
 import {
-  type CozeloopSpanProcessorOptions,
-  CozeloopSpanProcessorOptionsSchema,
+  type CozeloopSpanExporterOptions,
+  CozeloopSpanExporterOptionsSchema,
 } from './schema';
 import { BatchingQueue } from './batching-queue';
 
-export class CozeloopSpanProcessor implements SpanProcessor {
+export class CozeloopSpanExporter {
   private _exporter: OTLPTraceExporter;
   private _queue: BatchingQueue<ReadableSpan>;
 
   private static WORKSPACE_ID_HEADER = 'cozeloop-workspace-id';
 
-  constructor(options: Partial<CozeloopSpanProcessorOptions>) {
+  constructor(options: CozeloopSpanExporterOptions) {
     const {
       token,
       workspaceId,
@@ -27,20 +22,22 @@ export class CozeloopSpanProcessor implements SpanProcessor {
       traceEndpoint,
       batchSize,
       scheduleDelay,
-    } = CozeloopSpanProcessorOptionsSchema.parse(options);
+    } = CozeloopSpanExporterOptionsSchema.parse(options);
+
+    this._exporter = new OTLPTraceExporter({
+      url: traceEndpoint,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        [CozeloopSpanExporter.WORKSPACE_ID_HEADER]: workspaceId,
+        ...headers,
+      },
+    });
+
     this._queue = new BatchingQueue<ReadableSpan>(
       batchSize,
       scheduleDelay,
       spans => this._onExport(spans),
     );
-    this._exporter = new OTLPTraceExporter({
-      url: traceEndpoint,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        [CozeloopSpanProcessor.WORKSPACE_ID_HEADER]: workspaceId,
-        ...headers,
-      },
-    });
   }
 
   private _onExport(spans: ReadableSpan[]) {
@@ -53,27 +50,17 @@ export class CozeloopSpanProcessor implements SpanProcessor {
     });
   }
 
-  onStart(span: Span, parentContext: Context): void {
-    // no op
-    // console.info(
-    //   `[Start] ${span.name} ${span.spanContext().spanId} parent = ${span.parentSpanId || ''}`,
-    // );
-  }
-
-  onEnd(span: ReadableSpan): void {
+  enqueue(span: ReadableSpan) {
     this._queue.enqueue(span);
-    // console.info(
-    //   `[Ennnd] ${span.name} ${span.spanContext().spanId}, runId=${span.attributes['langchain-run-id']}`,
-    // );
   }
 
-  async forceFlush() {
-    await this._queue.destroy();
+  async flush() {
+    await this._queue.flush();
     await this._exporter.forceFlush();
   }
 
   async shutdown() {
-    await this._queue.destroy();
+    await this.flush();
     await this._exporter.shutdown();
   }
 }

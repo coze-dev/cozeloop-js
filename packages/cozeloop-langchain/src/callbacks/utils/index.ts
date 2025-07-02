@@ -1,6 +1,6 @@
 export { guessChainInput, guessChainOutput } from './chain';
 export { generateUUID, stringifyVal } from './common';
-export { parseBaseMessages } from './message';
+export { parseBaseMessages, parseRawMessage } from './message';
 export {
   extractLLMAttributes,
   guessModelProvider,

@@ -1,28 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- callback handler params */
 /* eslint-disable max-params -- callback handler methods */
-import { NodeSDK as OTelNodeSDK } from '@opentelemetry/sdk-node';
 import {
-  type Span,
+  trace,
+  context,
   SpanStatusCode,
   type Tracer,
-  context,
-  trace,
+  type Span,
 } from '@opentelemetry/api';
+import { type ChainValues } from '@langchain/core/utils/types';
 import { type LLMResult } from '@langchain/core/outputs';
 import { type BaseMessage } from '@langchain/core/messages';
+import { type Serialized } from '@langchain/core/load/serializable';
 import { type DocumentInterface } from '@langchain/core/documents';
-import { type ChainValues } from '@langchain/core/dist/utils/types';
-import { type Serialized } from '@langchain/core/dist/load/serializable';
-import {
-  type AgentAction,
-  type AgentFinish,
-} from '@langchain/core/dist/agents';
 import {
   type BaseCallbackHandlerInput,
   BaseCallbackHandler,
   type NewTokenIndices,
   type HandleLLMNewTokenCallbackFields,
 } from '@langchain/core/callbacks/base';
+import { type AgentAction, type AgentFinish } from '@langchain/core/agents';
 
 import { parseLLMPrompts } from './utils/message';
 import {
@@ -34,15 +30,14 @@ import {
   parseLLMResult,
   stringifyVal,
 } from './utils';
-import { TreeLogSpanProcessor } from './tree-log-processor';
-import { type CozeloopSpanProcessorOptions } from './schema';
-import { CozeloopSpanProcessor } from './processor';
 import { CozeloopAttr, CozeloopSpanType } from './constants';
+import { OTelNodeSDK, type CozeloopSpanExporterOptions } from '../otel';
 
 export interface CozeloopCallbackHandlerInput extends BaseCallbackHandlerInput {
   /** Weather to ignore prompt node like {@link ChatPromptTemplate} */
   ignorePrompt?: boolean;
-  spanProcessor?: Partial<CozeloopSpanProcessorOptions>;
+  /** Span exporter {@link options CozeloopSpanExporterOptions} */
+  spanExporter?: CozeloopSpanExporterOptions;
 }
 
 export class CozeloopCallbackHandler
@@ -55,7 +50,7 @@ export class CozeloopCallbackHandler
 
   ignorePrompt: boolean;
 
-  private readonly _otel: OTelNodeSDK;
+  private readonly _tracerName: string;
 
   private readonly _tracer: Tracer;
 
@@ -68,18 +63,16 @@ export class CozeloopCallbackHandler
   private readonly _agentRunIdMap = new Map<string, string[]>();
 
   constructor(handlerInput: CozeloopCallbackHandlerInput = {}) {
-    const { ignorePrompt, spanProcessor = {}, ...input } = handlerInput;
+    const { ignorePrompt, spanExporter = {}, ...input } = handlerInput;
     super(input);
     this.ignorePrompt = ignorePrompt ?? false;
-    this._otel = new OTelNodeSDK({
-      spanProcessors: [
-        new CozeloopSpanProcessor(spanProcessor),
-        new TreeLogSpanProcessor(),
-      ],
-    });
-    this._otel.start();
-    // MUST initialize tracer after otel sdk started
-    this._tracer = trace.getTracer(this.name, process.env.COZELOOP_VERSION);
+
+    const tracerName = generateUUID();
+    this._tracerName = tracerName;
+    OTelNodeSDK.addExporter(tracerName, spanExporter);
+
+    // MUST initialize tracer after the OTelNodeSDK started
+    this._tracer = trace.getTracer(tracerName, process.env.COZELOOP_VERSION);
   }
 
   handleText(
@@ -255,7 +248,6 @@ export class CozeloopCallbackHandler
     tags?: string[],
     extraParams?: Record<string, unknown>,
   ) {
-    console.info(output.generations);
     this._endSpan(runId, undefined, span => {
       const result = parseLLMResult(output);
 
@@ -537,9 +529,21 @@ export class CozeloopCallbackHandler
     }
   }
 
+  /**
+   * Flush {@link CozeloopCallbackHandler callback} and exporter
+   */
+  async flush() {
+    this._runMap.clear();
+    this._llmStartMap.clear();
+    await OTelNodeSDK.flushExporter(this._tracerName);
+  }
+
+  /**
+   * Shutdown {@link CozeloopCallbackHandler callback} and remove exporter
+   */
   async shutdown() {
     this._runMap.clear();
     this._llmStartMap.clear();
-    await this._otel.shutdown();
+    await OTelNodeSDK.removeExporter(this._tracerName);
   }
 }
