@@ -1,6 +1,6 @@
 import { type ChainValues } from '@langchain/core/utils/types';
 
-export function guessChainInput(inputs: ChainValues) {
+export function guessChainInput(inputs?: ChainValues) {
   if (!inputs) {
     return undefined;
   }
@@ -8,7 +8,7 @@ export function guessChainInput(inputs: ChainValues) {
   return inputs.input || inputs.inputs || inputs.question || inputs;
 }
 
-export function guessChainOutput(outputs: ChainValues) {
+export function guessChainOutput(outputs?: ChainValues) {
   if (!outputs) {
     return undefined;
   }

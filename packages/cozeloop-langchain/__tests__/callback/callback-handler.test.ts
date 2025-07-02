@@ -9,7 +9,7 @@ import {
   CustomRetriever,
   reactAgentExecutor,
   graphAgent,
-} from './__mock__';
+} from '../__mock__';
 
 const makeCallback = (input?: CozeloopCallbackHandlerInput) =>
   new CozeloopCallbackHandler({

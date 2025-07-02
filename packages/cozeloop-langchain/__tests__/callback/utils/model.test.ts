@@ -1,5 +1,4 @@
-import { type Serialized } from '@langchain/core/dist/load/serializable';
-
+import { type Serialized } from '@langchain/core/load/serializable';
 import {
   guessModelProvider,
   extractLLMAttributes,
