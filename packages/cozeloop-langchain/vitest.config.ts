@@ -13,11 +13,6 @@ export default defineConfig({
     },
     env: {
       COZELOOP_VERSION: packageJson.version,
-      COZELOOP_WORKSPACE_ID: '7480080243929694252',
-      // OTEL_EXPORTER_OTLP_ENDPOINT:
-      // 'https://api-bot-boe.bytedance.net/v1/loop/opentelemetry/v1/traces',
-      COZELOOP_API_TOKEN:
-        'pat_zaguQ3FIZNicL5GZUgoSgLeXRg7dieSxpSWaQ4DaE3YKMr30dwzNz829Qqg5qJl0',
     },
   },
 });

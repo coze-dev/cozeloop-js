@@ -40,7 +40,7 @@ describe('Callback with langchain', () => {
 
     expect(resp).toBeTruthy();
 
-    await callback.shutdown();
+    await callback.flush();
   });
 
   it('🧪 stream model', async () => {
@@ -54,7 +54,7 @@ describe('Callback with langchain', () => {
       expect(chunk).not.toBeUndefined();
     }
 
-    await callback.shutdown();
+    await callback.flush();
   });
 
   it('🧪 react agent', async () => {
@@ -66,7 +66,7 @@ describe('Callback with langchain', () => {
 
     expect(resp).toBeTruthy();
 
-    await callback.shutdown();
+    await callback.flush();
   });
 
   it('🧪 retriever', async () => {
@@ -79,7 +79,7 @@ describe('Callback with langchain', () => {
     });
     expect(resp.length).toBeGreaterThan(1);
 
-    await callback.shutdown();
+    await callback.flush();
   });
 });
 
@@ -99,6 +99,6 @@ describe('Callback with langgraph', () => {
     );
     expect(resp.messages.length).toBeGreaterThan(1);
 
-    await callback.shutdown();
+    await callback.flush();
   });
 });

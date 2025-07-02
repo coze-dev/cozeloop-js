@@ -6,8 +6,12 @@ declare module 'process' {
       interface ProcessEnv {
         /** SDK Version, which is injected via vitest or tsup from package.json */
         COZELOOP_VERSION: string;
+        /** API token */
         COZELOOP_API_TOKEN?: string;
-        OTEL_EXPORTER_OTLP_ENDPOINT?: string;
+        /** Workspace id */
+        COZELOOP_WORKSPACE_ID?: string;
+        /** OTLP Endpoint, @default 'https://api.coze.cn/v1/loop/opentelemetry/v1/traces' */
+        COZELOOP_OTLP_ENDPOINT?: string;
       }
     }
   }

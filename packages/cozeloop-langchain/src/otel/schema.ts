@@ -6,6 +6,8 @@ function formatPropertyUnprovidedError(propName: string, envKey: string) {
 
 const DEFAULT_BATCH_SIZE = 100;
 const DEFAULT_SCHEDULE_DELAY = 30_000;
+const DEFAULT_TRACE_ENDPOINT =
+  'https://api.coze.cn/v1/loop/opentelemetry/v1/traces';
 
 export const CozeloopSpanExporterOptionsSchema = z.object({
   /** Workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
@@ -18,16 +20,10 @@ export const CozeloopSpanExporterOptionsSchema = z.object({
         'COZELOOP_WORKSPACE_ID',
       ),
     }),
-  /** Endpoint to export traces, use process.env.OTEL_EXPORTER_OTLP_ENDPOINT when unprovided */
+  /** Endpoint to export traces, use process.env.COZELOOP_OTLP_ENDPOINT when unprovided */
   traceEndpoint: z
     .string()
-    .prefault(process.env.OTEL_EXPORTER_OTLP_ENDPOINT || '')
-    .refine(val => Boolean(val), {
-      message: formatPropertyUnprovidedError(
-        'traceEndpoint',
-        'OTEL_EXPORTER_OTLP_ENDPOINT',
-      ),
-    }),
+    .prefault(process.env.COZELOOP_OTLP_ENDPOINT || DEFAULT_TRACE_ENDPOINT),
   /** CozeLoop API token, use process.env.COZELOOP_API_TOKEN when unprovided */
   token: z
     .string()
