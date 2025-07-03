@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { z } from 'zod/v4';
 
 function formatPropertyUnprovidedError(propName: string, envKey: string) {

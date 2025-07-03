@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { type ChainValues } from '@langchain/core/utils/types';
 
 export function guessChainInput(inputs?: ChainValues) {

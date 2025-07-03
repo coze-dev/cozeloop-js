@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 export enum CozeloopAttr {
   WORKSPACE_ID = 'cozeloop.workspace_id',
   SPAN_TYPE = 'cozeloop.span_type',

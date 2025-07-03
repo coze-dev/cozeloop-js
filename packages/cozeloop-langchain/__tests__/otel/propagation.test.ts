@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { type ReadableSpan } from '@opentelemetry/sdk-trace-base';
 import { TraceState } from '@opentelemetry/core';
 import { context, trace } from '@opentelemetry/api';

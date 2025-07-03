@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { type LLMResult } from '@langchain/core/outputs';
 import { type Serialized } from '@langchain/core/load/serializable';
 

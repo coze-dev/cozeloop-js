@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { NodeSDK } from '@opentelemetry/sdk-node';
 
 import { type CozeloopSpanExporterOptions } from './schema';
