@@ -66,10 +66,12 @@ function parseContent(message?: BaseMessage) {
   return undefined;
 }
 
+// eslint-disable-next-line complexity -- skip
 function parsePart(complex: MessageContentComplex): LoopMessageContentPart {
   switch (complex.type) {
     case 'text':
       return { type: 'text', text: stringifyVal(complex.text) };
+    case 'image':
     case 'image_url':
       return {
         type: 'image_url',
@@ -82,13 +84,17 @@ function parsePart(complex: MessageContentComplex): LoopMessageContentPart {
                 detail: complex.image_url?.url,
               },
       };
+    case 'file':
     case 'file_url':
       return {
         type: 'file_url',
-        file_url: {
-          name: complex.file_url?.name || complex.name,
-          url: complex.file_url?.url || complex.url,
-        },
+        file_url:
+          typeof complex?.file_url === 'string'
+            ? { url: complex.file_url }
+            : {
+                name: complex.file_url?.name || complex.name,
+                url: complex.file_url?.url || complex.url,
+              },
       };
     default:
       return { type: 'text', text: stringifyVal(complex) };
@@ -154,7 +160,7 @@ export function parseBaseMessage(message?: BaseMessage): LoopMessage {
 }
 
 export function parseBaseMessages(messages?: BaseMessage[][]) {
-  if (!messages?.[0].length) {
+  if (!messages?.length) {
     return undefined;
   }
 

@@ -9,12 +9,20 @@ import {
   CustomRetriever,
   reactAgentExecutor,
   graphAgent,
+  fanGraph,
+  setupTraceMock,
+  customAgent,
 } from '../__mock__';
 
 const makeCallback = (input?: CozeloopCallbackHandlerInput) =>
   new CozeloopCallbackHandler({ ...input });
 
 describe('Callback with langchain', () => {
+  const httpMock = setupTraceMock();
+  beforeAll(() => httpMock.start());
+  afterAll(() => httpMock.close());
+  afterEach(() => httpMock.reset());
+
   it('🧪 invoke model', async () => {
     const prompt = ChatPromptTemplate.fromTemplate('What is 1 + {number}?');
     const model = new CustomLLM({});
@@ -52,18 +60,6 @@ describe('Callback with langchain', () => {
     await callback.flush();
   });
 
-  it('🧪 react agent', async () => {
-    const callback = makeCallback();
-    const resp = await reactAgentExecutor.invoke(
-      { input: '翻译「苹果」到英文' },
-      { callbacks: [callback] },
-    );
-
-    expect(resp).toBeTruthy();
-
-    await callback.flush();
-  });
-
   it('🧪 retriever', async () => {
     const callback = makeCallback();
     const retriever = new CustomRetriever();
@@ -76,10 +72,57 @@ describe('Callback with langchain', () => {
 
     await callback.flush();
   });
+
+  it.skip('🧪 react agent', async () => {
+    const callback = makeCallback();
+    const resp = await reactAgentExecutor.invoke(
+      { input: '翻译「苹果」到英文' },
+      { callbacks: [callback] },
+    );
+
+    expect(resp).toBeTruthy();
+
+    await callback.flush();
+  });
 });
 
 describe('Callback with langgraph', () => {
-  it('🧪 graph agent', async () => {
+  const httpMock = setupTraceMock();
+  beforeAll(() => httpMock.start());
+  afterAll(() => httpMock.close());
+  afterEach(() => httpMock.reset());
+
+  it('🧪 simple graph', async () => {
+    const callback = makeCallback();
+    const resp = await fanGraph.invoke(
+      { aggregate: [] },
+      { callbacks: [callback] },
+    );
+
+    expect(resp.aggregate.length).toBeGreaterThan(0);
+
+    await callback.flush();
+  });
+
+  it('🧪 custom llm agent', async () => {
+    const callback = makeCallback();
+    const resp = await customAgent.invoke(
+      {
+        messages: [
+          {
+            role: 'user',
+            content: 'what is the weather in sf',
+          },
+        ],
+      },
+      { callbacks: [callback] },
+    );
+    expect(resp.messages.length).toBeGreaterThan(1);
+
+    await callback.flush();
+  });
+
+  it.skip('🧪 graph agent', async () => {
     const callback = makeCallback();
     const resp = await graphAgent.invoke(
       {

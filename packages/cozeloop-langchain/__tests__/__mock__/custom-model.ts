@@ -6,7 +6,6 @@ import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager
 
 export class CustomLLM extends LLM {
   readonly delay = 10;
-  readonly chunkSize = 2;
 
   _llmType() {
     return 'custom';

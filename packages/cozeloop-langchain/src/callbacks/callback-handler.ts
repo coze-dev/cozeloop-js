@@ -524,9 +524,10 @@ export class CozeloopCallbackHandler
         ? extractPropagationHeaders(context.active(), this._propagationHeaders)
         : context.active();
 
+    // update propagation headers
+    injectPropagationHeaders(currentContext, this._w3cPropagationHeaders);
+
     context.with(currentContext, () => {
-      injectPropagationHeaders(currentContext, this._w3cPropagationHeaders);
-      console.info(this._w3cPropagationHeaders);
       const span = this._tracer.startSpan(name);
 
       // span.setAttribute(CozeloopAttr.WORKSPACE_ID, this._workspaceId || '');
