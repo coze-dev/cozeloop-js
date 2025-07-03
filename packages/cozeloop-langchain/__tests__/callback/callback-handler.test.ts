@@ -12,16 +12,7 @@ import {
 } from '../__mock__';
 
 const makeCallback = (input?: CozeloopCallbackHandlerInput) =>
-  new CozeloopCallbackHandler({
-    spanExporter: {
-      traceEndpoint:
-        'https://api-bot-boe.bytedance.net/v1/loop/opentelemetry/v1/traces',
-      headers: {
-        'x-tt-env': 'boe_otel_ingest_trace',
-      },
-    },
-    ...input,
-  });
+  new CozeloopCallbackHandler({ ...input });
 
 describe('Callback with langchain', () => {
   it('🧪 invoke model', async () => {
@@ -39,6 +30,10 @@ describe('Callback with langchain', () => {
     );
 
     expect(resp).toBeTruthy();
+    expect(callback.w3cPropagationHeaders?.traceparent).not.toBeUndefined();
+    expect(
+      callback.w3cPropagationHeaders?.['X-Cozeloop-Traceparent'],
+    ).not.toBeUndefined();
 
     await callback.flush();
   });

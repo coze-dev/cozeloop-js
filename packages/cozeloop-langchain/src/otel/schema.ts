@@ -20,7 +20,10 @@ export const CozeloopSpanExporterOptionsSchema = z.object({
         'COZELOOP_WORKSPACE_ID',
       ),
     }),
-  /** Endpoint to export traces, use process.env.COZELOOP_OTLP_ENDPOINT when unprovided */
+  /**
+   * Endpoint to export traces, use process.env.COZELOOP_OTLP_ENDPOINT when unprovided
+   * @default 'https://api.coze.cn/v1/loop/opentelemetry/v1/traces'
+   */
   traceEndpoint: z
     .string()
     .prefault(process.env.COZELOOP_OTLP_ENDPOINT || DEFAULT_TRACE_ENDPOINT),

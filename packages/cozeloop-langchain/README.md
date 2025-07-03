@@ -24,7 +24,7 @@ The following variables are optional, and will be used if values provided.
 |Variable|Comment|Example|
 |----|----|------|
 |COZELOOP_WORKSPACE_ID|Cozeloop workspace id, used to identify the workspace to which resource such as trace belongs|'7487806534651887643'|
-|COZELOOP_API_TOKEN|Cozeloop api token|'pat_xxxx'|
+|COZELOOP_API_TOKEN|Cozeloop api token, see [authentication-for-sdk](https://loop.coze.cn/open/docs/cozeloop/authentication-for-sdk) |'pat_xxxx'|
 |COZELOOP_OTLP_ENDPOINT|Trace endpoint|'https://api.coze.cn/v1/loop/opentelemetry/v1/trace'|
 
 
@@ -52,13 +52,21 @@ const callback = new CozeloopCallbackHandler({
   // ignoreLLM: false,
   // ignoreRetriever: false,
   // ignorePrompt: false,
-  // Span exporter
+  /** Span exporter */
   spanExporter: {
     workspaceId: 'xxx',
     token: 'pat_xxx',
     traceEndpoint: 'https://api.coze.cn/v1/loop/opentelemetry/v1/traces',
   },
+  /** Propagate with upstream services */
+  // propagationHeaders: {
+  //   tracestate: '',
+  //   traceparent: '00-b3691bfe8af1415029177821d4114cef-ddd0307891d51ce3-01',
+  // },
 });
+
+// use to propagate with downstream services
+// callback.w3cPropagationHeaders
 ```
 
 * With LangChain

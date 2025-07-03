@@ -31,13 +31,31 @@ import {
   stringifyVal,
 } from './utils';
 import { CozeloopAttr, CozeloopSpanType } from './constants';
-import { OTelNodeSDK, type CozeloopSpanExporterOptions } from '../otel';
+import {
+  extractPropagationHeaders,
+  injectPropagationHeaders,
+  OTelNodeSDK,
+  type CozeloopSpanExporterOptions,
+} from '../otel';
 
 export interface CozeloopCallbackHandlerInput extends BaseCallbackHandlerInput {
   /** Weather to ignore prompt node like {@link ChatPromptTemplate} */
   ignorePrompt?: boolean;
   /** Span exporter {@link options CozeloopSpanExporterOptions} */
   spanExporter?: CozeloopSpanExporterOptions;
+  /**
+   * Propagate with upstream service, see {@link https://opentelemetry.io/docs/concepts/context-propagation/ context propagation}
+   *
+   * Priority:
+   * * X-Cozeloop-Traceparent > traceparent
+   * * X-Cozeloop-Tracestate > tracestate
+   */
+  propagationHeaders?: {
+    'X-Cozeloop-Traceparent'?: string;
+    traceparent?: string;
+    'X-Cozeloop-Tracestate'?: string;
+    tracestate?: string;
+  };
 }
 
 export class CozeloopCallbackHandler
@@ -46,11 +64,14 @@ export class CozeloopCallbackHandler
 {
   name = 'cozeloop-langchain-callback';
 
-  _awaitHandler?: boolean;
-
-  ignorePrompt: boolean;
-
   private readonly _tracerName: string;
+
+  private readonly _ignorePrompt: boolean;
+
+  private readonly _propagationHeaders: CozeloopCallbackHandlerInput['propagationHeaders'];
+
+  private _w3cPropagationHeaders: CozeloopCallbackHandlerInput['propagationHeaders'] =
+    {};
 
   private readonly _tracer: Tracer;
 
@@ -62,10 +83,21 @@ export class CozeloopCallbackHandler
 
   private readonly _agentRunIdMap = new Map<string, string[]>();
 
+  /** W3C compatible propagation headers for propagating with downstream services */
+  get w3cPropagationHeaders() {
+    return this._w3cPropagationHeaders;
+  }
+
   constructor(handlerInput: CozeloopCallbackHandlerInput = {}) {
-    const { ignorePrompt, spanExporter = {}, ...input } = handlerInput;
+    const {
+      ignorePrompt,
+      propagationHeaders,
+      spanExporter = {},
+      ...input
+    } = handlerInput;
     super(input);
-    this.ignorePrompt = ignorePrompt ?? false;
+    this._ignorePrompt = ignorePrompt ?? false;
+    this._propagationHeaders = propagationHeaders;
 
     const tracerName = generateUUID();
     this._tracerName = tracerName;
@@ -447,7 +479,7 @@ export class CozeloopCallbackHandler
     tags?: string[],
     kwargs?: { inputs?: Record<string, unknown> },
   ) {
-    if (this.ignorePrompt) {
+    if (this._ignorePrompt) {
       return;
     }
     this._promptChain.delete(runId);
@@ -465,7 +497,7 @@ export class CozeloopCallbackHandler
     tags?: string[],
     kwargs?: { inputs?: Record<string, unknown> },
   ) {
-    if (this.ignorePrompt) {
+    if (this._ignorePrompt) {
       return;
     }
     this._promptChain.delete(runId);
@@ -488,10 +520,15 @@ export class CozeloopCallbackHandler
     const parentSpan = parentRunId ? this._runMap.get(parentRunId) : undefined;
     const currentContext = parentSpan
       ? trace.setSpan(context.active(), parentSpan)
-      : context.active();
+      : this._propagationHeaders
+        ? extractPropagationHeaders(context.active(), this._propagationHeaders)
+        : context.active();
 
     context.with(currentContext, () => {
+      injectPropagationHeaders(currentContext, this._w3cPropagationHeaders);
+      console.info(this._w3cPropagationHeaders);
       const span = this._tracer.startSpan(name);
+
       // span.setAttribute(CozeloopAttr.WORKSPACE_ID, this._workspaceId || '');
       this._runMap.set(runId, span);
       span.setAttribute('langchain-run-id', runId);
