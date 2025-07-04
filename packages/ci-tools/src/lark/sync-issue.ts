@@ -91,7 +91,7 @@ async function syncIssue(this: Command) {
     if (resp.code === 0) {
       success++;
     } else {
-      errors.push(`Error send to ${it}, errMsg=${resp.msg}`);
+      errors.push(`Error send to ${type}#${id}, errMsg=${resp.msg}`);
     }
   };
 
