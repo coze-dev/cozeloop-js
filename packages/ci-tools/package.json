@@ -1,0 +1,57 @@
+{
+  "name": "@cozeloop/ci-tools",
+  "version": "0.0.1",
+  "description": "🔧 Tools for CI",
+  "homepage": "https://github.com/coze-dev/cozeloop-js/tree/main/packages/ci-tools",
+  "bugs": {
+    "url": "https://github.com/coze-dev/cozeloop-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coze-dev/cozeloop-js.git",
+    "directory": "packages/ci-tools"
+  },
+  "license": "MIT",
+  "author": "qihai <mocayo@qq.com>",
+  "main": "dist/index.js",
+  "bin": {
+    "cozeloop-ci": "./bin/index.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "lint": "eslint ./ --cache",
+    "prepublishOnly": "npm run build",
+    "start": "vitest watch",
+    "test": "vitest run --passWithNoTests",
+    "test:cov": "vitest run --passWithNoTests --coverage",
+    "vitest": "vitest"
+  },
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.50.1",
+    "commander": "^14.0.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@loop-infra/eslint-config": "workspace:*",
+    "@loop-infra/ts-config": "workspace:*",
+    "@loop-infra/vitest-config": "workspace:*",
+    "@types/node": "^20",
+    "@vitest/coverage-v8": "~2.1.4",
+    "msw": "^2.7.3",
+    "rimraf": "~3.0.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.5.3",
+    "vitest": "~2.1.4"
+  },
+  "peerDependencies": {
+    "axios": "^1.7.1"
+  }
+}

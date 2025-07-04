@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: MIT
 import { traceable } from './wrapper';
 import { setError, setInput, setOutput, setTag, setTags } from './utils/tags';
+import { getTracer } from './utils';
 import { tracerInitModule } from './initialize';
+
+export { tracerInitModule } from './initialize';
 
 export {
   type LoopTraceWrapperOptions,
@@ -65,4 +68,5 @@ export const cozeLoopTracer = {
    * Shutdown tracer
    */
   shutdown: tracerInitModule.shutdown,
+  getTracer: () => getTracer(),
 };

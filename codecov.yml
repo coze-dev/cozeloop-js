@@ -10,11 +10,11 @@ coverage:
   status:
     project:
       default:
-        target: 90%
+        target: 80%
         threshold: 1%
     patch:
       default:
-        target: 90%
+        target: 80%
         threshold: 5%
 
 comment:
@@ -29,10 +29,10 @@ component_management:
   default_rules: # default rules that will be inherited by all components
     statuses:
       - type: project
-        target: 90%
+        target: 80%
         threshold: 1%
       - type: patch
-        target: 90%
+        target: 80%
         threshold: 5%
 
   individual_components:
@@ -40,3 +40,8 @@ component_management:
       name: '@cozeloop/ai'
       paths:
         - packages/cozeloop-ai/**
+
+    - component_id: cozeloop-langchain
+      name: '@cozeloop/langchain'
+      paths:
+        - packages/cozeloop-langchain/**

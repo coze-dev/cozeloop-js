@@ -155,7 +155,7 @@ describe('Test utils/common.ts', () => {
 
     it('should handle Date object', () => {
       const date = new Date('2023-05-20T12:00:00Z');
-      expect(stringifyVal(date)).toBe(JSON.stringify(date));
+      expect(stringifyVal(date)).toBe(date.toISOString());
     });
 
     it('should handle custom objects', () => {

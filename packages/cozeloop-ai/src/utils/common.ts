@@ -55,7 +55,11 @@ export function stringifyVal(val: unknown) {
     case 'symbol':
       return val.toString();
     case 'object':
-      return val === null ? '' : JSON.stringify(val);
+      return val === null
+        ? ''
+        : val instanceof Date
+          ? val.toISOString()
+          : JSON.stringify(val);
     case 'undefined':
       return '';
     case 'function':
@@ -65,7 +69,7 @@ export function stringifyVal(val: unknown) {
   }
 }
 
-/** parse value to numver safely, NaN is treated as undefined */
+/** parse value to number safely, NaN is treated as undefined */
 export function safeNumber(value: unknown) {
   if (typeof value === 'number' && !isNaN(value)) {
     return value;
