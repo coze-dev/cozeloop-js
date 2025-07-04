@@ -1,0 +1,19 @@
+header:
+  license:
+    spdx-id: Apache-2.0
+    pattern: |
+      Copyright (c) \d{4} Bytedance Ltd. and/or its affiliates
+      SPDX-License-Identifier: MIT
+
+  paths:
+    - packages/*/{src,__tests__}/**/*.{ts,tsx,less,css}
+
+  paths-ignore:
+    - 'node_modules'
+    - 'dist'
+    - 'coverage'
+    - 'licenses'
+    - '**/*.md'
+    - '**/__mock__/**'
+
+  comment: on-failure

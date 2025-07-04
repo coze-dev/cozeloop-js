@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 /* eslint-disable security/detect-object-injection -- skip */
 import {
   cozeLoopGetter,
