@@ -30,8 +30,8 @@
     "lint": "eslint ./ --cache",
     "prepublishOnly": "npm run build",
     "start": "vitest watch",
-    "test": "vitest run",
-    "test:cov": "vitest run --coverage",
+    "test": "vitest run --passWithNoTests",
+    "test:cov": "vitest run --passWithNoTests --coverage",
     "vitest": "vitest"
   },
   "dependencies": {
