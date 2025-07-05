@@ -2,7 +2,7 @@ name: License Check
 
 on:
   push:
-    branches: ['main']
+    branches: ['ci/**', 'main']
   pull_request:
     branches: ['main']
   workflow_dispatch:
