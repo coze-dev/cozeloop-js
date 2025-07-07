@@ -17,6 +17,9 @@ coverage:
         target: 80%
         threshold: 5%
 
+github_checks:
+  annotations: false
+
 comment:
   layout: 'header, diff, components, files' # show component info in the PR comment
   require_changes: false # if true: only post the comment if coverage changes
