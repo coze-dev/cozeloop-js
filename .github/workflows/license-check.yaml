@@ -1,0 +1,24 @@
+name: License Check
+
+on:
+  push:
+    branches: ['ci/**', 'main']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
+
+jobs:
+  license-check:
+    name: License Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Check License Header
+        uses: apache/skywalking-eyes/header@v0.7.0
+        with:
+          config: .github/.licenserc.yaml
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -12,6 +12,7 @@
 | 包名 | 描述 | 版本 |
 |---------|------------|---------|
 | [@cozeloop/ai](./packages/cozeloop-ai) | CozeLoop API SDK | [![npm](https://img.shields.io/npm/v/@cozeloop/ai.svg)](https://www.npmjs.com/package/@cozeloop/ai) |
+| [@cozeloop/langchain](./packages/cozeloop-langchain) | CozeLoop LangChain Integration | [![npm](https://img.shields.io/npm/v/@cozeloop/langchain.svg)](https://www.npmjs.com/package/@cozeloop/langchain) |
 
 
 ## 🎮 示例
