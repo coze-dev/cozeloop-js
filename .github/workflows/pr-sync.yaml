@@ -17,7 +17,7 @@ jobs:
       PR_URL: ${{ github.event.pull_request.html_url }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
       PR_TITLE: ${{ github.event.pull_request.title }}
-      PR_SENDER: ${{ github.event.sender }}
+      PR_SENDER: ${{ github.event.sender.login }}
       PR_SOURCE_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
       PR_SOURCE_REF: ${{ github.event.pull_request.head.ref }}
       PR_TARGET_OWNER: ${{ github.event.pull_request.base.repo.owner.login }}
