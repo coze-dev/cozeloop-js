@@ -32,7 +32,7 @@ jobs:
 
       - name: Install ci-tools
         run: |
-          npm install -g @cozeloop/ci-tools@0.0.3
+          npm install -g @cozeloop/ci-tools@0.0.4
 
       - name: Notify via lark
         run: |

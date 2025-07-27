@@ -5,7 +5,6 @@ import { Client } from '@larksuiteoapi/node-sdk';
 
 import { larkOptionSchema, messageReceiverSchema } from './schema';
 
-// eslint-disable-next-line max-lines-per-function -- skip
 function makePrMessage() {
   const repo_name = process.env.REPO_NAME;
   const pr_action = process.env.PR_ACTION;
@@ -45,69 +44,18 @@ function makePrMessage() {
         {
           tag: 'markdown',
           content: [
-            `> 仓库：[${repo_name}](https://github.com/${repo_name})\n\n`,
-            `<br />${pr_title}  [#${pr_number}](${pr_url})<br />`,
+            `${pr_title}  [#${pr_number}](${pr_url})<br />`,
             `发起人：${pr_sender}`,
+            `仓库：[${repo_name}](https://github.com/${repo_name})`,
+            `来源：\`${pr_source_owner}:${pr_source_ref}\``,
+            `目标：\`${pr_target_owner}:${pr_target_ref}\``,
           ].join('\n'),
           text_align: 'left',
           text_size: 'normal_v2',
           margin: '0px 0px 0px 0px',
         },
         {
-          tag: 'column_set',
-          horizontal_spacing: '8px',
-          horizontal_align: 'left',
-          columns: [
-            {
-              tag: 'column',
-              width: 'weighted',
-              elements: [
-                {
-                  tag: 'markdown',
-                  content: `\`${pr_source_owner}:${pr_source_ref}\``,
-                  text_align: 'left',
-                  text_size: 'normal_v2',
-                  margin: '0px 0px 0px 0px',
-                },
-              ],
-              vertical_align: 'top',
-              weight: 1,
-            },
-            {
-              tag: 'column',
-              width: 'weighted',
-              elements: [
-                {
-                  tag: 'div',
-                  text: {
-                    tag: 'plain_text',
-                    content: '→',
-                    text_size: 'normal_v2',
-                    text_align: 'center',
-                    text_color: 'default',
-                  },
-                  margin: '0px 0px 0px 0px',
-                },
-              ],
-              vertical_align: 'top',
-              weight: 1,
-            },
-            {
-              tag: 'column',
-              width: 'weighted',
-              elements: [
-                {
-                  tag: 'markdown',
-                  content: `\`${pr_target_owner}:${pr_target_ref}\``,
-                  text_align: 'left',
-                  text_size: 'normal_v2',
-                  margin: '0px 0px 0px 0px',
-                },
-              ],
-              vertical_align: 'top',
-              weight: 1,
-            },
-          ],
+          tag: 'hr',
           margin: '0px 0px 0px 0px',
         },
         {
