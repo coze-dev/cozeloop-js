@@ -3,7 +3,8 @@
 import { Command } from 'commander';
 import { Client } from '@larksuiteoapi/node-sdk';
 
-import { larkOptionSchema, syncIssueOptionsSchema } from './schema';
+import { filterMessageBody } from './utils';
+import { larkOptionSchema, messageReceiverSchema } from './schema';
 
 function makeIssueMessage() {
   const issue_action = process.env.ISSUE_ACTION;
@@ -36,7 +37,7 @@ function makeIssueMessage() {
           content: [
             `> 仓库：[${repo_name}](https://github.com/${repo_name})\n\n`,
             `<br />${issue_title}  [#${issue_number}](${issue_url})<br />`,
-            `${issue_body}\n\n`,
+            `${filterMessageBody(issue_body)}\n\n`,
             `<a href="${issue_url}">👉 前往处理</a>`,
           ].join('\n'),
           text_align: 'left',
@@ -68,13 +69,12 @@ function makeIssueMessage() {
 }
 
 async function syncIssue(this: Command) {
-  const options = syncIssueOptionsSchema.parse(this.opts());
+  const options = messageReceiverSchema.parse(this.opts());
   const clientOptions = larkOptionSchema.parse(this.opts());
 
   const client = new Client(clientOptions);
   const content = makeIssueMessage();
   let success = 0;
-  const errors: string[] = [];
 
   const sendMessage = async (type: 'email' | 'chat_id', id: string) => {
     const resp = await client.im.message.create({
@@ -88,11 +88,7 @@ async function syncIssue(this: Command) {
       },
     });
 
-    if (resp.code === 0) {
-      success++;
-    } else {
-      errors.push(`Error send to ${type}#${id}, errMsg=${resp.msg}`);
-    }
+    success += resp.code === 0 ? 1 : 0;
   };
 
   const tasks: Promise<void>[] = [];
@@ -100,12 +96,7 @@ async function syncIssue(this: Command) {
   options.chatId.forEach(it => tasks.push(sendMessage('chat_id', it)));
   await Promise.allSettled(tasks);
 
-  const result =
-    success === tasks.length
-      ? '✅ All done'
-      : `✅ Success ${success}\n❌ Fail ${errors.length}, errMsg=\n${errors.join('\n')}`;
-
-  console.info(result);
+  console.info(`✅ ${success}/${tasks.length} done`);
 }
 
 export function applySyncIssue(program: Command) {
