@@ -1,6 +1,6 @@
 {
   "name": "@cozeloop/ci-tools",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "🔧 Tools for CI",
   "homepage": "https://github.com/coze-dev/cozeloop-js/tree/main/packages/ci-tools",
   "bugs": {
@@ -50,8 +50,5 @@
     "tsup": "^8.0.1",
     "typescript": "^5.5.3",
     "vitest": "~2.1.4"
-  },
-  "peerDependencies": {
-    "axios": "^1.7.1"
   }
 }

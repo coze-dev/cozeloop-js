@@ -32,9 +32,9 @@ jobs:
 
       - name: Install ci-tools
         run: |
-          npm install -g @cozeloop/ci-tools@0.0.2
+          npm install -g @cozeloop/ci-tools@0.0.3
 
       - name: Notify via lark
         run: |
-          cozeloop-ci lark sync-issue \
+          cozeloop-ci lark sync-pr \
           --email qihai@bytedance.com

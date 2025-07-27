@@ -77,7 +77,7 @@ jobs:
 
       - name: Install dep
         run: |
-          npm install -g @cozeloop/ci-tools@0.0.1
+          npm install -g @cozeloop/ci-tools@0.0.3
 
       - name: Notification via lark
         run: |
@@ -141,10 +141,10 @@ jobs:
 
       - name: Install ci-tools
         run: |
-          npm install -g @cozeloop/ci-tools@0.0.2
+          npm install -g @cozeloop/ci-tools@0.0.3
 
       - name: Notify via lark
         run: |
-          cozeloop-ci lark sync-issue \
+          cozeloop-ci lark sync-pr \
           --chat-id <oc_xxx>
 ```
