@@ -97,10 +97,10 @@ Synchronize GitHub PR(Pull Request) via lark, with params:
 |PR_URL|pr html url, `github.event.pull_request.html_url`|'https://github.com/coze-dev/cozeloop-python/pull/1'|
 |PR_TITLE|pr title, `github.event.pull_request.title`|'如何将coze智能体的数据通过cozeloop上报'|
 |PR_SENDER|pr sender, `github.event.sender`|'xxx'|
-|PR_SOURCE_OWNER|pr sender, `github.event.pull_request.head.repo.owner.login`|'xxx'|
-|PR_SOURCE_REF|pr sender, `github.event.pull_request.head.ref`|'xxx'|
-|PR_TARGET_OWNER|pr sender, `github.event.pull_request.base.repo.owner.login`|'xxx'|
-|PR_TARGET_REF|pr sender, `github.event.pull_request.base.ref`|'xxx'|
+|PR_SOURCE_OWNER|pr source owner, `github.event.pull_request.head.repo.owner.login`|'xxx'|
+|PR_SOURCE_REF|pr source ref, `github.event.pull_request.head.ref`|'xxx'|
+|PR_TARGET_OWNER|pr target owner, `github.event.pull_request.base.repo.owner.login`|'xxx'|
+|PR_TARGET_REF|pr target ref, `github.event.pull_request.base.ref`|'xxx'|
 |PR_MERGED|pr merged, `github.event.pull_request.merged`|'xxx'|
 
 
