@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { Command, Option } from 'commander';
 
+import { applySyncPr } from './sync-pr';
 import { applySyncIssue } from './sync-issue';
 import { applySendMessage } from './send-message';
 
@@ -12,6 +13,7 @@ function createProgram() {
 
   applySendMessage(program);
   applySyncIssue(program);
+  applySyncPr(program);
 
   // add common options
   program.commands.forEach(it =>

@@ -16,7 +16,7 @@ export const larkOptionSchema = z.object({
     .transform(val => Number(val)),
 });
 
-export const syncIssueOptionsSchema = z
+export const messageReceiverSchema = z
   .object({
     email: z.array(z.string()),
     chatId: z.array(z.string()),

@@ -3,16 +3,25 @@
 import { Command } from 'commander';
 import { Client } from '@larksuiteoapi/node-sdk';
 
-import { filterMessageBody } from './utils';
 import { larkOptionSchema, messageReceiverSchema } from './schema';
 
-function makeIssueMessage() {
-  const issue_action = process.env.ISSUE_ACTION;
-  const issue_number = process.env.ISSUE_NUMBER;
-  const issue_url = process.env.ISSUE_URL;
-  const issue_title = process.env.ISSUE_TITLE;
-  const issue_body = process.env.ISSUE_BODY;
+function makePrMessage() {
   const repo_name = process.env.REPO_NAME;
+  const pr_action = process.env.PR_ACTION;
+  const pr_url = process.env.PR_URL;
+  const pr_number = process.env.PR_NUMBER;
+  const pr_title = process.env.PR_TITLE;
+  const pr_sender = process.env.PR_SENDER;
+  const pr_source_owner = process.env.PR_SOURCE_OWNER;
+  const pr_source_ref = process.env.PR_SOURCE_REF;
+  const pr_target_owner = process.env.PR_TARGET_OWNER;
+  const pr_target_ref = process.env.PR_TARGET_REF;
+  const pr_merged = process.env.PR_MERGED;
+
+  const title =
+    pr_action === 'closed' && pr_merged === 'true'
+      ? `🎉 PR #${pr_number} merged`
+      : `📢 PR #${pr_number} ${pr_action}`;
 
   return JSON.stringify({
     schema: '2.0',
@@ -35,9 +44,11 @@ function makeIssueMessage() {
         {
           tag: 'markdown',
           content: [
-            `> 仓库：[${repo_name}](https://github.com/${repo_name})\n\n`,
-            `<br />${issue_title}  [#${issue_number}](${issue_url})<br />`,
-            `${filterMessageBody(issue_body)}\n\n`,
+            `${pr_title}  [#${pr_number}](${pr_url})<br />`,
+            `发起人：${pr_sender}`,
+            `仓库：[${repo_name}](https://github.com/${repo_name})`,
+            `来源：\`${pr_source_owner}:${pr_source_ref}\``,
+            `目标：\`${pr_target_owner}:${pr_target_ref}\``,
           ].join('\n'),
           text_align: 'left',
           text_size: 'normal_v2',
@@ -49,7 +60,7 @@ function makeIssueMessage() {
         },
         {
           tag: 'markdown',
-          content: `<a href="${issue_url}">👉 前往处理</a>`,
+          content: `<a href="${pr_url}">👉 前往查看</a>`,
           text_align: 'left',
           text_size: 'normal_v2',
           margin: '0px 0px 0px 0px',
@@ -59,7 +70,7 @@ function makeIssueMessage() {
     header: {
       title: {
         tag: 'plain_text',
-        content: `📢 Issue #${issue_number} ${issue_action}`,
+        content: title,
       },
       subtitle: {
         tag: 'plain_text',
@@ -71,12 +82,12 @@ function makeIssueMessage() {
   });
 }
 
-async function syncIssue(this: Command) {
+async function syncPr(this: Command) {
   const options = messageReceiverSchema.parse(this.opts());
   const clientOptions = larkOptionSchema.parse(this.opts());
-
   const client = new Client(clientOptions);
-  const content = makeIssueMessage();
+  const content = makePrMessage();
+
   let success = 0;
 
   const sendMessage = async (type: 'email' | 'chat_id', id: string) => {
@@ -102,12 +113,12 @@ async function syncIssue(this: Command) {
   console.info(`✅ ${success}/${tasks.length} done`);
 }
 
-export function applySyncIssue(program: Command) {
+export function applySyncPr(program: Command) {
   program.addCommand(
-    new Command('sync-issue')
-      .description('Synchronize GitHub issue via lark')
+    new Command('sync-pr')
+      .description('Synchronize GitHub PR via lark')
       .option('--email [emails...]', 'email list split by `,`', [])
       .option('--chat-id [chat-ids...]', 'chat id list split by `,`', [])
-      .action(syncIssue),
+      .action(syncPr),
   );
 }

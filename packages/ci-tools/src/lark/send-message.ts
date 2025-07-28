@@ -3,16 +3,8 @@
 import { Command } from 'commander';
 import { Client } from '@larksuiteoapi/node-sdk';
 
+import { safeJsonParse } from './utils';
 import { larkOptionSchema } from './schema';
-
-function safeJsonParse<T>(val: string): T | undefined {
-  try {
-    return JSON.parse(val) as T;
-  } catch {
-    // no-catch
-    return undefined;
-  }
-}
 
 async function sendMessage(this: Command) {
   const options = larkOptionSchema.parse(this.opts);
