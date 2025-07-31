@@ -1,5 +1,8 @@
 # 🕗 Change Log - @cozeloop/ai
 
+## 0.0.5
+* fix: variable_defs may be undefined (by @othorizon)
+
 ## 0.0.1 ~ 0.0.4
 🌱 Early version
 
