@@ -7,7 +7,7 @@ function formatPropertyUnprovidedError(propName: string, envKey: string) {
 }
 
 const DEFAULT_BATCH_SIZE = 100;
-const DEFAULT_SCHEDULE_DELAY = 30_000;
+const DEFAULT_SCHEDULE_DELAY = 1_000;
 const DEFAULT_TRACE_ENDPOINT =
   'https://api.coze.cn/v1/loop/opentelemetry/v1/traces';
 
