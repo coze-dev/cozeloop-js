@@ -1,5 +1,6 @@
 # 🧭 CozeLoop LangChain Integration
 
+[![npm version](https://img.shields.io/npm/v/%40cozeloop%2Flangchain)](https://www.npmjs.com/package/@cozeloop/langchain)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Integrate Langchain with Cozeloop via `@cozeloop/langchain`, supports:

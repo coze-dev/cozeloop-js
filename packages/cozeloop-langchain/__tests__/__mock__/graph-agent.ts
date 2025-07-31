@@ -1,4 +1,3 @@
-// npm install @langchain-anthropic
 import { z } from 'zod';
 import { AzureChatOpenAI } from '@langchain/openai';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
