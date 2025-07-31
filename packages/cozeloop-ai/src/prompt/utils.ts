@@ -38,8 +38,8 @@ export function formatPromptTemplate(
   if (!promptTemplate?.messages.length) {
     return [];
   }
-
-  const { messages, template_type, variable_defs } = promptTemplate;
+  // variable_defs may be undefined
+  const { messages, template_type, variable_defs = [] } = promptTemplate;
   const variableMap = buildVariableMap(variable_defs, variables);
   const formattedMessages: Message[] = [];
 
