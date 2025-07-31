@@ -2,7 +2,7 @@ name: Issue Notification
 
 on:
   issues:
-    types: ['opened', 'reopened', 'closed']
+    types: ['opened', 'reopened']
 
 jobs:
   sync:
