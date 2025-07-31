@@ -32,6 +32,7 @@ jobs:
             style
             test
             chore
+            bump
           # sdk: cozeloop-ai, cozeloop-langchain, etc
           # infra: rush update, {eslint,ts,vitest}-config, prettier etc
           # tools: ci-tools, etc
