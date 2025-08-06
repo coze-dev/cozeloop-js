@@ -1,5 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
+import { renderString } from 'nunjucks';
+
 import { stringifyVal } from '../utils/common';
 import type {
   FormattedMessage,
@@ -31,60 +33,16 @@ function buildVariableMap(
   return variableMap;
 }
 
-export function formatPromptTemplate(
-  promptTemplate?: PromptTemplate,
-  variables?: PromptVariables,
-) {
-  if (!promptTemplate?.messages.length) {
-    return [];
+function interpolateJinja(content: string, variables?: PromptVariables) {
+  if (!variables || !Object.keys(variables).length) {
+    return content;
   }
-  // variable_defs may be undefined
-  const { messages, template_type, variable_defs = [] } = promptTemplate;
-  const variableMap = buildVariableMap(variable_defs, variables);
-  const formattedMessages: Message[] = [];
 
-  messages.forEach(it => {
-    formattedMessages.push(...formatMessage(it, template_type, variableMap));
-  });
-
-  return formattedMessages as FormattedMessage[];
+  return renderString(content, variables);
 }
 
-function formatMessage(
-  message: Message,
-  templateType: PromptTemplate['template_type'],
-  variableMap: PromptVariableMap,
-): Message[] {
-  const { role, content = '' } = message;
-
-  switch (role) {
-    case 'system':
-    case 'user':
-    case 'assistant':
-    case 'tool':
-      return [
-        { role, content: interpolateText(content, templateType, variableMap) },
-      ];
-    case 'placeholder':
-      return interpolatePlaceholder(content, templateType, variableMap);
-    default:
-      throw new Error(`[formatMessage] unsupported message role ${role}`);
-  }
-}
-
-function interpolateText(
-  content: string,
-  templateType: PromptTemplate['template_type'],
-  variableMap: PromptVariableMap,
-) {
-  // content is empty
-  // only support normal template now
-  // no variables
-  if (
-    templateType !== 'normal' ||
-    !content ||
-    !Object.keys(variableMap).length
-  ) {
+function interpolateNormal(content: string, variableMap?: PromptVariableMap) {
+  if (!variableMap || !Object.keys(variableMap).length) {
     return content;
   }
 
@@ -96,16 +54,60 @@ function interpolateText(
   });
 }
 
+export function formatPromptTemplate(
+  promptTemplate?: PromptTemplate,
+  variables?: PromptVariables,
+) {
+  if (!promptTemplate?.messages.length) {
+    return [];
+  }
+  // variable_defs may be undefined
+  const { messages, template_type, variable_defs = [] } = promptTemplate;
+  const variableMap = buildVariableMap(variable_defs, variables);
+  const formattedMessages: Message[] = [];
+  const interpolator = (content: string) => {
+    switch (template_type) {
+      case 'normal':
+        return interpolateNormal(content, variableMap);
+      case 'jinja2':
+        return interpolateJinja(content, variables);
+      default:
+        return content;
+    }
+  };
+
+  messages.forEach(it => {
+    formattedMessages.push(...formatMessage(it, variableMap, interpolator));
+  });
+
+  return formattedMessages as FormattedMessage[];
+}
+
+function formatMessage(
+  message: Message,
+  variableMap: PromptVariableMap,
+  interpolator: (content: string) => string,
+): Message[] {
+  const { role, content = '' } = message;
+
+  switch (role) {
+    case 'system':
+    case 'user':
+    case 'assistant':
+    case 'tool':
+      return [{ role, content: interpolator(content) }];
+    case 'placeholder':
+      return interpolatePlaceholder(content, variableMap);
+    default:
+      throw new Error(`[formatMessage] unsupported message role ${role}`);
+  }
+}
+
 function interpolatePlaceholder(
   placeholderName: string,
-  templateType: PromptTemplate['template_type'],
   variableMap: PromptVariableMap,
 ) {
-  if (
-    !placeholderName ||
-    templateType !== 'normal' ||
-    !Object.keys(variableMap).length
-  ) {
+  if (!placeholderName || !Object.keys(variableMap).length) {
     return [];
   }
 

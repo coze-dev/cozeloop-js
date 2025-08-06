@@ -35,7 +35,10 @@ describe('Test Prompt Hub', () => {
 
   it('#1 getPrompt and formatPrompt', async () => {
     const hub = new PromptHub({
-      traceable: true,
+      apiClient: {
+        headers: { 'x-template-type': 'normal' }, // for mock
+      },
+      traceable: false,
     });
 
     const key = 'loop1';
@@ -115,5 +118,33 @@ describe('Test Prompt Hub', () => {
     cache.clear();
     // @ts-expect-error skip
     expect(cache._timer).toBeUndefined();
+  });
+
+  it('#3 jinja2 prompt', async () => {
+    const hub = new PromptHub({
+      apiClient: {
+        headers: { 'x-template-type': 'jinja2' }, // for mock
+      },
+      traceable: false,
+    });
+
+    const key = 'loop12';
+    const version = '0.0.3';
+    const prompt = await hub.getPrompt(key, version);
+
+    expect(prompt?.prompt_key).toBe(key);
+    expect(prompt?.version).toBe(version);
+
+    const messageList = hub.formatPrompt(prompt, {
+      title: '示例标题',
+      user: {
+        is_authenticated: true,
+        name: '张三',
+      },
+      items: [{ name: '项目一' }, { name: '项目二' }, { name: '项目三' }],
+      pl: [{ role: 'user', content: 'hi hi hi' }],
+    });
+
+    expect(messageList.length).toBeGreaterThan(0);
   });
 });
