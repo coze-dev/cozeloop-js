@@ -1,6 +1,6 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
-import { renderString } from 'nunjucks';
+import nj from 'nunjucks';
 
 import { stringifyVal } from '../utils/common';
 import type {
@@ -38,7 +38,7 @@ function interpolateJinja(content: string, variables?: PromptVariables) {
     return content;
   }
 
-  return renderString(content, variables);
+  return nj.renderString(content, variables);
 }
 
 function interpolateNormal(content: string, variableMap?: PromptVariableMap) {
