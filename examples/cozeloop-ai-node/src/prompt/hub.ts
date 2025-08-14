@@ -14,12 +14,12 @@ export async function run() {
 
   // 1. getPrompt
   const key = 'loop';
-  const version = '0.0.3';
+  const version = '0.0.1';
   const prompt = await hub.getPrompt(key, version);
   // {
-  //   workspace_id: '7306823955623854124',
+  //   workspace_id: '7308703665823416358',
   //   prompt_key: 'loop',
-  //   version: '0.0.3',
+  //   version: '0.0.1',
   //   prompt_template: {
   //     template_type: 'normal',
   //     messages: [
