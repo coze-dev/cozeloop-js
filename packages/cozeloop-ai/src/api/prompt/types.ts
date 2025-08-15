@@ -19,7 +19,7 @@ export interface VariableDef {
 }
 
 export interface PromptTemplate {
-  template_type: 'normal';
+  template_type: 'normal' | 'jinja2';
   messages: Message[];
   variable_defs: VariableDef[];
 }

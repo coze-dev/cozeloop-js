@@ -1,6 +1,6 @@
 {
   "name": "@cozeloop/ai",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Official Node.js SDK of CozeLoop | 扣子罗盘官方 Node.js SDK",
   "keywords": [
     "cozeloop",
@@ -58,6 +58,7 @@
     "jsonwebtoken": "^9.0.2",
     "nanoid": "^3.x",
     "node-fetch": "^2.x",
+    "nunjucks": "^3.2.4",
     "promise-retry": "~2.0.1",
     "quick-lru": "^5.x",
     "remeda": "^2.21.2",
@@ -70,6 +71,7 @@
     "@types/jsonwebtoken": "^9.0.0",
     "@types/node": "^20",
     "@types/node-fetch": "^2.x",
+    "@types/nunjucks": "^3.2.6",
     "@types/promise-retry": "~1.1.6",
     "@vitest/coverage-v8": "~2.1.4",
     "axios": "^1.8.2",

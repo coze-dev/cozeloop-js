@@ -1,4 +1,7 @@
-# 🕗 Change Log - @cozeloop/ai
+# 🕗 ChangeLog - @cozeloop/ai
+
+## 0.0.6
+* PromptHub: support prompt with Jinja2 template type
 
 ## 0.0.5
 * fix: variable_defs may be undefined (by @othorizon)

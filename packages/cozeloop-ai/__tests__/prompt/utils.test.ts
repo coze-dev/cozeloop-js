@@ -120,6 +120,23 @@ describe('Test prompt/utils', () => {
       ]);
     });
 
+    it('should handle jinja2 template', () => {
+      const promptTemplate: PromptTemplate = {
+        messages: [
+          { role: 'system', content: 'You are {{ user.name }}.' },
+          { role: 'placeholder', content: 'conversation' },
+        ],
+        template_type: 'jinja2',
+        variable_defs: [{ key: 'conversation', type: 'placeholder' }],
+      };
+
+      const variables: PromptVariables = {
+        user: { name: 'Bot' },
+      };
+      const result = formatPromptTemplate(promptTemplate, variables);
+      expect(result).toEqual([{ role: 'system', content: 'You are Bot.' }]);
+    });
+
     it('should throw error for unsupported message role', () => {
       const promptTemplate: PromptTemplate = {
         messages: [

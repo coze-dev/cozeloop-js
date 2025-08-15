@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 
 import { run as runTrace } from './tracer';
-import { run as runPromptHub } from './prompt/hub';
+import { run as runPromptHub } from './prompt';
 import { run as runOAuthJwt } from './auth/oauth-jwt';
 import { run as runApiClient } from './api/api-client';
 
@@ -25,6 +25,8 @@ async function run() {
       .catch(e => console.error(`❌ ${task.name} error=${e}`));
 
   await Promise.all(tasks.map(it => runTask(it)));
+
+  process.exit(0);
 }
 
 config();

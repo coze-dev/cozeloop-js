@@ -28,10 +28,12 @@ export interface PromptHubOptions {
   logger?: SimpleLogger;
 }
 
-export type PromptVariables = Record<
-  string,
-  string | number | bigint | boolean | symbol | Message | Message[]
->;
+export type PromptVariables =
+  | Record<
+      string,
+      string | number | bigint | boolean | symbol | Message | Message[]
+    >
+  | Record<string, unknown>;
 
 export type PromptVariableMap = Record<
   string,
