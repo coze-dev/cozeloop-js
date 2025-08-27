@@ -4,7 +4,8 @@ import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { tool } from '@langchain/core/tools';
 
 const search = tool(
-  ({ query }) => {
+  input => {
+    const { query } = input as any;
     if (
       query.toLowerCase().includes('sf') ||
       query.toLowerCase().includes('san francisco')

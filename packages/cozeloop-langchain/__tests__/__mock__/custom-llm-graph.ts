@@ -8,7 +8,7 @@ const model = new CustomChatModel({});
 
 const getWeather = tool(
   input => {
-    if (input.location === 'sf') {
+    if ((input as any).location === 'sf') {
       return "It's always sunny in sf";
     } else {
       return 'It might be cloudy in nyc';
