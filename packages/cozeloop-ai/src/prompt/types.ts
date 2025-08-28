@@ -4,7 +4,6 @@ import { type SimpleLogger } from '../utils/logger';
 import {
   type ApiClient,
   type ApiClientOptions,
-  type Message,
   type VariableDef,
 } from '../api';
 
@@ -14,6 +13,27 @@ export interface PromptCacheOptions {
   /** Cache size (by prompt count, LRU) @default 100 */
   maxSize?: number;
 }
+
+export interface Message {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+  parts?: (ContentPartText | ContentPartImage)[];
+}
+
+export interface ContentPartText {
+  type: 'text';
+  text: string;
+}
+
+export interface ContentPartImage {
+  type: 'image_url';
+  image_url: {
+    url: string;
+    detail?: 'auto' | 'low' | 'high';
+  };
+}
+
+export type ContentPart = ContentPartText | ContentPartImage;
 
 export interface PromptHubOptions {
   /** Workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
@@ -31,7 +51,14 @@ export interface PromptHubOptions {
 export type PromptVariables =
   | Record<
       string,
-      string | number | bigint | boolean | symbol | Message | Message[]
+      | string
+      | number
+      | bigint
+      | boolean
+      | symbol
+      | Message
+      | Message[]
+      | ContentPart[]
     >
   | Record<string, unknown>;
 

@@ -9,7 +9,7 @@ import { simpleConsoleLogger } from '../../src/utils/logger';
 import { cozeLoopTracer } from '../../src/tracer';
 import { PromptCache } from '../../src/prompt/cache';
 import { PromptHub, type PromptVariables } from '../../src/prompt';
-import { PromptApi, type Message } from '../../src/api';
+import { PromptApi, type TemplateMessage } from '../../src/api';
 
 config();
 
@@ -61,7 +61,7 @@ describe('Test Prompt Hub', () => {
     // var1: str
     // placeholder: messages
     (() => {
-      const placeholderMessages: Message[] = [
+      const placeholderMessages: TemplateMessage[] = [
         { role: 'assistant', content: 'fake_content' },
         { role: 'user', content: 'fake_content' },
       ];
@@ -146,5 +146,50 @@ describe('Test Prompt Hub', () => {
     });
 
     expect(messageList.length).toBeGreaterThan(0);
+  });
+
+  it('#4 multi-part prompt', async () => {
+    const hub = new PromptHub({
+      apiClient: {
+        headers: { 'x-template-type': 'multi-part' }, // for mock
+      },
+      traceable: false,
+    });
+    const key = 'loop';
+    const version = '0.0.3';
+    const prompt = await hub.getPrompt(key, version);
+    expect(prompt?.prompt_key).toBe(key);
+    expect(prompt?.version).toBe(version);
+    const messageList = hub.formatPrompt(prompt, {
+      var1: 'value_of_var1',
+      var2: 'value_of_var2',
+      var3: 'value_of_var3',
+      placeholder1: { role: 'assistant', content: 'user' },
+      img1: [
+        { type: 'text', text: 'text' },
+        {
+          type: 'image_url',
+          image_url: {
+            url: 'https://lf-coze-web-cdn.coze.cn/obj/coze-web-cn/obric/coze/static/image/PE3.29a1178e.webp',
+          },
+        },
+      ],
+    });
+    expect(messageList.length).toBe(4);
+    expect(messageList.at(-1)).toMatchObject({
+      role: 'user',
+      content: '',
+      parts: [
+        { type: 'text', text: 'text2value_of_var2\n' },
+        { type: 'text', text: 'text' },
+        {
+          type: 'image_url',
+          image_url: {
+            url: 'https://lf-coze-web-cdn.coze.cn/obj/coze-web-cn/obric/coze/static/image/PE3.29a1178e.webp',
+          },
+        },
+        { type: 'text', text: '\ntext3value_of_var3' },
+      ],
+    });
   });
 });

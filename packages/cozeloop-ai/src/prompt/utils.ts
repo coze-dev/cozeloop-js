@@ -4,19 +4,28 @@ import nj from 'nunjucks';
 
 import { stringifyVal } from '../utils/common';
 import type {
-  FormattedMessage,
-  Message,
+  TemplateMessage,
   PromptQuery,
   PromptTemplate,
   VariableDef,
+  TemplateContentPart,
 } from '../api';
-import type { PromptVariableMap, PromptVariables } from './types';
+import {
+  type Message,
+  type ContentPart,
+  type PromptVariableMap,
+  type PromptVariables,
+} from './types';
 
-function buildVariableMap(
-  variableDefs: VariableDef[],
+export function buildVariableMap(
+  variableDefs?: VariableDef[],
   variables?: PromptVariables,
 ): PromptVariableMap {
   const variableMap: PromptVariableMap = {};
+  if (!variableDefs?.length) {
+    return variableMap;
+  }
+
   const variableKeys = new Set<string>(Object.keys(variables || {}));
 
   for (const def of variableDefs) {
@@ -33,7 +42,7 @@ function buildVariableMap(
   return variableMap;
 }
 
-function interpolateJinja(content: string, variables?: PromptVariables) {
+function formatJinjaText(content: string, variables?: PromptVariables) {
   if (!variables || !Object.keys(variables).length) {
     return content;
   }
@@ -41,7 +50,7 @@ function interpolateJinja(content: string, variables?: PromptVariables) {
   return nj.renderString(content, variables);
 }
 
-function interpolateNormal(content: string, variableMap?: PromptVariableMap) {
+function formatNormalText(content: string, variableMap?: PromptVariableMap) {
   if (!variableMap || !Object.keys(variableMap).length) {
     return content;
   }
@@ -62,40 +71,91 @@ export function formatPromptTemplate(
     return [];
   }
   // variable_defs may be undefined
-  const { messages, template_type, variable_defs = [] } = promptTemplate;
+  const { messages = [], template_type, variable_defs = [] } = promptTemplate;
   const variableMap = buildVariableMap(variable_defs, variables);
   const formattedMessages: Message[] = [];
-  const interpolator = (content: string) => {
+  // format text by template_type
+  const formatText = (content: string) => {
     switch (template_type) {
       case 'normal':
-        return interpolateNormal(content, variableMap);
+        return formatNormalText(content, variableMap);
       case 'jinja2':
-        return interpolateJinja(content, variables);
+        return formatJinjaText(content, variables);
       default:
         return content;
     }
   };
 
-  messages.forEach(it => {
-    formattedMessages.push(...formatMessage(it, variableMap, interpolator));
-  });
+  for (const it of messages) {
+    formattedMessages.push(...formatMessage(it, variableMap, formatText));
+  }
 
-  return formattedMessages as FormattedMessage[];
+  return formattedMessages;
+}
+
+function formatPart(
+  part: TemplateContentPart,
+  variableMap: PromptVariableMap,
+  formatText: (content: string) => string,
+): ContentPart[] {
+  switch (part.type) {
+    case 'text':
+      return [{ type: 'text', text: formatText(part.text) }];
+    case 'multi_part_variable': {
+      const variable = variableMap[part.text];
+      if (!variable?.value) {
+        return [];
+      }
+
+      if (variable.def.type !== 'multi_part') {
+        throw new Error(
+          `[formatPart] unmatched variable type ${part.text}, expect multi_part, found ${variable?.def.type}`,
+        );
+      }
+
+      return Array.isArray(variable.value)
+        ? (variable.value as ContentPart[])
+        : [variable.value as ContentPart];
+    }
+    default:
+      throw new Error(`[formatParts] unsupported part type ${part.type}`);
+  }
+}
+
+function formatParts(
+  parts: TemplateContentPart[],
+  variableMap: PromptVariableMap,
+  formatText: (content: string) => string,
+) {
+  if (!parts.length) {
+    return [];
+  }
+
+  const contentParts: ContentPart[] = [];
+  for (const it of parts) {
+    contentParts.push(...formatPart(it, variableMap, formatText));
+  }
+
+  return contentParts;
 }
 
 function formatMessage(
-  message: Message,
+  message: TemplateMessage,
   variableMap: PromptVariableMap,
-  interpolator: (content: string) => string,
+  formatText: (content: string) => string,
 ): Message[] {
-  const { role, content = '' } = message;
+  const { role, content = '', parts } = message;
 
   switch (role) {
     case 'system':
     case 'user':
-    case 'assistant':
-    case 'tool':
-      return [{ role, content: interpolator(content) }];
+    case 'assistant': {
+      const formatted: Message = { role, content: formatText(content) };
+      if (typeof parts !== 'undefined') {
+        formatted.parts = formatParts(parts, variableMap, formatText);
+      }
+      return [formatted];
+    }
     case 'placeholder':
       return interpolatePlaceholder(content, variableMap);
     default:
