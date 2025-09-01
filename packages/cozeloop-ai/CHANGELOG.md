@@ -1,5 +1,8 @@
 # 🕗 ChangeLog - @cozeloop/ai
 
+## 0.0.7
+* PromptHub: multi-modal variable in template
+
 ## 0.0.6
 * PromptHub: support prompt with Jinja2 template type
 
