@@ -36,4 +36,5 @@ export async function run() {
   });
 
   assert.strictEqual(resp.code, 0);
+  process.exit(0);
 }
