@@ -9,7 +9,7 @@ import { clone, chunk } from 'remeda';
 import QuickLRU from 'quick-lru';
 
 import { type PromptCacheOptions } from './types';
-import type { Prompt, PromptApi } from '../api';
+import type { Prompt, PromptApi, PromptQuery } from '../api';
 import { cacheKeyToQuery, queryToCacheKey } from './utils';
 
 const DEFAULT_MAX_SIZE = 100;
@@ -41,9 +41,7 @@ export class PromptCache {
         queries: keys.map(it => cacheKeyToQuery(it)),
       });
 
-      resp.data?.items?.map(({ query, prompt }) =>
-        this.update(query.prompt_key, query.version, prompt),
-      );
+      resp.data?.items?.map(({ query, prompt }) => this.update(query, prompt));
     };
 
     try {
@@ -64,21 +62,21 @@ export class PromptCache {
     );
   }
 
-  get(key: string, version?: string) {
-    const cacheKey = queryToCacheKey(key, version);
+  get(query: PromptQuery) {
+    const cacheKey = queryToCacheKey(query);
     const prompt = this._lru.get(cacheKey);
 
     return clone(prompt);
   }
 
-  update(key: string, version: string | undefined, prompt: Prompt) {
-    const cacheKey = queryToCacheKey(key, version);
+  update(query: PromptQuery, prompt: Prompt) {
+    const cacheKey = queryToCacheKey(query);
 
     return this._lru.set(cacheKey, prompt);
   }
 
-  delete(key: string, version?: string) {
-    const cacheKey = queryToCacheKey(key, version);
+  delete(query: PromptQuery) {
+    const cacheKey = queryToCacheKey(query);
 
     return this._lru.delete(cacheKey);
   }

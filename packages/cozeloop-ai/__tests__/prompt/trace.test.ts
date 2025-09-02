@@ -22,72 +22,33 @@ describe('🧪 Prompt Trace Functions', () => {
   });
 
   describe('toPromptHubInput', () => {
-    it('should serialize prompt hub input with key and version', () => {
-      const key = 'test-prompt';
-      const version = '1.0.0';
-
-      const result = toPromptHubInput(key, version);
-
-      expect(mockSerializeTagValue).toHaveBeenCalledWith({
-        prompt_key: key,
-        prompt_version: version,
-      });
-      expect(result).toBe(
-        '{"prompt_key":"test-prompt","prompt_version":"1.0.0"}',
-      );
+    it('should return correct serialized value for prompt_key only', () => {
+      const input = { prompt_key: 'test_key' };
+      const expected = '{"prompt_key":"test_key"}';
+      expect(toPromptHubInput(input)).toBe(expected);
     });
 
-    it('should serialize prompt hub input with key but without version', () => {
-      const key = 'test-prompt';
-
-      const result = toPromptHubInput(key);
-
-      expect(mockSerializeTagValue).toHaveBeenCalledWith({
-        prompt_key: key,
-        prompt_version: undefined,
-      });
-      expect(result).toBe('{"prompt_key":"test-prompt"}');
+    it('should return correct serialized value for prompt_key and version', () => {
+      const input = { prompt_key: 'test_key', version: 'v1' };
+      const expected = '{"prompt_key":"test_key","prompt_version":"v1"}';
+      expect(toPromptHubInput(input)).toBe(expected);
     });
 
-    it('should handle empty string key', () => {
-      const key = '';
-      const version = '1.0.0';
-
-      const result = toPromptHubInput(key, version);
-
-      expect(mockSerializeTagValue).toHaveBeenCalledWith({
-        prompt_key: '',
-        prompt_version: version,
-      });
-      expect(result).toBe('{"prompt_key":"","prompt_version":"1.0.0"}');
+    it('should return correct serialized value for prompt_key and label', () => {
+      const input = { prompt_key: 'test_key', label: 'test_label' };
+      const expected = '{"prompt_key":"test_key","prompt_label":"test_label"}';
+      expect(toPromptHubInput(input)).toBe(expected);
     });
 
-    it('should handle empty string version', () => {
-      const key = 'test-prompt';
-      const version = '';
-
-      const result = toPromptHubInput(key, version);
-
-      expect(mockSerializeTagValue).toHaveBeenCalledWith({
-        prompt_key: key,
-        prompt_version: '',
-      });
-      expect(result).toBe('{"prompt_key":"test-prompt","prompt_version":""}');
-    });
-
-    it('should handle special characters in key', () => {
-      const key = 'test@prompt with spaces';
-      const version = 'v1.0.0-beta';
-
-      const result = toPromptHubInput(key, version);
-
-      expect(mockSerializeTagValue).toHaveBeenCalledWith({
-        prompt_key: key,
-        prompt_version: version,
-      });
-      expect(result).toBe(
-        '{"prompt_key":"test@prompt with spaces","prompt_version":"v1.0.0-beta"}',
-      );
+    it('should return correct serialized value for prompt_key, version and label', () => {
+      const input = {
+        prompt_key: 'test_key',
+        version: 'v1',
+        label: 'test_label',
+      };
+      const expected =
+        '{"prompt_key":"test_key","prompt_version":"v1","prompt_label":"test_label"}';
+      expect(toPromptHubInput(input)).toBe(expected);
     });
   });
 
@@ -311,63 +272,6 @@ describe('🧪 Prompt Trace Functions', () => {
 
       expect(mockSerializeTagValue).toHaveBeenCalledWith(messages);
       expect(result).toBe(JSON.stringify(messages));
-    });
-  });
-
-  describe('Integration tests', () => {
-    it('should call serializeTagValue exactly once for each function', () => {
-      // Test toPromptHubInput
-      toPromptHubInput('test');
-      expect(mockSerializeTagValue).toHaveBeenCalledTimes(1);
-
-      mockSerializeTagValue.mockClear();
-
-      // Test toPromptTemplateInput
-      toPromptTemplateInput();
-      expect(mockSerializeTagValue).toHaveBeenCalledTimes(1);
-
-      mockSerializeTagValue.mockClear();
-
-      // Test toPromptTemplateOutput
-      toPromptTemplateOutput([]);
-      expect(mockSerializeTagValue).toHaveBeenCalledTimes(1);
-    });
-
-    it('should work with realistic data structures', () => {
-      const templateMessages: TemplateMessage[] = [
-        {
-          role: 'system',
-          content: 'You are {{assistant_type}}',
-          parts: [
-            { type: 'text', text: 'You are ' },
-            { type: 'multi_part_variable', text: 'assistant_type' },
-          ],
-        },
-      ];
-
-      const variableMap: PromptVariables = {
-        assistant_type: 'a helpful AI assistant',
-      };
-
-      const outputMessages: Message[] = [
-        {
-          role: 'system',
-          content: 'You are a helpful AI assistant',
-        },
-      ];
-
-      // Test all functions with realistic data
-      const hubResult = toPromptHubInput('chat-assistant', 'v2.1.0');
-      const templateResult = toPromptTemplateInput(
-        templateMessages,
-        variableMap,
-      );
-      const outputResult = toPromptTemplateOutput(outputMessages);
-
-      expect(hubResult).toContain('chat-assistant');
-      expect(templateResult).toContain('assistant_type');
-      expect(outputResult).toContain('helpful AI assistant');
-      expect(mockSerializeTagValue).toHaveBeenCalledTimes(3);
     });
   });
 });

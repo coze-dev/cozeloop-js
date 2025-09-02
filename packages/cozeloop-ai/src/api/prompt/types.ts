@@ -63,6 +63,8 @@ export interface Prompt {
 export interface PromptQuery {
   prompt_key: string;
   version?: string;
+  /** priority: version > label */
+  label?: string;
 }
 
 export interface PullPromptReq {

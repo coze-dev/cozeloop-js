@@ -182,19 +182,24 @@ function interpolatePlaceholder(
     : [val.value as Message];
 }
 
-export function queryToCacheKey(key: string, version?: string) {
-  return version ? `${key}@${version}` : key;
+export const DELIMITER = '|';
+export const EMPTY_PLACEHOLDER = '-';
+
+export function queryToCacheKey({ prompt_key, version, label }: PromptQuery) {
+  // priority: version > label
+  return [
+    prompt_key,
+    version || EMPTY_PLACEHOLDER,
+    label || EMPTY_PLACEHOLDER,
+  ].join(DELIMITER);
 }
 
 export function cacheKeyToQuery(cacheKey: string): PromptQuery {
-  const lastAtIndex = cacheKey.lastIndexOf('@');
+  const [prompt_key, version, label] = cacheKey.split(DELIMITER);
 
-  if (lastAtIndex === -1) {
-    return { prompt_key: cacheKey };
-  }
-
-  const prompt_key = cacheKey.slice(0, lastAtIndex);
-  const version = cacheKey.slice(lastAtIndex + 1) || undefined;
-
-  return { prompt_key, version };
+  return {
+    prompt_key,
+    version: version === EMPTY_PLACEHOLDER ? undefined : version,
+    label: label === EMPTY_PLACEHOLDER ? undefined : label,
+  };
 }

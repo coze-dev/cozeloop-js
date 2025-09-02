@@ -28,4 +28,5 @@ export async function run() {
     runLargeText(),
     runTransferBetweenServices(),
   ]);
+  process.exit(0);
 }

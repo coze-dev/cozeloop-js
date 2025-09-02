@@ -112,8 +112,8 @@ describe('Test Prompt Hub', () => {
     expect(spy).toHaveBeenCalledTimes(4);
 
     vi.useRealTimers();
-    expect(cache.get('non_exist_key')).toBeUndefined();
-    expect(cache.delete('non_exist_key')).toBe(false);
+    expect(cache.get({ prompt_key: 'non_exist_key' })).toBeUndefined();
+    expect(cache.delete({ prompt_key: 'non_exist_key' })).toBe(false);
 
     cache.clear();
     // @ts-expect-error skip
@@ -191,5 +191,21 @@ describe('Test Prompt Hub', () => {
         { type: 'text', text: '\ntext3value_of_var3' },
       ],
     });
+  });
+
+  it('#5 get prompt with label', async () => {
+    const hub = new PromptHub({
+      apiClient: {
+        headers: { 'x-template-type': 'beta-label' }, // for mock
+      },
+      traceable: false,
+    });
+
+    const key = 'loop';
+    const label = 'beta';
+    const prompt = await hub.getPrompt(key, undefined, label);
+
+    expect(prompt?.prompt_key).toBe(key);
+    expect(prompt?.version).toBe('0.0.2');
   });
 });

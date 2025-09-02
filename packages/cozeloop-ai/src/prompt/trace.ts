@@ -1,13 +1,14 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import { serializeTagValue } from '../tracer/utils';
-import { type TemplateMessage } from '../api';
+import { type PromptQuery, type TemplateMessage } from '../api';
 import { type Message, type PromptVariables } from './types';
 
-export function toPromptHubInput(key: string, version?: string) {
+export function toPromptHubInput({ prompt_key, version, label }: PromptQuery) {
   return serializeTagValue({
-    prompt_key: key,
+    prompt_key,
     prompt_version: version,
+    prompt_label: label,
   });
 }
 

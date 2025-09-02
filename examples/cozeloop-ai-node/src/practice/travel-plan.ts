@@ -90,6 +90,7 @@ async function run() {
   console.info(result);
   // The trace reporting is asynchronous and has some latency.
   // If **running local files directly**, a short delay is required to ensure successful reporting.
+  process.exit(0);
 }
 
 run();

@@ -105,6 +105,26 @@ const multipartPrompt = {
   },
 };
 
+const betaPrompt = {
+  query: { prompt_key: 'loop', label: 'beta' },
+  prompt: {
+    workspace_id: '7308703665823416358',
+    prompt_key: 'loop',
+    version: '0.0.2',
+    prompt_template: {
+      template_type: 'normal',
+      messages: [],
+      variable_defs: [],
+    },
+    llm_config: {
+      temperature: 1,
+      max_tokens: 4096,
+      top_p: 0.7,
+      frequency_penalty: 0,
+    },
+  },
+};
+
 export function setupPromptHubMock() {
   const mockServer = setupServer(
     http.post(/\/v1\/loop\/prompts\/mget/, req => {
@@ -116,6 +136,8 @@ export function setupPromptHubMock() {
           return successResp({ items: [normalPrompt] });
         case 'multi-part':
           return successResp({ items: [multipartPrompt] });
+        case 'beta-label':
+          return successResp({ items: [betaPrompt] });
         default:
           return passthrough();
       }

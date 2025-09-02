@@ -19,4 +19,5 @@ export async function run() {
   const tokenResp = await authFlow.getToken();
 
   assert.ok(tokenResp.access_token);
+  process.exit(0);
 }
