@@ -11,7 +11,7 @@ import {
   SpanKind,
   cozeLoopTracer,
 } from '../tracer';
-import { type Prompt, PromptApi } from '../api';
+import { type Prompt, PromptApi, type PromptQuery } from '../api';
 import {
   toPromptHubInput,
   toPromptTemplateInput,
@@ -44,9 +44,9 @@ export class PromptHub {
     this._cache.startPollingUpdate(workspaceId);
   }
 
-  private async _getPrompt(key: string, version?: string) {
+  private async _getPrompt(query: PromptQuery) {
     // 1. try to get prompt from cache
-    const promptInCache = this._cache.get(key, version);
+    const promptInCache = this._cache.get(query);
 
     if (promptInCache) {
       return promptInCache;
@@ -55,14 +55,14 @@ export class PromptHub {
     // 2. pull prompt if no cache
     const resp = await this._api.pullPrompt({
       workspace_id: this._options.workspaceId || '',
-      queries: [{ prompt_key: key, version }],
+      queries: [query],
     });
 
     const promptPulled = resp.data?.items?.[0].prompt;
 
     // 3. update cache
     if (promptPulled) {
-      this._cache.update(key, version, promptPulled);
+      this._cache.update(query, promptPulled);
     }
 
     return promptPulled;
@@ -73,6 +73,7 @@ export class PromptHub {
    *
    * @param key Prompt key
    * @param version Prompt version(optional), latest version by default
+   * @param label Publish label, priority: version > label
    *
    * @example
    * ```typescript
@@ -81,20 +82,21 @@ export class PromptHub {
    *
    * // 2. get prompt with latest version
    * await hub.get('your_prompt_key');
+   *
+   * // 3. get prompt with label like `beta`
+   * await hub.get('your_prompt_key', undefined, 'beta')
    * ```
    */
-  async getPrompt(key: string, version?: string) {
+  async getPrompt(key: string, version?: string, label?: string) {
+    const query: PromptQuery = { prompt_key: key, version, label };
     if (this._options.traceable) {
       return cozeLoopTracer.traceable(
-        async () => await this._getPrompt(key, version),
+        async () => await this._getPrompt(query),
         {
           name: 'PromptHub',
           type: SpanKind.PromptHub,
           attributes: {
-            [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: toPromptHubInput(
-              key,
-              version,
-            ),
+            [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: toPromptHubInput(query),
             [COZELOOP_TRACE_BASIC_TAGS.SPAN_RUNTIME_SCENE]: 'prompt_hub',
             [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_KEY]: key,
             [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_VERSION]: version,
@@ -103,7 +105,7 @@ export class PromptHub {
       );
     }
 
-    return this._getPrompt(key, version);
+    return this._getPrompt(query);
   }
 
   /**

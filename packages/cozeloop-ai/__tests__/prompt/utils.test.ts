@@ -5,7 +5,7 @@ import {
   formatPromptTemplate,
   queryToCacheKey,
 } from '../../src/prompt/utils';
-import type { PromptVariables, PromptTemplate } from '../../src';
+import type { PromptVariables, PromptTemplate, PromptQuery } from '../../src';
 
 describe('Test prompt/utils', () => {
   describe('🧪 formatPromptTemplate', () => {
@@ -153,47 +153,46 @@ describe('Test prompt/utils', () => {
       );
     });
   });
+
   describe('🧪 queryToCacheKey', () => {
-    it('should return the key when version is not provided', () => {
-      const result = queryToCacheKey('test-key');
-      expect(result).toBe('test-key');
+    it('should create a cache key with prompt_key, version, and label', () => {
+      const query: PromptQuery = {
+        prompt_key: 'test_prompt',
+        version: '1.0',
+        label: 'production',
+      };
+      const cacheKey = queryToCacheKey(query);
+      expect(cacheKey).toBe('test_prompt|1.0|production');
     });
 
-    it('should return key@version when version is provided', () => {
-      const result = queryToCacheKey('test-key', '1.0.0');
-      expect(result).toBe('test-key@1.0.0');
-    });
-
-    it('should handle empty strings', () => {
-      const result = queryToCacheKey('');
-      expect(result).toBe('');
-    });
-
-    it('should handle empty version', () => {
-      const result = queryToCacheKey('test-key', '');
-      expect(result).toBe('test-key');
+    it('should handle undefined version and label', () => {
+      const query: PromptQuery = {
+        prompt_key: 'test_prompt',
+      };
+      const cacheKey = queryToCacheKey(query);
+      expect(cacheKey).toBe('test_prompt|-|-');
     });
   });
 
   describe('🧪 cacheKeyToQuery', () => {
-    it('should return correct PromptQuery when version is provided', () => {
-      const result = cacheKeyToQuery('test-key@1.0.0');
-      expect(result).toEqual({ prompt_key: 'test-key', version: '1.0.0' });
+    it('should convert a cache key to a PromptQuery object', () => {
+      const cacheKey = 'test_prompt|1.0|production';
+      const query = cacheKeyToQuery(cacheKey);
+      expect(query).toEqual({
+        prompt_key: 'test_prompt',
+        version: '1.0',
+        label: 'production',
+      });
     });
 
-    it('should return correct PromptQuery when version is not provided', () => {
-      const result = cacheKeyToQuery('test-key');
-      expect(result).toEqual({ prompt_key: 'test-key', version: undefined });
-    });
-
-    it('should handle empty string', () => {
-      const result = cacheKeyToQuery('');
-      expect(result).toEqual({ prompt_key: '', version: undefined });
-    });
-
-    it('should handle multiple @ symbols', () => {
-      const result = cacheKeyToQuery('test@key@1.0.0');
-      expect(result).toEqual({ prompt_key: 'test@key', version: '1.0.0' });
+    it('should handle undefined version and label', () => {
+      const cacheKey = 'test_prompt|-|-';
+      const query = cacheKeyToQuery(cacheKey);
+      expect(query).toEqual({
+        prompt_key: 'test_prompt',
+        version: undefined,
+        label: undefined,
+      });
     });
   });
 });
