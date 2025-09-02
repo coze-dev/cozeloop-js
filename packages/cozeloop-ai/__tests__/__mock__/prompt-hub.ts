@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import { setupServer } from 'msw/node';
-import { http } from 'msw';
+import { http, passthrough } from 'msw';
 
 import { setupMockServer, successResp } from './utils';
 
@@ -61,13 +61,64 @@ const jinja2Prompt = {
   },
 };
 
+const multipartPrompt = {
+  query: { prompt_key: 'loop', version: '0.0.3' },
+  prompt: {
+    workspace_id: '7308703665823416358',
+    prompt_key: 'loop',
+    version: '0.0.3',
+    prompt_template: {
+      template_type: 'normal',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a helpful bot, the conversation topic is {{var1}}.',
+        },
+        { role: 'placeholder', content: 'placeholder1' },
+        { content: 'My question is {{var2}}', role: 'user' },
+        { role: 'placeholder', content: 'placeholder2' },
+        {
+          role: 'user',
+          content: '',
+          parts: [
+            { type: 'text', text: 'text2{{var2}}\n' },
+            { type: 'multi_part_variable', text: 'img1' },
+            { type: 'text', text: '\ntext3{{var3}}' },
+          ],
+        },
+      ],
+      variable_defs: [
+        { key: 'var1', desc: '', type: 'string' },
+        { key: 'var2', desc: '', type: 'string' },
+        { key: 'var3', desc: '', type: 'string' },
+        { key: 'img1', desc: '', type: 'multi_part' },
+        { key: 'placeholder1', desc: '', type: 'placeholder' },
+        { desc: '', type: 'placeholder', key: 'placeholder2' },
+      ],
+    },
+    llm_config: {
+      temperature: 1,
+      max_tokens: 4096,
+      top_p: 0.7,
+      frequency_penalty: 0,
+    },
+  },
+};
+
 export function setupPromptHubMock() {
   const mockServer = setupServer(
     http.post(/\/v1\/loop\/prompts\/mget/, req => {
       const templateType = req.request.headers.get('x-template-type');
-      return successResp({
-        items: [templateType === 'jinja2' ? jinja2Prompt : normalPrompt],
-      });
+      switch (templateType) {
+        case 'jinja2':
+          return successResp({ items: [jinja2Prompt] });
+        case 'normal':
+          return successResp({ items: [normalPrompt] });
+        case 'multi-part':
+          return successResp({ items: [multipartPrompt] });
+        default:
+          return passthrough();
+      }
     }),
   );
 

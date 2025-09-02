@@ -1,8 +1,8 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
-import { simpleConsoleLogger } from '../src/utils/logger';
-import { ApiClient } from '../src/api/api-client';
-import { setupBaseHttpMock } from './__mock__/base-http';
+import { setupBaseHttpMock } from '../__mock__/base-http';
+import { simpleConsoleLogger } from '../../src/utils/logger';
+import { ApiClient } from '../../src/api/api-client';
 
 interface BaseHttpResp {
   method: string;

@@ -2,10 +2,6 @@
 // SPDX-License-Identifier: MIT
 import { ensureProperty, EnvKeys } from '../utils/env';
 import { mergeConfig } from '../utils/common';
-import {
-  toLoopTraceSpanPromptTemplateInput,
-  toLoopTraceSpanPromptTemplateMessages,
-} from '../tracer/utils/adapt';
 import { formatPromptTemplate } from './utils';
 import { type PromptVariables, type PromptHubOptions } from './types';
 import { PromptCache } from './cache';
@@ -16,6 +12,11 @@ import {
   cozeLoopTracer,
 } from '../tracer';
 import { type Prompt, PromptApi } from '../api';
+import {
+  toPromptHubInput,
+  toPromptTemplateInput,
+  toPromptTemplateOutput,
+} from './trace';
 
 export class PromptHub {
   private _options: PromptHubOptions;
@@ -90,10 +91,10 @@ export class PromptHub {
           name: 'PromptHub',
           type: SpanKind.PromptHub,
           attributes: {
-            [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: JSON.stringify({
-              prompt_key: key,
-              prompt_version: version,
-            }),
+            [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: toPromptHubInput(
+              key,
+              version,
+            ),
             [COZELOOP_TRACE_BASIC_TAGS.SPAN_RUNTIME_SCENE]: 'prompt_hub',
             [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_KEY]: key,
             [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_VERSION]: version,
@@ -126,26 +127,23 @@ export class PromptHub {
             prompt?.prompt_template,
             variables,
           );
-          cozeLoopTracer.setOutput(
+          cozeLoopTracer.setInput(
             span,
-            toLoopTraceSpanPromptTemplateMessages(messages),
+            toPromptTemplateInput(prompt?.prompt_template.messages, variables),
           );
+          cozeLoopTracer.setOutput(span, toPromptTemplateOutput(messages));
 
           return messages;
         },
         {
           name: 'PromptTemplate',
           type: SpanKind.PromptTemplate,
+          recordOutputs: false,
           attributes: {
-            [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: JSON.stringify(
-              toLoopTraceSpanPromptTemplateInput(
-                prompt?.prompt_template.messages,
-                variables,
-              ),
-            ),
             [COZELOOP_TRACE_BASIC_TAGS.SPAN_RUNTIME_SCENE]: 'prompt_template',
             [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_KEY]: prompt?.prompt_key,
             [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_VERSION]: prompt?.version,
+            [COZELOOP_TRACE_BUSINESS_TAGS.PROMPT_PROVIDER]: 'CozeLoop',
           },
         },
       );

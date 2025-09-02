@@ -57,7 +57,7 @@ export function getNodeStreamAdapter(
       data: response.body,
       status: response.status,
       statusText: response.statusText,
-      headers: Object.fromEntries(response.headers),
+      headers: Object.fromEntries(response.headers ?? {}),
       config,
       request,
     };

@@ -5,4 +5,8 @@ export type {
   PromptHubOptions,
   PromptCacheOptions,
   PromptVariables,
+  Message,
+  ContentPart,
+  ContentPartImage,
+  ContentPartText,
 } from './types';

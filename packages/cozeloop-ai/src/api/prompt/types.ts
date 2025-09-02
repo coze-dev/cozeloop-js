@@ -2,25 +2,28 @@
 // SPDX-License-Identifier: MIT
 import type { BaseApiResp } from '../base';
 
-export interface Message {
-  role: 'system' | 'user' | 'assistant' | 'placeholder' | 'tool';
-  content: string;
+export interface TemplateContentPart {
+  /** variable type */
+  type: 'text' | 'multi_part_variable';
+  /** variable name */
+  text: string;
 }
 
-export interface FormattedMessage {
-  role: 'system' | 'user' | 'assistant';
+export interface TemplateMessage {
+  role: 'system' | 'user' | 'assistant' | 'placeholder';
   content: string;
+  parts?: TemplateContentPart[];
 }
 
 export interface VariableDef {
   key: string;
-  type: 'string' | 'placeholder';
+  type: 'string' | 'placeholder' | 'multi_part';
   desc?: string;
 }
 
 export interface PromptTemplate {
   template_type: 'normal' | 'jinja2';
-  messages: Message[];
+  messages: TemplateMessage[];
   variable_defs: VariableDef[];
 }
 
