@@ -1,5 +1,8 @@
 # 🕗 ChangeLog - @cozeloop/ai
 
+## 0.0.8
+* PromptHub: get prompt with label
+
 ## 0.0.7
 * PromptHub: multi-modal variable in template
 
