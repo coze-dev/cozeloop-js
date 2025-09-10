@@ -9,7 +9,7 @@ import { simpleConsoleLogger } from '../../src/utils/logger';
 import { cozeLoopTracer } from '../../src/tracer';
 import { PromptCache } from '../../src/prompt/cache';
 import { PromptHub, type PromptVariables } from '../../src/prompt';
-import { PromptApi, type TemplateMessage } from '../../src/api';
+import { PromptApi, type LoopMessage } from '../../src/api';
 
 config();
 
@@ -61,7 +61,7 @@ describe('Test Prompt Hub', () => {
     // var1: str
     // placeholder: messages
     (() => {
-      const placeholderMessages: TemplateMessage[] = [
+      const placeholderMessages: LoopMessage[] = [
         { role: 'assistant', content: 'fake_content' },
         { role: 'user', content: 'fake_content' },
       ];

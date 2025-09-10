@@ -4,11 +4,11 @@ import nj from 'nunjucks';
 
 import { stringifyVal } from '../utils/common';
 import type {
-  TemplateMessage,
+  LoopMessage,
+  LoopContentPart,
   PromptQuery,
   PromptTemplate,
   VariableDef,
-  TemplateContentPart,
 } from '../api';
 import {
   type Message,
@@ -94,15 +94,15 @@ export function formatPromptTemplate(
 }
 
 function formatPart(
-  part: TemplateContentPart,
+  part: LoopContentPart,
   variableMap: PromptVariableMap,
   formatText: (content: string) => string,
 ): ContentPart[] {
   switch (part.type) {
     case 'text':
-      return [{ type: 'text', text: formatText(part.text) }];
+      return [{ type: 'text', text: formatText(part.text || '') }];
     case 'multi_part_variable': {
-      const variable = variableMap[part.text];
+      const variable = variableMap[part.text ?? ''];
       if (!variable?.value) {
         return [];
       }
@@ -123,7 +123,7 @@ function formatPart(
 }
 
 function formatParts(
-  parts: TemplateContentPart[],
+  parts: LoopContentPart[],
   variableMap: PromptVariableMap,
   formatText: (content: string) => string,
 ) {
@@ -140,7 +140,7 @@ function formatParts(
 }
 
 function formatMessage(
-  message: TemplateMessage,
+  message: LoopMessage,
   variableMap: PromptVariableMap,
   formatText: (content: string) => string,
 ): Message[] {

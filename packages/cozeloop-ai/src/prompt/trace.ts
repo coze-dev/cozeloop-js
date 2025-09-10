@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import { serializeTagValue } from '../tracer/utils';
-import { type PromptQuery, type TemplateMessage } from '../api';
+import { type PromptQuery, type LoopMessage } from '../api';
 import { type Message, type PromptVariables } from './types';
 
 export function toPromptHubInput({ prompt_key, version, label }: PromptQuery) {
@@ -13,7 +13,7 @@ export function toPromptHubInput({ prompt_key, version, label }: PromptQuery) {
 }
 
 export function toPromptTemplateInput(
-  messages?: TemplateMessage[],
+  messages?: LoopMessage[],
   variables?: PromptVariables,
 ) {
   return serializeTagValue({
