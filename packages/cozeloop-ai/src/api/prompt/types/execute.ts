@@ -28,3 +28,5 @@ export interface ExecutePromptReply {
 }
 
 export type ExecutePromptResp = BaseApiResp<ExecutePromptReply>;
+
+export type StreamingExecutePromptResp = AsyncGenerator<ExecutePromptReply>;

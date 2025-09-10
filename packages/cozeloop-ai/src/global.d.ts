@@ -34,6 +34,7 @@ declare module 'process' {
         /** SDK Version, which is injected via vitest or tsup from package.json */
         COZELOOP_VERSION: string;
         COZELOOP_API_TOKEN?: string;
+        COZELOOP_WORKSPACE_ID?: string;
       }
     }
   }

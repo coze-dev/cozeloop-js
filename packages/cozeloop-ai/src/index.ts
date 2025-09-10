@@ -9,7 +9,7 @@ export { OAuthJWTFlow } from './auth';
 export type * from './auth';
 
 // prompt
-export { PromptHub } from './prompt';
+export { PromptHub, PromptAsAService } from './prompt';
 export type * from './prompt';
 
 // tracer

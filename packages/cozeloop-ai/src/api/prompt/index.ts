@@ -1,7 +1,11 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import { type PullPromptReq, type PullPromptResp } from './types/prompt';
-import { type ExecutePromptResp, type ExecutePromptReq } from './types/execute';
+import {
+  type ExecutePromptResp,
+  type ExecutePromptReq,
+  type StreamingExecutePromptResp,
+} from './types/execute';
 import { BaseApi } from '../base';
 
 export type * from './types/common';
@@ -24,6 +28,6 @@ export class PromptApi extends BaseApi {
   streamingExecutePrompt(req: ExecutePromptReq) {
     const url = '/v1/loop/prompts/execute_streaming';
 
-    return this._client.post<ExecutePromptResp>(url, req);
+    return this._client.post<StreamingExecutePromptResp>(url, req, true);
   }
 }

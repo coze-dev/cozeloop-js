@@ -90,7 +90,7 @@ describe('Test Prompt Hub', () => {
       };
       const messages = hub.formatPrompt(prompt, variables);
 
-      expect(messages[0].content.includes('{{var1}}')).toBe(false);
+      expect(messages[0].content?.includes('{{var1}}')).toBe(false);
       expect(messages[1].content).contains(variables.var2);
     })();
   });

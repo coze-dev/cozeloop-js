@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { type SimpleLogger } from '../utils/logger';
 import {
+  type PromptQuery,
   type ApiClient,
   type ApiClientOptions,
   type VariableDef,
@@ -12,12 +13,6 @@ export interface PromptCacheOptions {
   refreshInterval?: number;
   /** Cache size (by prompt count, LRU) @default 100 */
   maxSize?: number;
-}
-
-export interface Message {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-  parts?: (ContentPartText | ContentPartImage)[];
 }
 
 export interface ContentPartText {
@@ -34,6 +29,24 @@ export interface ContentPartImage {
 }
 
 export type ContentPart = ContentPartText | ContentPartImage;
+
+export interface ToolCall {
+  id?: string;
+  type?: 'function';
+  function: {
+    name?: string;
+    arguments?: string;
+  };
+}
+
+export interface Message {
+  role: 'system' | 'user' | 'tool' | 'assistant';
+  content?: string;
+  parts?: (ContentPartText | ContentPartImage)[];
+  reasoning_content?: string;
+  tool_call_id?: string;
+  tool_calls?: ToolCall[];
+}
 
 export interface PromptHubOptions {
   /** Workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
@@ -67,3 +80,18 @@ export type PromptVariableMap = Record<
   | { def: VariableDef; value?: PromptVariables[keyof PromptVariables] }
   | undefined
 >;
+
+export interface PromptAsAServiceOptions {
+  /** Workspace ID, use process.env.COZELOOP_WORKSPACE_ID when unprovided */
+  workspaceId?: string;
+  /** The Loop {@link ApiClient} instance or {@link ApiClientOptions} */
+  apiClient?: ApiClient | ApiClientOptions;
+  /** Prompt identified by prompt query */
+  prompt?: PromptQuery;
+}
+
+export interface PromptExecuteOptions {
+  prompt?: PromptQuery;
+  messages: Message[];
+  variables?: PromptVariables;
+}

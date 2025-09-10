@@ -9,6 +9,12 @@ import { fileToStreamResp, headersToJson, setupMockServer } from './utils';
 
 export function setupBaseHttpMock() {
   const mockServer = setupServer(
+    http.post(/\/stream-event-error/i, () =>
+      fileToStreamResp(join(__dirname, 'base-stream-event-error.txt')),
+    ),
+    http.post(/\/stream-parse-error/i, () =>
+      fileToStreamResp(join(__dirname, 'base-stream-parse-error.txt')),
+    ),
     http.post(/\/stream/i, () =>
       fileToStreamResp(join(__dirname, 'base-stream.txt')),
     ),

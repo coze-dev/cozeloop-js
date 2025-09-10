@@ -20,8 +20,8 @@ import {
 
 export class PromptHub {
   private _options: PromptHubOptions;
-  private readonly _cache: PromptCache;
   private _api: PromptApi;
+  private readonly _cache: PromptCache;
 
   /** Prompt cache instance */
   get cache() {
@@ -37,9 +37,7 @@ export class PromptHub {
     });
 
     this._options = mergeConfig<PromptHubOptions>(options, { workspaceId });
-
     this._api = new PromptApi(this._options.apiClient);
-
     this._cache = new PromptCache(options.cacheOptions || {}, this._api);
     this._cache.startPollingUpdate(workspaceId);
   }
