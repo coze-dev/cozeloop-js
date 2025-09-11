@@ -17,6 +17,7 @@
     "packagejson",
     "prefault",
     "preinstall",
+    "ptaas",
     "remeda",
     "traceparent",
     "tracestate",

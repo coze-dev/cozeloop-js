@@ -83,8 +83,8 @@ export function parseEventChunk<T>(chunk: string) {
     }
   }
 
-  if (event === 'gateway-error') {
-    throw new Error(data || 'gateway-error');
+  if (event.includes('error')) {
+    throw new Error(data || 'SSE event error');
   }
 
   return JSON.parse(data) as T;

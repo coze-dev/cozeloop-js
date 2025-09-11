@@ -1,0 +1,5 @@
+data: {"seq": 1}
+
+event: error
+data: 500 Bad Gateway
+

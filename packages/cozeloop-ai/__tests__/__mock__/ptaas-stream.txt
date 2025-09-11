@@ -1,0 +1,84 @@
+data: {"message":{"role":"assistant","content":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"**"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"国"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"庆"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"长"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"假"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"**\\n\\n"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"山"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"川"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"河"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"海"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"舞"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"锦"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"绣"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"，"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"人"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"间"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"繁"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"华"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"庆"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"六"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"合"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"。"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"  \\n"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"载"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"歌"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"载"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"舞"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"庆"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"华"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"诞"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"，"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"共"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"庆"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"华"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"诞"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"风"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"景"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"好"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"。"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":""},"finish_reason":"stop"}
+
+data: {"message":{"role":"assistant","content":""},"finish_reason":"","usage":{"output_tokens":603,"input_tokens":468}}
+

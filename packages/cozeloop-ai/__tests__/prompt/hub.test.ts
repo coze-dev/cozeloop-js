@@ -9,7 +9,7 @@ import { simpleConsoleLogger } from '../../src/utils/logger';
 import { cozeLoopTracer } from '../../src/tracer';
 import { PromptCache } from '../../src/prompt/cache';
 import { PromptHub, type PromptVariables } from '../../src/prompt';
-import { PromptApi, type TemplateMessage } from '../../src/api';
+import { PromptApi, type LoopMessage } from '../../src/api';
 
 config();
 
@@ -47,6 +47,7 @@ describe('Test Prompt Hub', () => {
 
     expect(prompt?.prompt_key).toBe(key);
     expect(prompt?.version).toBe(version);
+    expect(hub.cache).toBeInstanceOf(PromptCache);
 
     // 1) format prompt without variables
     (() => {
@@ -61,7 +62,7 @@ describe('Test Prompt Hub', () => {
     // var1: str
     // placeholder: messages
     (() => {
-      const placeholderMessages: TemplateMessage[] = [
+      const placeholderMessages: LoopMessage[] = [
         { role: 'assistant', content: 'fake_content' },
         { role: 'user', content: 'fake_content' },
       ];
@@ -90,7 +91,7 @@ describe('Test Prompt Hub', () => {
       };
       const messages = hub.formatPrompt(prompt, variables);
 
-      expect(messages[0].content.includes('{{var1}}')).toBe(false);
+      expect(messages[0].content?.includes('{{var1}}')).toBe(false);
       expect(messages[1].content).contains(variables.var2);
     })();
   });
@@ -125,7 +126,7 @@ describe('Test Prompt Hub', () => {
       apiClient: {
         headers: { 'x-template-type': 'jinja2' }, // for mock
       },
-      traceable: false,
+      traceable: true,
     });
 
     const key = 'loop12';

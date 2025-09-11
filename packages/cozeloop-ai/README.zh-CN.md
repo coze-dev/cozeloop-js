@@ -19,7 +19,7 @@ pnpm install @cozeloop/ai
 
 ### 2. 基础用法
 ```typescript
-import { ApiClient, PromptHub } from '@cozeloop/ai';
+import { ApiClient, PromptHub, PromptAsAService } from '@cozeloop/ai';
 
 // 1. 设置 ApiClient
 const apiClient = new ApiClient({
@@ -27,21 +27,35 @@ const apiClient = new ApiClient({
   token: 'your_access_token',
 });
 
-// 2. 使用 PromptHub 获取 Prompt
+// 2. 使用 `PromptHub` 或 `PromptAsAService`
 const promptHub = new PromptHub({
   // 或设置环境变量 process.env.COZELOOP_WORKSPACE_ID,
   workspaceId: 'your_workspace_id',
   apiClient,
 });
+// hub.getPrompt(key, version);
+// hub.formatPrompt(prompt);
 
-const prompt = await promptHub.getPrompt(
-  'your_prompt_key',
-  'prompt_version (optional)',
-);
+const model = new PromptAsAService({
+  // 或设置环境变量 process.env.COZELOOP_WORKSPACE_ID,
+  workspaceId: 'your_workspace_id',
+  // 要调用的 prompt
+  prompt: {
+    prompt_key: 'your_prompt_key',
+  },
+  apiClient,
+});
+// model.invoke({
+//   messages: [{ role: 'user', content: 'hi' }],
+// });
+// model.stream({
+//   messages: [{ role: 'user', content: 'hi' }],
+// });
 ```
 
 ## 主要特性
-- 🗄️ **Prompt Hub**: 在 [CozeLoop](https://loop.coze.cn) 平台开发、提交和发布 Prompt，使用 `PromptHub` 访问 Prompt。
+- 🗂️ **Prompt Hub**: 在 [CozeLoop](https://loop.coze.cn) 平台开发、提交和发布 Prompt，使用 `PromptHub` 访问 Prompt。
+- 🛠️ **Prompt as a Service**: 在 [CozeLoop](https://loop.coze.cn) 平台开发、提交和发布 Prompt，并作为服务调用。
 - 🔐 **多种鉴权方式**: PAT and JWT
 - ⚙️ **可配置**: 超时、请求头、信号、调试
 

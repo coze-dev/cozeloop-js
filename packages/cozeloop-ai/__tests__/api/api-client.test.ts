@@ -43,6 +43,34 @@ describe('Http Test', () => {
     }
   });
 
+  it('Basic POST streaming with parse error', async () => {
+    const resp = await apiClient.post<AsyncGenerator<{ seq: number }>>(
+      '/stream-parse-error',
+      undefined,
+      true,
+    );
+
+    await expect(async () => {
+      for await (const chunk of resp) {
+        console.info(chunk);
+      }
+    }).rejects.toThrowError(SyntaxError);
+  });
+
+  it('Basic POST streaming with event error', async () => {
+    const resp = await apiClient.post<AsyncGenerator<{ seq: number }>>(
+      '/stream-event-error',
+      undefined,
+      true,
+    );
+
+    await expect(async () => {
+      for await (const chunk of resp) {
+        console.info(chunk);
+      }
+    }).rejects.toThrowError(/500 Bad Gateway/);
+  });
+
   it('Basic PUT', async () => {
     const resp = await apiClient.put<BaseHttpResp>('/basic');
 

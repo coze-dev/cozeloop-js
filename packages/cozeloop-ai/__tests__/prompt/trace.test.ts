@@ -7,7 +7,7 @@ import {
   toPromptTemplateInput,
   toPromptTemplateOutput,
 } from '../../src/prompt/trace';
-import type { TemplateMessage } from '../../src/api';
+import type { LoopMessage } from '../../src/api';
 
 // Mock serializeTagValue to verify calls
 vi.mock('../../src/tracer/utils', () => ({
@@ -54,7 +54,7 @@ describe('🧪 Prompt Trace Functions', () => {
 
   describe('toPromptTemplateInput', () => {
     it('should serialize template input with messages and variable map', () => {
-      const messages: TemplateMessage[] = [
+      const messages: LoopMessage[] = [
         {
           role: 'system',
           content: 'You are a helpful assistant',
@@ -88,7 +88,7 @@ describe('🧪 Prompt Trace Functions', () => {
     });
 
     it('should handle empty messages and variable map', () => {
-      const messages: TemplateMessage[] = [];
+      const messages: LoopMessage[] = [];
       const variableMap: PromptVariables = {};
 
       const result = toPromptTemplateInput(messages, variableMap);
@@ -101,7 +101,7 @@ describe('🧪 Prompt Trace Functions', () => {
     });
 
     it('should handle only messages without variable map', () => {
-      const messages: TemplateMessage[] = [
+      const messages: LoopMessage[] = [
         {
           role: 'user',
           content: 'Hello',

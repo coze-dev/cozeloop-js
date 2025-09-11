@@ -1,5 +1,8 @@
 # 🕗 ChangeLog - @cozeloop/ai
 
+## 0.0.9
+* Prompt as a Service (ptaas)
+
 ## 0.0.8
 * PromptHub: get prompt with label
 

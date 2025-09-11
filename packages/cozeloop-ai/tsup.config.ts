@@ -16,7 +16,11 @@ export default defineConfig(() => {
     tsconfig: './tsconfig.build.json',
     format: ['cjs', 'esm'],
     dts: false,
-    onSuccess: 'tsc -b ./tsconfig.typings.json',
+    onSuccess: [
+      'printf "TSC Start build \x1b[1mtypings\x1b[0m"',
+      'tsc -b ./tsconfig.typings.json',
+      'printf " ✅\n"',
+    ].join(' && '),
     env: {
       COZELOOP_VERSION: packageJson.version,
     },
