@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { type ContentPart, type Message } from './types';
 
 export function isMessage(val: unknown): val is Message {
@@ -41,6 +43,6 @@ export function isContentPart(val: unknown): val is ContentPart {
   return false;
 }
 
-export function isContentParts(val: unknown): val is ContentPart[] {
+export function isContentPartArr(val: unknown): val is ContentPart[] {
   return Array.isArray(val) && val.every(it => isContentPart(it));
 }

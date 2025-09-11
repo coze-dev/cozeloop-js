@@ -1,6 +1,5 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
-
 import { ensureProperty, EnvKeys } from '../utils/env';
 import { mergeConfig } from '../utils/common';
 import { type ExecutePromptReq, PromptApi } from '../api';
@@ -44,6 +43,47 @@ export class PromptAsAService {
     return req;
   }
 
+  /**
+   * Invoke prompt-as-a-service
+   *
+   * @param options {@link PromptExecuteOptions}
+   *
+   * @example
+   * ```typescript
+   *
+   * // 1. invoke with messages
+   * const model = new PromptAsAService({
+   *   workspaceId: 'your_workspace_id',
+   *   prompt: {
+   *     prompt_key: 'your_prompt_key',
+   *     // version: '0.0.1',
+   *   },
+   *   apiClient: {
+   *     token: 'pat_xxx',
+   *   },
+   * });
+   *
+   * const reply = await model.invoke({
+   *   messages: [
+   *     { role: 'user', content: 'hi' },
+   *   ],
+   * });
+   *
+   * // 2. invoke, and specify prompt at runtime
+   * const model = new PromptAsAService({});
+   *
+   * const reply = await model.invoke({
+   *   // higher priority than PromptAsAService constructor params
+   *   prompt: {
+   *     prompt_key: 'your_prompt_key',
+   *     // version: '0.0.1',
+   *   },
+   *   messages: [
+   *     { role: 'user', content: 'hi' },
+   *   ],
+   * });
+   * ```
+   */
   async invoke(options: PromptExecuteOptions) {
     const req = this._getExecuteReq(options);
     const resp = await this._api.executePrompt(req);
@@ -51,9 +91,32 @@ export class PromptAsAService {
     return resp.data;
   }
 
-  stream(options: PromptExecuteOptions) {
+  /**
+   * Streaming-invoke prompt-as-a-service
+   *
+   * @param options {@link PromptExecuteOptions}
+   *
+   * @example
+   * ```typescript
+   *
+   * // 1. stream with messages
+   * const model = new PromptAsAService({});
+   *
+   * const replyStream = await model.invoke({
+   *   messages: [
+   *     { role: 'user', content: 'hi' },
+   *   ],
+   * });
+   *
+   * for await (const chunk of replyStream) {
+   *   // chunk is {@link PromptExecuteOptions}
+   * }
+   *
+   * ```
+   */
+  async stream(options: PromptExecuteOptions) {
     const req = this._getExecuteReq(options);
-    const resp = this._api.streamingExecutePrompt(req);
+    const resp = await this._api.streamingExecutePrompt(req);
 
     return resp;
   }

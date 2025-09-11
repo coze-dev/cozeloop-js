@@ -47,6 +47,7 @@ describe('Test Prompt Hub', () => {
 
     expect(prompt?.prompt_key).toBe(key);
     expect(prompt?.version).toBe(version);
+    expect(hub.cache).toBeInstanceOf(PromptCache);
 
     // 1) format prompt without variables
     (() => {
@@ -125,7 +126,7 @@ describe('Test Prompt Hub', () => {
       apiClient: {
         headers: { 'x-template-type': 'jinja2' }, // for mock
       },
-      traceable: false,
+      traceable: true,
     });
 
     const key = 'loop12';

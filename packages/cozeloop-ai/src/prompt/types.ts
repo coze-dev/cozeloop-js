@@ -88,10 +88,17 @@ export interface PromptAsAServiceOptions {
   apiClient?: ApiClient | ApiClientOptions;
   /** Prompt identified by prompt query */
   prompt?: PromptQuery;
+  /** Enable trace report for `invoke` and `stream` */
+  // traceable?: boolean;
+  /** A logger function to print debug message */
+  logger?: SimpleLogger;
 }
 
 export interface PromptExecuteOptions {
+  /** Prompt identified by prompt query */
   prompt?: PromptQuery;
+  /** Messages */
   messages: Message[];
+  /** variable values of Prompt */
   variables?: PromptVariables;
 }

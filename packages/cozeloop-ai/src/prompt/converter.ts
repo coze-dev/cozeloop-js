@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// SPDX-License-Identifier: MIT
 import { stringifyVal } from '../utils/common';
 import {
   type LoopToolCall,
@@ -11,7 +13,7 @@ import {
   type PromptVariables,
   type ContentPart,
 } from './types';
-import { isContentParts, isMessage, isMessageArr } from './guard';
+import { isContentPartArr, isMessage, isMessageArr } from './guard';
 
 export function toLoopToolCalls(toolCalls?: ToolCall[]) {
   if (typeof toolCalls === 'undefined') {
@@ -44,7 +46,7 @@ export function toLoopPart(part: ContentPart): LoopContentPart {
   }
 }
 
-function toLoopMessage(message: Message): LoopMessage {
+export function toLoopMessage(message: Message): LoopMessage {
   switch (message.role) {
     case 'system':
       return {
@@ -107,7 +109,7 @@ export function toVariableVal(
         return { key, placeholder_messages: toLoopMessages(val) };
       }
 
-      if (isContentParts(val)) {
+      if (isContentPartArr(val)) {
         return { key, multi_part_values: val.map(it => toLoopPart(it)) };
       }
 

@@ -7,6 +7,7 @@ import {
   type StreamingExecutePromptResp,
 } from './types/execute';
 import { BaseApi } from '../base';
+import { type RequestOptions } from '../api-client';
 
 export type * from './types/common';
 export type * from './types/execute';
@@ -19,15 +20,20 @@ export class PromptApi extends BaseApi {
     return this._client.post<PullPromptResp>(url, req);
   }
 
-  executePrompt(req: ExecutePromptReq) {
+  executePrompt(req: ExecutePromptReq, options?: RequestOptions) {
     const url = '/v1/loop/prompts/execute';
 
-    return this._client.post<ExecutePromptResp>(url, req);
+    return this._client.post<ExecutePromptResp>(url, req, false, options);
   }
 
-  streamingExecutePrompt(req: ExecutePromptReq) {
+  streamingExecutePrompt(req: ExecutePromptReq, options?: RequestOptions) {
     const url = '/v1/loop/prompts/execute_streaming';
 
-    return this._client.post<StreamingExecutePromptResp>(url, req, true);
+    return this._client.post<StreamingExecutePromptResp>(
+      url,
+      req,
+      true,
+      options,
+    );
   }
 }
