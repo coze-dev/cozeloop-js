@@ -19,30 +19,44 @@ pnpm install @cozeloop/ai
 
 ### 2. Basic Usage
 ```typescript
-import { ApiClient, PromptHub } from '@cozeloop/ai';
+import { ApiClient, PromptHub, PromptAsAService } from '@cozeloop/ai';
 
-// 1. setup API client
+// 1. Setup API client
 const apiClient = new ApiClient({
   baseURL: 'https://api.coze.cn',
   token: 'your_access_token',
 });
 
-// 2. Using prompt hub to get prompt
-const promptHub = new PromptHub({
+// 2. Using `PromptHub` or `PromptAsAService`
+const hub = new PromptHub({
   // or set it as process.env.COZELOOP_WORKSPACE_ID,
   workspaceId: 'your_workspace_id',
   apiClient,
 });
+// hub.getPrompt(key, version);
+// hub.formatPrompt(prompt);
 
-const prompt = await promptHub.getPrompt(
-  'your_prompt_key',
-  'prompt_version (optional)',
-);
+const model = new PromptAsAService({
+  // or set it as process.env.COZELOOP_WORKSPACE_ID,
+  workspaceId: 'your_workspace_id',
+  // prompt to invoke as a service
+  prompt: {
+    prompt_key: 'your_prompt_key',
+  },
+  apiClient,
+});
+// model.invoke({
+//   messages: [{ role: 'user', content: 'hi' }],
+// });
+// model.stream({
+//   messages: [{ role: 'user', content: 'hi' }],
+// });
 ```
 
 ## Key Features
-- 🗄️ **Prompt Hub**: Develop, submit and publish prompts on [CozeLoop](https://loop.coze.cn), and access them it via `PromptHub`
-- 🔐 **Authentication Methods**: PAT and JWT
+- 🗂️ **Prompt Hub**: Develop, submit and publish prompts on [CozeLoop](https://loop.coze.cn), and access them via `PromptHub`
+- 🛠️ **Prompt as a Service**: Develop, submit and publish prompts on [CozeLoop](https://loop.coze.cn), and invoke them as services
+- 🔐 **Authentication Methods**: PAT, SAT and JWT
 - ⚙️ **Configurable**: Timeout, headers, signal, debug options
 
 ## Authentication Options
