@@ -1,6 +1,6 @@
 import { type ChatCompletionCreateParams } from 'openai/resources/chat';
 import { OpenAI } from 'openai';
-import { cozeLoopTracer, PromptHub, SpanKind } from '@cozeloop/ai';
+import { cozeLoopTracer, PromptHub, type Span, SpanKind } from '@cozeloop/ai';
 
 // initialize tracer globally
 cozeLoopTracer.initialize({
@@ -23,7 +23,7 @@ async function callLLM(messages: ChatCompletionCreateParams['messages']) {
 
   // wrap model as a span node with `cozeLoopTracer.traceable`
   return await cozeLoopTracer.traceable(
-    async span => {
+    async (span: Span) => {
       cozeLoopTracer.setInput(span, { messages });
 
       const resp = await openai.chat.completions.create({
@@ -64,7 +64,7 @@ async function runTravelPlan(options: TravelPlanOptions) {
   const messages = hub.formatPrompt(prompt, { ...options });
 
   // invoke model
-  return callLLM(messages);
+  return callLLM(messages as ChatCompletionCreateParams['messages']);
 }
 
 async function run() {
@@ -77,7 +77,7 @@ async function run() {
   };
 
   const result = await cozeLoopTracer.traceable(
-    async span => {
+    async (span: Span) => {
       cozeLoopTracer.setInput(span, options);
       const { choices } = await runTravelPlan(options);
 
