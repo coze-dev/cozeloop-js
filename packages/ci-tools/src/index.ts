@@ -22,3 +22,7 @@ export function run() {
 
   program.parse(process.argv);
 }
+
+// if (require.main === module) {
+//   run();
+// }

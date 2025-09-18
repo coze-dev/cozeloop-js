@@ -16,18 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: '18'
-      GIT_USER_NAME: 'mocayo'
-      GIT_USER_EMAIL: 'qihai@bytedance.com'
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
-
-      - name: Config Git User
-        # should be turn to ci user
-        run: |
-          git config --local user.name ${{ env.GIT_USER_NAME }}
-          git config --local user.email ${{ env.GIT_USER_EMAIL }}
 
       - uses: actions/setup-node@v3
         with:

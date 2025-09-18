@@ -1,6 +1,6 @@
 # 🕗 Change Log - @cozeloop/ci-tools
 
-## 0.0.2
+## 0.0.2 ~ 0.0.5
 * [feat] add `sync-pr` to synchronize GitHub PR via lark in `lark` command
 
 ## 0.0.1

@@ -1,7 +1,7 @@
 {
   "name": "@cozeloop/ci-tools",
-  "version": "0.0.4",
-  "description": "🔧 Tools for CI",
+  "version": "0.0.5",
+  "description": "🔧 Tools for Coze Loop CI",
   "homepage": "https://github.com/coze-dev/cozeloop-js/tree/main/packages/ci-tools",
   "bugs": {
     "url": "https://github.com/coze-dev/cozeloop-js/issues"

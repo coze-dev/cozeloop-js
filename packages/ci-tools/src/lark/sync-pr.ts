@@ -5,6 +5,27 @@ import { Client } from '@larksuiteoapi/node-sdk';
 
 import { larkOptionSchema, messageReceiverSchema } from './schema';
 
+function makeCRUrl(pr_url?: string) {
+  const baseUrl = process.env.PR_CR_BASE_URL;
+
+  if (!pr_url || !baseUrl) {
+    return;
+  }
+
+  const docUrl = process.env.PR_CR_DOC_URL || '';
+  const formData = JSON.stringify([
+    { name: 'pr_url', value: pr_url },
+    { name: 'doc_url', value: docUrl },
+  ]);
+
+  const cr_url = new URL(baseUrl);
+  cr_url.searchParams.append('formData', formData);
+  cr_url.searchParams.append('autoreg', 'true');
+  cr_url.searchParams.append('fromapp', 'GitHub');
+
+  return cr_url.toString();
+}
+
 function makePrMessage() {
   const repo_name = process.env.REPO_NAME;
   const pr_action = process.env.PR_ACTION;
@@ -17,11 +38,14 @@ function makePrMessage() {
   const pr_target_owner = process.env.PR_TARGET_OWNER;
   const pr_target_ref = process.env.PR_TARGET_REF;
   const pr_merged = process.env.PR_MERGED;
+  const cr_url = makeCRUrl(pr_url);
 
-  const title =
-    pr_action === 'closed' && pr_merged === 'true'
-      ? `🎉 PR #${pr_number} merged`
-      : `📢 PR #${pr_number} ${pr_action}`;
+  const isOpen = pr_action === 'opened' || pr_action === 'reopened';
+  const isMerged = pr_action === 'closed' && pr_merged === 'true';
+
+  const title = isMerged
+    ? `🎉 PR #${pr_number} merged`
+    : `📢 PR #${pr_number} ${pr_action}`;
 
   return JSON.stringify({
     schema: '2.0',
@@ -59,13 +83,43 @@ function makePrMessage() {
           margin: '0px 0px 0px 0px',
         },
         {
-          tag: 'markdown',
-          content: `<a href="${pr_url}">👉 前往查看</a>`,
-          text_align: 'left',
-          text_size: 'normal_v2',
-          margin: '0px 0px 0px 0px',
+          tag: 'column_set',
+          columns: [
+            {
+              tag: 'column',
+              width: 'weighted',
+              elements: [
+                {
+                  tag: 'markdown',
+                  content: `<a href="${pr_url}">👉 前往查看</a>`,
+                  text_align: 'left',
+                  text_size: 'normal_v2',
+                  margin: '0px 0px 0px 0px',
+                },
+              ],
+              vertical_align: 'top',
+              weight: 1,
+            },
+            isOpen && cr_url
+              ? {
+                  tag: 'column',
+                  width: 'weighted',
+                  elements: [
+                    {
+                      tag: 'markdown',
+                      content: `<a href="${cr_url}">🔍 Aime CR</a>`,
+                      text_align: 'left',
+                      text_size: 'normal_v2',
+                      margin: '0px 0px 0px 0px',
+                    },
+                  ],
+                  vertical_align: 'top',
+                  weight: 1,
+                }
+              : undefined,
+          ],
         },
-      ],
+      ].filter(v => Boolean(v)),
     },
     header: {
       title: {
