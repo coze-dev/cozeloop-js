@@ -1,6 +1,6 @@
 {
   "name": "@cozeloop/ai",
-  "version": "0.0.10-beta.1",
+  "version": "0.0.10",
   "description": "Official Node.js SDK of CozeLoop | 扣子罗盘官方 Node.js SDK",
   "keywords": [
     "cozeloop",
