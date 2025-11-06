@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
-import { sign as signJWT, type Algorithm } from 'jsonwebtoken';
+import { type Algorithm } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 import { type SetRequired } from '../utils/types';
 import { type SimpleLogger } from '../utils/logger';
@@ -152,7 +153,7 @@ export class OAuthJWTFlow extends OAuthBaseFlow {
       payload.session_name = sessionName;
     }
 
-    return signJWT(payload, privateKey, { algorithm, keyid });
+    return jwt.sign(payload, privateKey, { algorithm, keyid });
   }
 
   async getToken(req?: OAuthJWTFlowGetTokenReq) {
