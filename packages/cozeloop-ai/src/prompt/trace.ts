@@ -1,8 +1,17 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 import { serializeTagValue } from '../tracer/utils';
-import { type PromptQuery, type LoopMessage } from '../api';
+import {
+  type PromptQuery,
+  type LoopMessage,
+  type ExecutePromptReq,
+  type ExecutePromptReply,
+} from '../api';
 import { type Message, type PromptVariables } from './types';
+import {
+  COZELOOP_TRACE_BASIC_TAGS,
+  COZELOOP_TRACE_BUSINESS_TAGS,
+} from '../tracer';
 
 export function toPromptHubInput({ prompt_key, version, label }: PromptQuery) {
   return serializeTagValue({
@@ -28,4 +37,38 @@ export function toPromptTemplateInput(
 
 export function toPromptTemplateOutput(messages: Message[]) {
   return serializeTagValue(messages);
+}
+
+function toPtaaSModelName(req: ExecutePromptReq) {
+  if (!req.prompt_identifier) {
+    return undefined;
+  }
+
+  const { prompt_key, version, label } = req.prompt_identifier;
+
+  // Priority: version > label
+  // Format: prompt_key@version or prompt_key|label or prompt_key
+  if (version) {
+    return `${prompt_key}@${version}`;
+  }
+  if (label) {
+    return `${prompt_key}|${label}`;
+  }
+  return prompt_key;
+}
+
+export function toPtaaSReqTags(req: ExecutePromptReq, stream?: boolean) {
+  return {
+    [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: serializeTagValue(req),
+    [COZELOOP_TRACE_BUSINESS_TAGS.MODEL_PROVIDER]: 'Cozeloop PtaaS',
+    [COZELOOP_TRACE_BUSINESS_TAGS.MODEL_NAME]: toPtaaSModelName(req),
+    [COZELOOP_TRACE_BUSINESS_TAGS.STREAM]: Boolean(stream),
+  };
+}
+
+export function toPtaasRespTags(resp?: ExecutePromptReply) {
+  return {
+    [COZELOOP_TRACE_BUSINESS_TAGS.INPUT_TOKENS]: resp?.usage?.input_tokens,
+    [COZELOOP_TRACE_BUSINESS_TAGS.OUTPUT_TOKENS]: resp?.usage?.output_tokens,
+  };
 }

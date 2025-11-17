@@ -23,5 +23,7 @@ export {
   cozeLoopTracer,
   injectWithCozeLoopHeaders,
   extractWithCozeLoopHeaders,
+  calcSpanTraceHeaders,
+  calcSpanContextTraceHeaders,
 } from './tracer';
 export type * from './tracer';

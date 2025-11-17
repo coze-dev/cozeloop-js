@@ -43,6 +43,8 @@ export function setupPTaaSMock() {
       switch (executeType) {
         case 'basic-stream':
           return fileToStreamResp(join(__dirname, 'ptaas-stream.txt'));
+        case 'toolcall-stream':
+          return fileToStreamResp(join(__dirname, 'ptaas-toolcall-stream.txt'));
         default:
           return passthrough();
       }

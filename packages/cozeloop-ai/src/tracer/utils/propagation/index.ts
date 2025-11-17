@@ -4,6 +4,8 @@ import {
   type Context,
   type TextMapGetter,
   type TextMapSetter,
+  type Span,
+  type SpanContext,
   propagation,
 } from '@opentelemetry/api';
 
@@ -70,4 +72,45 @@ export function extractWithCozeLoopHeaders<Carrier>(
   carrier: Carrier,
 ): Context {
   return propagation.extract(context, carrier, cozeLoopGetter);
+}
+
+/**
+ * 计算 span 的 traceparent 和 tracestate
+ *
+ * @param span - OpenTelemetry Span 实例
+ * @returns 包含 traceparent 和 tracestate 的对象
+ */
+export function calcSpanTraceHeaders(span: Span) {
+  const spanContext = span.spanContext();
+  return calcSpanContextTraceHeaders(spanContext);
+}
+
+/**
+ * 从 SpanContext 计算 traceparent 和 tracestate
+ *
+ * @param spanContext - OpenTelemetry SpanContext 实例
+ * @returns 包含 traceparent 和 tracestate 的对象
+ */
+export function calcSpanContextTraceHeaders(spanContext: SpanContext) {
+  // 构建 traceparent 格式: version-trace_id-parent_id-trace_flags
+  // W3C Trace Context 规范: https://www.w3.org/TR/trace-context/
+  const version = '00'; // 当前版本固定为 00
+  const { traceId } = spanContext;
+  const { spanId } = spanContext;
+  const traceFlags =
+    spanContext.traceFlags?.toString(16).padStart(2, '0') || '01';
+
+  const traceparent = `${version}-${traceId}-${spanId}-${traceFlags}`;
+
+  // 获取 tracestate
+  const tracestate = spanContext.traceState?.serialize();
+
+  return {
+    [COZELOOP_TRACE_PROPAGATION_HEADERS.W3C_TRACEPARENT]: traceparent,
+    [COZELOOP_TRACE_PROPAGATION_HEADERS.COZELOOP_TRACEPARENT]: traceparent,
+    [COZELOOP_TRACE_PROPAGATION_HEADERS.W3C_TRACESTATE]:
+      tracestate || undefined,
+    [COZELOOP_TRACE_PROPAGATION_HEADERS.COZELOOP_TRACESTATE]:
+      tracestate || undefined,
+  };
 }

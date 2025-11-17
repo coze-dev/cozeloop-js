@@ -6,6 +6,8 @@ import {
   cozeLoopSetter,
   extractWithCozeLoopHeaders,
   injectWithCozeLoopHeaders,
+  calcSpanTraceHeaders,
+  calcSpanContextTraceHeaders,
 } from '../../src/tracer/utils/propagation';
 import { COZELOOP_TRACE_PROPAGATION_HEADERS } from '../../src/tracer/constants';
 import { context, cozeLoopTracer } from '../../src/tracer';
@@ -153,5 +155,124 @@ describe('Test utils/propagation', () => {
         { name: 'TestSpan', type: 'extractWithCozeLoopHeaders' },
       ),
     );
+  });
+
+  describe('🧪 calcSpanTraceHeaders', () => {
+    it('should calculate traceparent and tracestate from span', () => {
+      let result: ReturnType<typeof calcSpanTraceHeaders> | undefined;
+
+      cozeLoopTracer.traceable(
+        span => {
+          result = calcSpanTraceHeaders(span);
+        },
+        {
+          name: 'TestSpan',
+          type: 'calcSpanTraceHeaders',
+          baggages: { user_id: 'uid-123', session_id: 'session-456' },
+        },
+      );
+
+      expect(result).toBeDefined();
+      expect(result!.traceparent).toMatch(
+        /^00-[a-f0-9]{32}-[a-f0-9]{16}-[0-9a-f]{2}$/,
+      );
+      expect(result!.tracestate).toContain('user_id=uid-123');
+      expect(result!.tracestate).toContain('session_id=session-456');
+    });
+
+    it('should handle span without tracestate', () => {
+      let result: ReturnType<typeof calcSpanTraceHeaders> | undefined;
+
+      cozeLoopTracer.traceable(
+        span => {
+          result = calcSpanTraceHeaders(span);
+        },
+        {
+          name: 'TestSpan',
+          type: 'calcSpanTraceHeaders',
+        },
+      );
+
+      expect(result).toBeDefined();
+      expect(result!.traceparent).toMatch(
+        /^00-[a-f0-9]{32}-[a-f0-9]{16}-[0-9a-f]{2}$/,
+      );
+      expect(result!.tracestate).toBeUndefined();
+    });
+  });
+
+  describe('🧪 calcSpanContextTraceHeaders', () => {
+    it('should calculate traceparent and tracestate from span context', () => {
+      let result: { traceparent: string; tracestate?: string } | undefined;
+
+      cozeLoopTracer.traceable(
+        span => {
+          const spanContext = span.spanContext();
+          result = calcSpanContextTraceHeaders(spanContext);
+        },
+        {
+          name: 'TestSpan',
+          type: 'calcSpanContextTraceHeaders',
+          baggages: { user_id: 'uid-789' },
+        },
+      );
+
+      expect(result).toBeDefined();
+      expect(result!.traceparent).toMatch(
+        /^00-[a-f0-9]{32}-[a-f0-9]{16}-[0-9a-f]{2}$/,
+      );
+      expect(result!.tracestate).toContain('user_id=uid-789');
+    });
+
+    it('should handle span context with specific trace flags', () => {
+      const rootTraceId = '424381abf8a57af66f9fc57964bb5881';
+      const parentSpanId = 'a2d0f4b97f0c1da7';
+      const extractedContext = extractWithCozeLoopHeaders(context.active(), {
+        [COZELOOP_TRACEPARENT]: `00-${rootTraceId}-${parentSpanId}-01`,
+        [COZELOOP_TRACESTATE]: 'user_id=test-user',
+      });
+
+      let result: ReturnType<typeof calcSpanContextTraceHeaders> | undefined;
+
+      context.with(extractedContext, () =>
+        cozeLoopTracer.traceable(
+          span => {
+            const spanContext = span.spanContext();
+            result = calcSpanContextTraceHeaders(spanContext);
+          },
+          { name: 'TestSpan', type: 'calcSpanContextTraceHeaders' },
+        ),
+      );
+
+      expect(result).toBeDefined();
+      expect(result!.traceparent).toMatch(
+        /^00-[a-f0-9]{32}-[a-f0-9]{16}-[0-9a-f]{2}$/,
+      );
+      expect(result!.traceparent).toContain(rootTraceId);
+      expect(result!.tracestate).toContain('user_id=test-user');
+    });
+
+    it('should format trace flags correctly', () => {
+      let result: ReturnType<typeof calcSpanContextTraceHeaders> | undefined;
+
+      cozeLoopTracer.traceable(
+        span => {
+          const spanContext = span.spanContext();
+          result = calcSpanContextTraceHeaders(spanContext);
+        },
+        {
+          name: 'TestSpan',
+          type: 'calcSpanContextTraceHeaders',
+        },
+      );
+
+      expect(result).toBeDefined();
+      const parts = result!.traceparent.split('-');
+      expect(parts).toHaveLength(4);
+      expect(parts[0]).toBe('00'); // version
+      expect(parts[1]).toHaveLength(32); // trace_id
+      expect(parts[2]).toHaveLength(16); // span_id
+      expect(parts[3]).toMatch(/^[0-9a-f]{2}$/); // trace_flags
+    });
   });
 });

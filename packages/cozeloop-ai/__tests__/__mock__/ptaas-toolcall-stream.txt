@@ -1,0 +1,84 @@
+data: {"message":{"reasoning_content":"","tool_call_id":"","role":"assistant","content":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"用户","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"content":"需要","reasoning_content":"","tool_call_id":"","role":"assistant"},"finish_reason":""}
+
+data: {"message":{"tool_call_id":"","role":"assistant","content":"规划","reasoning_content":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"上海","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"tool_call_id":"","role":"assistant","content":"一天","reasoning_content":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"的","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"旅游","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"行程","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"content":"，","reasoning_content":"","tool_call_id":"","role":"assistant"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"调用","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":" get","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"tool_call_id":"","role":"assistant","content":"_","reasoning_content":""},"finish_reason":""}
+
+data: {"message":{"reasoning_content":"","tool_call_id":"","role":"assistant","content":"weather"},"finish_reason":""}
+
+data: {"message":{"reasoning_content":"","tool_call_id":"","role":"assistant","content":" "},"finish_reason":""}
+
+data: {"message":{"reasoning_content":"","tool_call_id":"","role":"assistant","content":"函数"},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"获取","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"上海","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"当前","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"天气","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"，","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"以","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"更好","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"tool_call_id":"","role":"assistant","content":"地","reasoning_content":""},"finish_reason":""}
+
+data: {"message":{"reasoning_content":"","tool_call_id":"","role":"assistant","content":"规划"},"finish_reason":""}
+
+data: {"message":{"reasoning_content":"","tool_call_id":"","role":"assistant","content":"行程"},"finish_reason":""}
+
+data: {"message":{"content":"。","reasoning_content":"","tool_call_id":"","role":"assistant"},"finish_reason":""}
+
+data: {"finish_reason":"","message":{"reasoning_content":"","tool_call_id":"","tool_calls":[{"function_call":{"name":"get_weather","arguments":""},"index":0,"id":"call_50m82bqc5dbsguap8zxivomc","type":"function"}],"role":"assistant","content":""}}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"index":0,"id":"","type":"function","function_call":{"name":"","arguments":" {\""}}]},"finish_reason":""}
+
+data: {"message":{"tool_calls":[{"id":"","type":"function","function_call":{"name":"","arguments":"location"},"index":0}],"role":"assistant","content":"","reasoning_content":"","tool_call_id":""},"finish_reason":""}
+
+data: {"message":{"content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"index":0,"id":"","type":"function","function_call":{"name":"","arguments":"\":"}}],"role":"assistant"},"finish_reason":""}
+
+data: {"finish_reason":"","message":{"tool_calls":[{"index":0,"id":"","type":"function","function_call":{"name":"","arguments":" \""}}],"role":"assistant","content":"","reasoning_content":"","tool_call_id":""}}
+
+data: {"message":{"reasoning_content":"","tool_call_id":"","tool_calls":[{"type":"function","function_call":{"name":"","arguments":"上海"},"index":0,"id":""}],"role":"assistant","content":""},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"id":"","type":"function","function_call":{"name":"","arguments":"\","},"index":0}]},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"index":0,"id":"","type":"function","function_call":{"name":"","arguments":" \""}}]},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"index":0,"id":"","type":"function","function_call":{"name":"","arguments":"unit"}}]},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"type":"function","function_call":{"arguments":"\":","name":""},"index":0,"id":""}]},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"index":0,"id":"","type":"function","function_call":{"name":"","arguments":" \""}}]},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"id":"","type":"function","function_call":{"name":"","arguments":"c"},"index":0}]},"finish_reason":""}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":"","tool_calls":[{"type":"function","function_call":{"name":"","arguments":"\"}"},"index":0,"id":""}]},"finish_reason":""}
+
+data: {"message":{"reasoning_content":"","tool_call_id":"","role":"assistant","content":""},"finish_reason":"tool_calls"}
+
+data: {"message":{"role":"assistant","content":"","reasoning_content":"","tool_call_id":""},"finish_reason":"","usage":{"output_tokens":71,"input_tokens":102}}
+

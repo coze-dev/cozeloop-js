@@ -18,6 +18,8 @@ export { CozeLoopTraceExporter } from './exporter';
 export {
   injectWithCozeLoopHeaders,
   extractWithCozeLoopHeaders,
+  calcSpanTraceHeaders,
+  calcSpanContextTraceHeaders,
 } from './utils/propagation';
 
 export {
