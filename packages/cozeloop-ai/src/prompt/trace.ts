@@ -39,7 +39,7 @@ export function toPromptTemplateOutput(messages: Message[]) {
   return serializeTagValue(messages);
 }
 
-function toPtaaSModelName(req: ExecutePromptReq) {
+export function toPtaaSModelName(req: ExecutePromptReq) {
   if (!req.prompt_identifier) {
     return undefined;
   }
@@ -57,6 +57,26 @@ function toPtaaSModelName(req: ExecutePromptReq) {
   return prompt_key;
 }
 
+function toTraceMessage(message: LoopMessage) {
+  const { role, content, parts, reasoning_content, tool_call_id, tool_calls } =
+    message;
+
+  return {
+    role,
+    content,
+    reasoning_content: reasoning_content || undefined,
+    parts: parts?.length ? parts : undefined,
+    tool_call_id: tool_call_id || undefined,
+    tool_calls: tool_calls?.length
+      ? tool_calls.map(it => ({
+          id: it.id,
+          type: 'function',
+          function: it.function_call,
+        }))
+      : undefined,
+  };
+}
+
 export function toPtaaSReqTags(req: ExecutePromptReq, stream?: boolean) {
   return {
     [COZELOOP_TRACE_BASIC_TAGS.SPAN_INPUT]: serializeTagValue(req),
@@ -66,8 +86,25 @@ export function toPtaaSReqTags(req: ExecutePromptReq, stream?: boolean) {
   };
 }
 
+export function toModelOutput(reply?: ExecutePromptReply) {
+  if (!reply?.message) {
+    return undefined;
+  }
+
+  return serializeTagValue({
+    choices: [
+      {
+        index: 0,
+        finish_reason: reply.finish_reason,
+        message: toTraceMessage(reply.message),
+      },
+    ],
+  });
+}
+
 export function toPtaasRespTags(resp?: ExecutePromptReply) {
   return {
+    [COZELOOP_TRACE_BASIC_TAGS.SPAN_OUTPUT]: toModelOutput(resp),
     [COZELOOP_TRACE_BUSINESS_TAGS.INPUT_TOKENS]: resp?.usage?.input_tokens,
     [COZELOOP_TRACE_BUSINESS_TAGS.OUTPUT_TOKENS]: resp?.usage?.output_tokens,
   };

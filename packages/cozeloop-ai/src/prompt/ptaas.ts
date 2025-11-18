@@ -166,7 +166,6 @@ export class PromptAsAService {
             },
             collected => {
               onFinish?.(collected);
-              cozeLoopTracer.setOutput(span, collected);
               cozeLoopTracer.setTags(span, toPtaasRespTags(collected));
               span.end();
             },

@@ -1,28 +1,14 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 
-import { setTimeout } from 'node:timers/promises';
-
 import { setupPTaaSMock } from '../__mock__/ptaas';
-import { simpleConsoleLogger } from '../../src/utils/logger';
-import { cozeLoopTracer, PromptAsAService } from '../../src';
-
-cozeLoopTracer.initialize({
-  apiClient: {
-    logger: simpleConsoleLogger,
-  },
-  processor: 'simple',
-});
+import { PromptAsAService, type ExecutePromptReply } from '../../src';
 
 describe('Test Prompt As a Service', () => {
   const httpMock = setupPTaaSMock();
   beforeAll(async () => await httpMock.start());
   afterAll(async () => await httpMock.close());
-  afterEach(async () => {
-    // httpMock.reset();
-    await setTimeout(2_000);
-    await cozeLoopTracer.forceFlush();
-  });
+  afterEach(() => httpMock.reset());
 
   it('#1 basic invoke', async () => {
     const model = new PromptAsAService({
@@ -36,7 +22,7 @@ describe('Test Prompt As a Service', () => {
     });
 
     const reply = await model.invoke({
-      messages: [{ role: 'user', content: '做一首诗' }],
+      messages: [{ role: 'user', content: '去上海旅游' }],
     });
 
     expect(reply?.finish_reason).toBe('stop');
@@ -68,41 +54,28 @@ describe('Test Prompt As a Service', () => {
         prompt_key: 'tool',
         version: '0.0.1',
       },
-      apiClient: {
-        // headers: { 'x-mock': 'toolcall-stream' },
-      },
-    });
-
-    const replyStream = await model.stream({
-      messages: [{ role: 'user', content: '玩一天' }],
-      variables: {
-        city: '上海',
-      },
-    });
-
-    for await (const chunk of replyStream) {
-      console.info(JSON.stringify(chunk));
-    }
-  });
-
-  it.only('#4 collectReplyStream with tool call', async () => {
-    const model = new PromptAsAService({
-      prompt: {
-        prompt_key: 'tool',
-        version: '0.0.1',
-      },
-      apiClient: {
-        // headers: { 'x-mock': 'toolcall-stream' },
-      },
       traceable: true,
+      apiClient: {
+        headers: { 'x-mock': 'toolcall-stream' },
+      },
     });
 
-    const replyStream = await model.stream({
-      messages: [{ role: 'user', content: '规划上海一日游' }],
-    });
+    let reply: ExecutePromptReply | undefined;
+    const replyStream = await model.stream(
+      {
+        messages: [{ role: 'user', content: '玩一天' }],
+        variables: {
+          city: '上海',
+        },
+      },
+      res => (reply = res),
+    );
 
     for await (const chunk of replyStream) {
-      expect(chunk).toBeTruthy();
+      // console.info(JSON.stringify(chunk));
+      expect(chunk.message).toBeTruthy();
     }
+
+    expect(reply?.message.tool_calls?.length).toBeTruthy();
   });
 });
