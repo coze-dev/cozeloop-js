@@ -18,6 +18,7 @@ pnpm install @cozeloop/ai
 ```
 
 ### 2. Basic Usage
+
 ```typescript
 import { ApiClient, PromptHub, PromptAsAService } from '@cozeloop/ai';
 
@@ -54,6 +55,7 @@ const model = new PromptAsAService({
 ```
 
 ## Key Features
+
 - 🗂️ **Prompt Hub**: Develop, submit and publish prompts on [CozeLoop](https://loop.coze.cn), and access them via `PromptHub`
 - 🛠️ **Prompt as a Service**: Develop, submit and publish prompts on [CozeLoop](https://loop.coze.cn), and invoke them as services
 - 🔐 **Authentication Methods**: PAT, SAT and JWT
@@ -62,6 +64,7 @@ const model = new PromptAsAService({
 ## Authentication Options
 
 1. Personal Access Token (PAT, the simplest way)
+
 ```typescript
 const apiClient = new ApiClient({
   baseURL: 'https://api.coze.cn',
@@ -70,6 +73,7 @@ const apiClient = new ApiClient({
 ```
 
 2. JWT
+
 ```typescript
 const authFlow = new OAuthJWTFlow({
   baseURL: 'https://api.coze.cn',

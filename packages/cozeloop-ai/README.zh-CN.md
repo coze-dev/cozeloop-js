@@ -18,6 +18,7 @@ pnpm install @cozeloop/ai
 ```
 
 ### 2. 基础用法
+
 ```typescript
 import { ApiClient, PromptHub, PromptAsAService } from '@cozeloop/ai';
 
@@ -54,6 +55,7 @@ const model = new PromptAsAService({
 ```
 
 ## 主要特性
+
 - 🗂️ **Prompt Hub**: 在 [CozeLoop](https://loop.coze.cn) 平台开发、提交和发布 Prompt，使用 `PromptHub` 访问 Prompt。
 - 🛠️ **Prompt as a Service**: 在 [CozeLoop](https://loop.coze.cn) 平台开发、提交和发布 Prompt，并作为服务调用。
 - 🔐 **多种鉴权方式**: PAT and JWT
@@ -62,6 +64,7 @@ const model = new PromptAsAService({
 ## 鉴权方式
 
 1. 个人访问令牌（PAT，最简单）
+
 ```typescript
 const apiClient = new ApiClient({
   baseURL: 'https://api.coze.cn',
@@ -70,6 +73,7 @@ const apiClient = new ApiClient({
 ```
 
 2. JWT 鉴权
+
 ```typescript
 const authFlow = new OAuthJWTFlow({
   baseURL: 'https://api.coze.cn',

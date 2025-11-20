@@ -89,7 +89,7 @@ export interface PromptAsAServiceOptions {
   /** Prompt identified by prompt query */
   prompt?: PromptQuery;
   /** Enable trace report for `invoke` and `stream` */
-  // traceable?: boolean;
+  traceable?: boolean;
   /** A logger function to print debug message */
   logger?: SimpleLogger;
 }
