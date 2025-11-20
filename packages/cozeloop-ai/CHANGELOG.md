@@ -1,6 +1,10 @@
 # 🕗 ChangeLog - @cozeloop/ai
 
-## 0.1.0
+## 0.0.11
+
+* [feat] ptaas with cozeloop trace
+
+## 0.0.10
 
 * [fix] jsonwebtoken cjs in esm
 
