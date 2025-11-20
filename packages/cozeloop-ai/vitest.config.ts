@@ -18,9 +18,7 @@ export default defineConfig({
     env: {
       COZELOOP_VERSION: packageJson.version,
       COZELOOP_WORKSPACE_ID: '7308703665823416358',
-      // COZELOOP_API_TOKEN: 'pat_xxx',
-      COZELOOP_API_TOKEN:
-        'pat_lS33Lb4G07uU827MQEtOpYfy4YiVaDDc31rwW3SnMypV8uDsbl1PHtaLoS1tBAJg',
+      COZELOOP_API_TOKEN: 'pat_xxx',
     },
   },
 });
