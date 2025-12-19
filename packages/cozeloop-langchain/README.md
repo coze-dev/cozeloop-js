@@ -3,12 +3,15 @@
 [![npm version](https://img.shields.io/npm/v/%40cozeloop%2Flangchain)](https://www.npmjs.com/package/@cozeloop/langchain)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Integrate Langchain with Cozeloop via `@cozeloop/langchain`, supports:
-* `CozeloopCallbackHandler`: report trace to Cozeloop
+Official LangChain integration for [CozeLoop](https://loop.coze.cn) - seamlessly report traces from your LangChain and LangGraph applications.
 
-## Quick Start
+## Features
 
-### 1. Installation
+- **CozeloopCallbackHandler**: Automatically capture and report traces to CozeLoop
+- Support for both LangChain and LangGraph
+- W3C trace context propagation for distributed tracing
+
+## Installation
 
 ```sh
 npm install @cozeloop/langchain
@@ -16,106 +19,104 @@ npm install @cozeloop/langchain
 pnpm install @cozeloop/langchain
 ```
 
-### 2. Basic Usage
+## Configuration
 
-1. Environment variables
+### Environment Variables
 
-The following variables are optional, and will be used if values provided.
+The following environment variables can be used to configure the integration:
 
-|Variable|Comment|Example|
-|----|----|------|
-|COZELOOP_WORKSPACE_ID|Cozeloop workspace id, used to identify the workspace to which resource such as trace belongs|'7487806534651887643'|
-|COZELOOP_API_TOKEN|Cozeloop api token, see [authentication-for-sdk](https://loop.coze.cn/open/docs/cozeloop/authentication-for-sdk) |'pat_xxxx'|
-|COZELOOP_OTLP_ENDPOINT|Trace endpoint|'https://api.coze.cn/v1/loop/opentelemetry/v1/trace'|
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `COZELOOP_WORKSPACE_ID` | Workspace ID for resource association | `'7487806534651887643'` |
+| `COZELOOP_API_TOKEN` | API token for authentication. See [Authentication Guide](https://loop.coze.cn/open/docs/cozeloop/authentication-for-sdk) | `'pat_xxxx'` |
+| `COZELOOP_OTLP_ENDPOINT` | Trace reporting endpoint | `'https://api.coze.cn/v1/loop/opentelemetry/v1/traces'` |
 
+## Usage
 
-2. `CozeloopCallbackHandler`
+### CozeloopCallbackHandler
 
-Callbacks can be used with LangChain and LangGraph.
+The callback handler integrates with LangChain and LangGraph to automatically capture traces.
 
-Since the traces exporting is asynchronous, it can be interrupted by the termination of Node.js process.
+> **Note**: Since trace exporting is asynchronous, proper cleanup is required:
+>
+> - **CLI scripts**: Call `await callback.flush()` before exit to ensure all traces are exported.
+> - **Server applications**: Call `await callback.shutdown()` during graceful shutdown to release resources.
 
-(1) When you run a file in command line, call `await callback.flush();` to ensure all traces exported.
-
-(2) If you are running a server-side application, there is no need to flush, but it's recommended to call `await callback.shutdown();` to clean resource.
-
-* Initialize
+#### Initialization
 
 ```typescript
 import { CozeloopCallbackHandler } from '@cozeloop/langchain';
 
-// initialize callback
 const callback = new CozeloopCallbackHandler({
-  // Common callback params
+  // Span exporter configuration
+  spanExporter: {
+    workspaceId: 'xxx',
+    token: 'pat_xxx',
+    traceEndpoint: 'https://api.coze.cn/v1/loop/opentelemetry/v1/traces',
+  },
+  // Optional: Filter specific trace types
   // ignoreAgent: false,
   // ignoreChain: false,
   // ignoreCustomEvent: false,
   // ignoreLLM: false,
   // ignoreRetriever: false,
   // ignorePrompt: false,
-  /** Span exporter */
-  spanExporter: {
-    workspaceId: 'xxx',
-    token: 'pat_xxx',
-    traceEndpoint: 'https://api.coze.cn/v1/loop/opentelemetry/v1/traces',
-  },
-  /** Propagate with upstream services */
+
+  // Optional: Propagate trace context from upstream services
   // propagationHeaders: {
-  //   tracestate: '',
   //   traceparent: '00-b3691bfe8af1415029177821d4114cef-ddd0307891d51ce3-01',
+  //   tracestate: '',
   // },
 });
 
-// use to propagate with downstream services
-// callback.w3cPropagationHeaders
+// Access W3C propagation headers for downstream services
+// const headers = callback.w3cPropagationHeaders;
 ```
 
-* With LangChain
+#### With LangChain
+
 ```typescript
 import { CozeloopCallbackHandler } from '@cozeloop/langchain';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 
-// Chain
+const callback = new CozeloopCallbackHandler({ /* options */ });
+
 const prompt = ChatPromptTemplate.fromTemplate('What is 1 + {number}?');
 const model = new CustomLLM({});
 const chain = prompt.pipe(model);
-const callback = new CozeloopCallbackHandler({ /** options */});
 
 const resp = await chain.invoke(
   { number: 1 },
   {
     runName: 'SuperChain',
-    callbacks: [callback], // set callback
+    callbacks: [callback],
   },
 );
 
-// call `flush` to ensure trace exported in script run
+// Ensure traces are exported before script exits
 await callback.flush();
 ```
 
-* With LangGraph
+#### With LangGraph
+
 ```typescript
 import { CozeloopCallbackHandler } from '@cozeloop/langchain';
-
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
+
+const callback = new CozeloopCallbackHandler({ /* options */ });
 
 const agent = createReactAgent({
   llm: model,
   tools: [tool1, tool2],
 });
 
-const resp = await graphAgent.invoke(
+const resp = await agent.invoke(
   {
-    messages: [
-      {
-        role: 'user',
-        content: 'xxx',
-      },
-    ],
+    messages: [{ role: 'user', content: 'Hello!' }],
   },
-  { callbacks: [callback] }, // set callback
+  { callbacks: [callback] },
 );
 
-// call `flush` to ensure trace exported in script run
+// Ensure traces are exported before script exits
 await callback.flush();
 ```

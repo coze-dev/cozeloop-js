@@ -1,6 +1,6 @@
 {
   "name": "@cozeloop/langchain",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Integration LangChain with CozeLoop | 扣子罗盘 LangChain 集成",
   "keywords": [
     "cozeloop",
