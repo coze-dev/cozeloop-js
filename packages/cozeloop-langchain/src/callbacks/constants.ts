@@ -37,6 +37,7 @@ export enum CozeloopSpanType {
   RETRIEVER = 'retriever',
   TOOL = 'tool',
   CHAIN = 'chain',
+  GRAPH = 'graph',
   AGENT = 'agent',
   CUSTOM = 'custom',
 }

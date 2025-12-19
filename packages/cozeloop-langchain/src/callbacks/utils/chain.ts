@@ -27,3 +27,7 @@ export function guessChainOutput(outputs?: ChainValues) {
     outputs
   );
 }
+
+export function isLangGraphNode(name: string) {
+  return name === 'LangGraph';
+}

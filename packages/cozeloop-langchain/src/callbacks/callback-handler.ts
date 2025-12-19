@@ -28,6 +28,7 @@ import {
   generateUUID,
   guessChainInput,
   guessChainOutput,
+  isLangGraphNode,
   parseBaseMessages,
   parseLLMResult,
   stringifyVal,
@@ -334,7 +335,9 @@ export class CozeloopCallbackHandler
     const spanName = runName || 'ChainStart';
     this._startSpan(spanName, runId, parentRunId, span => {
       span.setAttributes({
-        [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.CHAIN,
+        [CozeloopAttr.SPAN_TYPE]: isLangGraphNode(spanName)
+          ? CozeloopSpanType.GRAPH
+          : CozeloopSpanType.CHAIN,
         [CozeloopAttr.INPUT]: stringifyVal(guessChainInput(inputs)),
       });
     });
