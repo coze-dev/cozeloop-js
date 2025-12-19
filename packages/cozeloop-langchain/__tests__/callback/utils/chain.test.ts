@@ -3,6 +3,7 @@
 import {
   guessChainInput,
   guessChainOutput,
+  isLangGraphNode,
 } from '@cozeloop/langchain/callbacks/utils';
 
 describe('guessChainInput', () => {
@@ -63,5 +64,18 @@ describe('guessChainOutput', () => {
       },
     };
     expect(guessChainOutput(output)).toBe(output.returnValues.text);
+  });
+});
+
+describe('isLangGraphNode', () => {
+  it('🧪 should return true for "LangGraph" name', () => {
+    expect(isLangGraphNode('LangGraph')).toBe(true);
+  });
+
+  it('🧪 should return false for other names', () => {
+    expect(isLangGraphNode('SomeOtherNode')).toBe(false);
+    expect(isLangGraphNode('langgraph')).toBe(false);
+    expect(isLangGraphNode('LANGGRAPH')).toBe(false);
+    expect(isLangGraphNode('')).toBe(false);
   });
 });
