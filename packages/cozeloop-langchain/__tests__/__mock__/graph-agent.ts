@@ -1,14 +1,18 @@
-import { z } from 'zod';
+import { type as arktype } from 'arktype';
 import { AzureChatOpenAI } from '@langchain/openai';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { tool } from '@langchain/core/tools';
 
+const searchSchema = arktype({
+  /** The query to use in your search. */
+  query: 'string',
+});
+
 const search = tool(
-  input => {
-    const { query } = input as any;
+  (input: typeof searchSchema.infer) => {
     if (
-      query.toLowerCase().includes('sf') ||
-      query.toLowerCase().includes('san francisco')
+      input.query.toLowerCase().includes('sf') ||
+      input.query.toLowerCase().includes('san francisco')
     ) {
       return "It's 60 degrees and foggy.";
     }
@@ -17,9 +21,7 @@ const search = tool(
   {
     name: 'search',
     description: 'Call to surf the web.',
-    schema: z.object({
-      query: z.string().describe('The query to use in your search.'),
-    }),
+    schema: searchSchema as any,
   },
 );
 

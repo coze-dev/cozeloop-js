@@ -1,26 +1,43 @@
 // Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
-import { z } from 'zod';
+import { type, type Type } from 'arktype';
 import { AppType, Domain } from '@larksuiteoapi/node-sdk';
 
-export const larkOptionSchema = z.object({
-  appId: z.string().prefault(process.env.LARK_APP_ID || ''),
-  appSecret: z.string().prefault(process.env.LARK_APP_SECRET || ''),
-  appType: z
-    .union([z.string(), z.number()])
-    .prefault(process.env.LARK_APP_TYPE || AppType.SelfBuild)
-    .transform(val => Number(val)),
-  domain: z
-    .union([z.string(), z.number()])
-    .prefault(process.env.LARK_DOMAIN || Domain.Feishu)
-    .transform(val => Number(val)),
-});
-
-export const messageReceiverSchema = z
-  .object({
-    email: z.array(z.string()),
-    chatId: z.array(z.string()),
-  })
-  .refine(v => v.chatId.length || v.email.length, {
-    error: 'Neither email nor chatId is empty',
+function withParse<T extends Type>(schema: T) {
+  return Object.assign(schema, {
+    parse: (data: unknown): T['infer'] => {
+      const result = schema(data);
+      if (result instanceof type.errors) {
+        throw new Error(result.summary);
+      }
+      return result as T['infer'];
+    },
   });
+}
+
+export const larkOptionSchema = withParse(
+  type({
+    appId: type('string').default(process.env.LARK_APP_ID || ''),
+    appSecret: type('string').default(process.env.LARK_APP_SECRET || ''),
+    appType: type('string | number')
+      .pipe(val => Number(val))
+      .default(Number(process.env.LARK_APP_TYPE || AppType.SelfBuild)),
+    domain: type('string | number')
+      .pipe(val => Number(val))
+      .default(Number(process.env.LARK_DOMAIN || Domain.Feishu)),
+  }),
+);
+
+export const messageReceiverSchema = withParse(
+  type({
+    email: 'string[]',
+    chatId: 'string[]',
+  }).narrow((v, ctx) => {
+    if (!v.chatId.length && !v.email.length) {
+      return ctx.reject({
+        message: 'Neither email nor chatId is empty',
+      });
+    }
+    return true;
+  }),
+);

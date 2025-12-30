@@ -78,11 +78,12 @@ const callback = new CozeloopCallbackHandler({
 ```typescript
 import { CozeloopCallbackHandler } from '@cozeloop/langchain';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { ChatOpenAI } from '@langchain/openai';
 
-const callback = new CozeloopCallbackHandler({ /* options */ });
+const callback = new CozeloopCallbackHandler({ /* ... */ });
 
 const prompt = ChatPromptTemplate.fromTemplate('What is 1 + {number}?');
-const model = new CustomLLM({});
+const model = new ChatOpenAI({});
 const chain = prompt.pipe(model);
 
 const resp = await chain.invoke(
@@ -103,7 +104,7 @@ await callback.flush();
 import { CozeloopCallbackHandler } from '@cozeloop/langchain';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 
-const callback = new CozeloopCallbackHandler({ /* options */ });
+const callback = new CozeloopCallbackHandler({ /* ... */ });
 
 const agent = createReactAgent({
   llm: model,
