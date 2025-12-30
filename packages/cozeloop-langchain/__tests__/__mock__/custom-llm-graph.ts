@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { type } from 'arktype';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { tool } from '@langchain/core/tools';
 
@@ -6,9 +6,14 @@ import { CustomChatModel } from './custom-chat-model';
 
 const model = new CustomChatModel({});
 
+const weatherSchema = type({
+  /** Location to get the weather for. */
+  location: "'sf' | 'nyc'",
+});
+
 const getWeather = tool(
-  input => {
-    if ((input as any).location === 'sf') {
+  (input: typeof weatherSchema.infer) => {
+    if (input.location === 'sf') {
       return "It's always sunny in sf";
     } else {
       return 'It might be cloudy in nyc';
@@ -17,11 +22,7 @@ const getWeather = tool(
   {
     name: 'get_weather',
     description: 'Call to get the current weather.',
-    schema: z.object({
-      location: z
-        .enum(['sf', 'nyc'])
-        .describe('Location to get the weather for.'),
-    }),
+    schema: weatherSchema as any,
   },
 );
 
