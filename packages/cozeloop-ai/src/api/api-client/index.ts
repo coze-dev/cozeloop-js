@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Bytedance Ltd. and/or its affiliates
+// Copyright (c) 2026 Bytedance Ltd. and/or its affiliates
 // SPDX-License-Identifier: MIT
 export { getUserAgentHeaders } from './user-agent';
 export { ApiClient, DEFAULT_API_BASE_URL } from './client';
