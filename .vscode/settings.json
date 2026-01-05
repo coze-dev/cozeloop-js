@@ -1,9 +1,25 @@
 {
-  "eslint.nodePath": "config/eslint-config/node_modules/eslint",
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
+  "cSpell.diagnosticLevel": "Warning",
+  "cSpell.words": [
+    "arktype",
+    "autoinstallers",
+    "Bytedance",
+    "cozeloop",
+    "doubao",
+    "kwargs",
+    "langchain",
+    "langgraph",
+    "langsmith",
+    "loggable",
+    "packagejson",
+    "prefault",
+    "preinstall",
+    "ptaas",
+    "remeda",
+    "traceparent",
+    "tracestate",
+    "vikingdb",
+    "websockets"
   ],
   "prettier.prettierPath": "config/eslint-config/node_modules/prettier",
   "editor.tabSize": 2,
@@ -18,9 +34,14 @@
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
+  "editor.semanticHighlighting.enabled": false,
+  "eslint.probe": ["javascript", "typescript"],
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
+  "eslint.nodePath": "config/eslint-config/node_modules/eslint",
+  "eslint.workingDirectories": [{ "mode": "auto" }],
   "search.followSymlinks": false,
+  "search.useIgnoreFiles": true,
   "search.exclude": {
     "**/node_modules": true,
     "**/pnpm-lock.yaml": true,
@@ -52,13 +73,9 @@
     "**/pnpm-lock.yaml": "plaintext",
     "**/*.yml": "yaml"
   },
-  "search.useIgnoreFiles": true,
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "cSpell.diagnosticLevel": "Warning",
-  "eslint.probe": ["javascript", "typescript"],
-  "editor.semanticHighlighting.enabled": false,
   "javascript.validate.enable": false,
   "typescript.tsdk": "config/ts-config/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
@@ -78,7 +95,6 @@
   },
   "typescript.validate.enable": true,
   "typescript.suggest.autoImports": true,
-  "emmet.triggerExpansionOnTab": true,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
