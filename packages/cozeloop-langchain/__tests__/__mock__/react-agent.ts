@@ -1,13 +1,8 @@
 import { setTimeout } from 'node:timers/promises';
 
-import { AgentExecutor, createOpenAIToolsAgent } from 'langchain/agents';
+import { createAgent } from 'langchain';
 import { AzureChatOpenAI } from '@langchain/openai';
 import { DynamicTool } from '@langchain/core/tools';
-import {
-  ChatPromptTemplate,
-  MessagesPlaceholder,
-} from '@langchain/core/prompts';
-import { SystemMessage } from '@langchain/core/messages';
 
 const translationTool = new DynamicTool({
   name: 'translator',
@@ -18,7 +13,7 @@ const translationTool = new DynamicTool({
 
 const tools = [translationTool];
 
-const llm = new AzureChatOpenAI({
+const model = new AzureChatOpenAI({
   temperature: 0,
   modelName: 'gpt-4o-2024-05-13',
   azureOpenAIApiInstanceName: 'azure-ins',
@@ -29,16 +24,8 @@ const llm = new AzureChatOpenAI({
   maxTokens: 1000,
 });
 
-const agent = await createOpenAIToolsAgent({
-  llm,
+export const reactAgent = await createAgent({
+  model,
   tools,
-  prompt: ChatPromptTemplate.fromMessages([
-    new SystemMessage('translate user query. {agent_scratchpad}'),
-    new MessagesPlaceholder('agent_scratchpad'),
-  ]),
-});
-
-export const reactAgentExecutor = new AgentExecutor({
-  agent,
-  tools,
+  systemPrompt: 'translate user query. {agent_scratchpad}',
 });

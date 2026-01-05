@@ -1,7 +1,6 @@
+import { createAgent, tool } from 'langchain';
 import { type as arktype } from 'arktype';
 import { AzureChatOpenAI } from '@langchain/openai';
-import { createReactAgent } from '@langchain/langgraph/prebuilt';
-import { tool } from '@langchain/core/tools';
 
 const searchSchema = arktype({
   /** The query to use in your search. */
@@ -34,7 +33,7 @@ const model = new AzureChatOpenAI({
   maxTokens: 1000,
 });
 
-export const graphAgent = createReactAgent({
-  llm: model,
+export const graphAgent = createAgent({
+  model,
   tools: [search],
 });
