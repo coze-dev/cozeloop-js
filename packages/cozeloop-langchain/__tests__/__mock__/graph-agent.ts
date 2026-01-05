@@ -10,10 +10,8 @@ const searchSchema = arktype({
 
 const search = tool(
   (input: typeof searchSchema.infer) => {
-    if (
-      input.query.toLowerCase().includes('sf') ||
-      input.query.toLowerCase().includes('san francisco')
-    ) {
+    const query = input.query?.toLowerCase() ?? '';
+    if (query.includes('sf') || query.includes('san francisco')) {
       return "It's 60 degrees and foggy.";
     }
     return "It's 90 degrees and sunny.";
@@ -21,7 +19,7 @@ const search = tool(
   {
     name: 'search',
     description: 'Call to surf the web.',
-    schema: searchSchema as any,
+    schema: searchSchema.toJsonSchema() as any,
   },
 );
 
