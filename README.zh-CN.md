@@ -14,13 +14,11 @@
 | [@cozeloop/ai](./packages/cozeloop-ai) | CozeLoop API SDK | [![npm](https://img.shields.io/npm/v/@cozeloop/ai.svg)](https://www.npmjs.com/package/@cozeloop/ai) |
 | [@cozeloop/langchain](./packages/cozeloop-langchain) | CozeLoop LangChain Integration | [![npm](https://img.shields.io/npm/v/@cozeloop/langchain.svg)](https://www.npmjs.com/package/@cozeloop/langchain) |
 
-
 ## 🎮 示例
 
 在 [examples](./examples) 目录中查找每个包的使用示例：
 
 - [cozeloop-ai-node](./examples/cozeloop-ai-node) - @cozeloop/ai 的 Node.js 使用示例
-
 
 ## 🚀 快速开始
 
@@ -86,9 +84,8 @@ npm run start
 
 ## 📖 文档
 
-<!-- - [官方文档](https://www.coze.cn/docs/developer_guides/nodejs_overview) -->
+- [官方文档](https://loop.coze.cn/open/docs/cozeloop/quick-start-nodejs)
 - [贡献指南](./CONTRIBUTING.md)
-<!-- - [如何发布](./docs/publish.md) -->
 
 ## 📄 许可证
 
