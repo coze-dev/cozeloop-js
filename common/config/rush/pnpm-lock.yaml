@@ -196,10 +196,10 @@ importers:
         version: 4.3.4(vite@5.4.14(@types/node@20.17.22))
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
       happy-dom:
-        specifier: ~15.11.0
-        version: 15.11.7
+        specifier: ^20.0.11
+        version: 20.0.11
       sucrase:
         specifier: ^3.32.0
         version: 3.35.0
@@ -208,7 +208,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
 
   ../../examples/cozeloop-ai-node:
     dependencies:
@@ -276,7 +276,7 @@ importers:
         version: 20.17.22
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
       msw:
         specifier: ^2.7.3
         version: 2.7.3(@types/node@20.17.22)(typescript@5.8.2)
@@ -291,7 +291,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
 
   ../../packages/cozeloop-ai:
     dependencies:
@@ -367,7 +367,7 @@ importers:
         version: 1.1.6
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
       axios:
         specifier: ^1.8.2
         version: 1.9.0
@@ -388,7 +388,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
 
   ../../packages/cozeloop-langchain:
     dependencies:
@@ -440,7 +440,7 @@ importers:
         version: 20.17.22
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
       langchain:
         specifier: ^1.2.3
         version: 1.2.3(@langchain/core@1.1.8(@opentelemetry/api@1.9.0)(@opentelemetry/exporter-trace-otlp-proto@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(openai@6.15.0(ws@8.18.3)(zod@4.3.5)))(@opentelemetry/api@1.9.0)(@opentelemetry/exporter-trace-otlp-proto@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(openai@6.15.0(ws@8.18.3)(zod@4.3.5))
@@ -455,7 +455,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
 
 packages:
 
@@ -2099,6 +2099,9 @@ packages:
   '@types/uuid@10.0.0':
     resolution: {integrity: sha512-7gqG38EyHgyP1S+7+xomFtL+ZNHcKv6DwNaCZmJmo1vgMugyF3TCnXVg4t1uk89mLNwnLtnY3TpOpCOyp1/xHQ==}
 
+  '@types/whatwg-mimetype@3.0.2':
+    resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
+
   '@typescript-eslint/eslint-plugin@5.38.1':
     resolution: {integrity: sha512-ky7EFzPhqz3XlhS7vPOoMDaQnQMn+9o5ICR9CPr/6bw8HrFkzhMSxuA3gRfiJVvs7geYrSeawGJjZoZQKCOglQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -2741,10 +2744,6 @@ packages:
     resolution: {integrity: sha512-ZSW3ma5GkcQBIpwZTSRAI8N71Uuwgs93IezB7mf7R60tC8ZbJideoDNKjHn2O9KIlx6rkGTTEk1xUCK2E1Y2Yg==}
     engines: {node: '>=10.13.0'}
 
-  entities@4.5.0:
-    resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
-    engines: {node: '>=0.12'}
-
   err-code@2.0.3:
     resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
 
@@ -3250,9 +3249,9 @@ packages:
     resolution: {integrity: sha512-AjqGKbDGUFRKIRCP9tCKiIGHyriz2oHEbPIbEtcSLSs4YjReZOIPQQWek4+6hjw62H9QShXHyaGivGiYVLeYFQ==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
-  happy-dom@15.11.7:
-    resolution: {integrity: sha512-KyrFvnl+J9US63TEzwoiJOQzZBJY7KgBushJA8X61DMbNsH+2ONkDuLDnCnwUiPTF42tLoEmrPyoqbenVA5zrg==}
-    engines: {node: '>=18.0.0'}
+  happy-dom@20.0.11:
+    resolution: {integrity: sha512-QsCdAUHAmiDeKeaNojb1OHOPF7NjcWPBR7obdu3NwH2a/oyQaLg5d0aaCy/9My6CdPChYF07dvz5chaXBGaD4g==}
+    engines: {node: '>=20.0.0'}
 
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
@@ -4652,10 +4651,6 @@ packages:
 
   webidl-conversions@4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
-
-  webidl-conversions@7.0.0:
-    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
-    engines: {node: '>=12'}
 
   whatwg-mimetype@3.0.0:
     resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
@@ -6517,6 +6512,8 @@ snapshots:
 
   '@types/uuid@10.0.0': {}
 
+  '@types/whatwg-mimetype@3.0.2': {}
+
   '@typescript-eslint/eslint-plugin@5.38.1(@typescript-eslint/parser@5.38.1(eslint@9.14.0)(typescript@5.8.2))(eslint@9.14.0)(typescript@5.8.2)':
     dependencies:
       '@typescript-eslint/parser': 5.38.1(eslint@9.14.0)(typescript@5.8.2)
@@ -6785,7 +6782,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))':
+  '@vitest/coverage-v8@2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -6799,7 +6796,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+      vitest: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
     transitivePeerDependencies:
       - supports-color
 
@@ -7305,8 +7302,6 @@ snapshots:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.2.1
-
-  entities@4.5.0: {}
 
   err-code@2.0.3: {}
 
@@ -8017,10 +8012,10 @@ snapshots:
 
   graphql@16.10.0: {}
 
-  happy-dom@15.11.7:
+  happy-dom@20.0.11:
     dependencies:
-      entities: 4.5.0
-      webidl-conversions: 7.0.0
+      '@types/node': 20.17.22
+      '@types/whatwg-mimetype': 3.0.2
       whatwg-mimetype: 3.0.0
 
   has-bigints@1.1.0: {}
@@ -9412,7 +9407,7 @@ snapshots:
       '@types/node': 20.17.22
       fsevents: 2.3.3
 
-  vitest@2.1.9(@types/node@20.17.22)(happy-dom@15.11.7)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)):
+  vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)):
     dependencies:
       '@vitest/expect': 2.1.9
       '@vitest/mocker': 2.1.9(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))(vite@5.4.14(@types/node@20.17.22))
@@ -9436,7 +9431,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 20.17.22
-      happy-dom: 15.11.7
+      happy-dom: 20.0.11
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -9453,8 +9448,6 @@ snapshots:
   webidl-conversions@3.0.1: {}
 
   webidl-conversions@4.0.2: {}
-
-  webidl-conversions@7.0.0: {}
 
   whatwg-mimetype@3.0.0: {}
 
