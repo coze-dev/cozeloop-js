@@ -1,12 +1,11 @@
-import { type } from 'arktype';
-import { createReactAgent } from '@langchain/langgraph/prebuilt';
-import { tool } from '@langchain/core/tools';
+import { createAgent, tool } from 'langchain';
+import { type as arktype } from 'arktype';
 
 import { CustomChatModel } from './custom-chat-model';
 
 const model = new CustomChatModel({});
 
-const weatherSchema = type({
+const weatherSchema = arktype({
   /** Location to get the weather for. */
   location: "'sf' | 'nyc'",
 });
@@ -22,15 +21,12 @@ const getWeather = tool(
   {
     name: 'get_weather',
     description: 'Call to get the current weather.',
-    schema: weatherSchema as any,
+    schema: weatherSchema.toJsonSchema(),
   },
 );
 
-// We can add our system prompt here
-const prompt = 'Respond in Italian';
-
-export const customAgent = createReactAgent({
-  llm: model,
+export const customAgent = createAgent({
+  model,
   tools: [getWeather],
-  stateModifier: prompt,
+  systemPrompt: 'You are a helpful assistant',
 });

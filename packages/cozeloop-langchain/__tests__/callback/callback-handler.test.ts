@@ -9,7 +9,7 @@ import {
 import {
   CustomLLM,
   CustomRetriever,
-  reactAgentExecutor,
+  reactAgent,
   graphAgent,
   fanGraph,
   setupTraceMock,
@@ -77,8 +77,8 @@ describe('Callback with langchain', () => {
 
   it.skip('🧪 react agent', async () => {
     const callback = makeCallback();
-    const resp = await reactAgentExecutor.invoke(
-      { input: '翻译「苹果」到英文' },
+    const resp = await reactAgent.invoke(
+      { messages: [{ role: 'user', content: '翻译「苹果」到英文' }] },
       { callbacks: [callback] },
     );
 

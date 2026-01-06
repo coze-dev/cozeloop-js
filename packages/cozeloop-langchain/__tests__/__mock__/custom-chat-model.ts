@@ -39,9 +39,6 @@ export class CustomChatModel extends SimpleChatModel {
     }
     // Pass `runManager?.getChild()` when invoking internal runnables to enable tracing
     // await subRunnable.invoke(params, runManager?.getChild());
-    if (typeof messages[0].content !== 'string') {
-      throw new Error('Multimodal messages are not supported.');
-    }
     return await setTimeout(this.delay, `[MOCK] ${JSON.stringify(messages)}`);
   }
 
@@ -52,9 +49,6 @@ export class CustomChatModel extends SimpleChatModel {
   ): AsyncGenerator<ChatGenerationChunk> {
     if (!messages.length) {
       throw new Error('No messages provided.');
-    }
-    if (typeof messages[0].content !== 'string') {
-      throw new Error('Multimodal messages are not supported.');
     }
     // Pass `runManager?.getChild()` when invoking internal runnables to enable tracing
     // await subRunnable.invoke(params, runManager?.getChild());

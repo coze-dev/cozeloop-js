@@ -14,13 +14,11 @@ This monorepo contains the following packages:
 | [@cozeloop/ai](./packages/cozeloop-ai) | CozeLoop API SDK | [![npm](https://img.shields.io/npm/v/@cozeloop/ai.svg)](https://www.npmjs.com/package/@cozeloop/ai) |
 | [@cozeloop/langchain](./packages/cozeloop-langchain) | CozeLoop LangChain Integration | [![npm](https://img.shields.io/npm/v/@cozeloop/langchain.svg)](https://www.npmjs.com/package/@cozeloop/langchain) |
 
-
 ## 🎮 Examples
 
 Find usage examples for each package in the [examples](./examples) directory:
 
 - [cozeloop-ai-node](./examples/cozeloop-ai-node) - Node.js Demo for @cozeloop/ai
-
 
 ## 🚀 Getting Started
 
@@ -88,9 +86,9 @@ rushx start
 
 ## 📖 Documentation
 
+- [Official Documentation](https://loop.coze.cn/open/docs/cozeloop/quick-start-nodejs)
 - [Contributing Guidelines](./CONTRIBUTING.md)
 
 ## 📄 License
 
 [MIT](./LICENSE)
-

@@ -1,7 +1,6 @@
+import { createAgent, tool } from 'langchain';
 import { type as arktype } from 'arktype';
 import { AzureChatOpenAI } from '@langchain/openai';
-import { createReactAgent } from '@langchain/langgraph/prebuilt';
-import { tool } from '@langchain/core/tools';
 
 const searchSchema = arktype({
   /** The query to use in your search. */
@@ -10,10 +9,8 @@ const searchSchema = arktype({
 
 const search = tool(
   (input: typeof searchSchema.infer) => {
-    if (
-      input.query.toLowerCase().includes('sf') ||
-      input.query.toLowerCase().includes('san francisco')
-    ) {
+    const query = input.query?.toLowerCase() ?? '';
+    if (query.includes('sf') || query.includes('san francisco')) {
       return "It's 60 degrees and foggy.";
     }
     return "It's 90 degrees and sunny.";
@@ -21,7 +18,7 @@ const search = tool(
   {
     name: 'search',
     description: 'Call to surf the web.',
-    schema: searchSchema as any,
+    schema: searchSchema.toJsonSchema() as any,
   },
 );
 
@@ -36,7 +33,7 @@ const model = new AzureChatOpenAI({
   maxTokens: 1000,
 });
 
-export const graphAgent = createReactAgent({
-  llm: model,
+export const graphAgent = createAgent({
+  model,
   tools: [search],
 });
