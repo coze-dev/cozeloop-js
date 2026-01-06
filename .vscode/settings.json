@@ -21,6 +21,9 @@
     "vikingdb",
     "websockets"
   ],
+  "markdownlint.config": {
+    "ol-prefix": false
+  },
   "prettier.prettierPath": "config/eslint-config/node_modules/prettier",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
@@ -68,7 +71,6 @@
     "*.json": "jsonc",
     "package.json": "json",
     "README": "markdown",
-    "CODEOWNERS": "ini",
     "**/coverage/**/*.*": "plaintext",
     "**/pnpm-lock.yaml": "plaintext",
     "**/*.yml": "yaml"
