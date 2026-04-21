@@ -15,7 +15,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     env:
-      NODE_VERSION: '18'
+      NODE_VERSION: '24'
     steps:
       - uses: actions/checkout@v3
         with:
