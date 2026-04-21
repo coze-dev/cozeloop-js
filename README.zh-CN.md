@@ -24,18 +24,18 @@
 
 ### 前置要求
 
-- Node.js 18+ (推荐 LTS/Hydrogen)
-- pnpm 9.12.0
-- Rush 5.150.0
+- Node.js 24+ (推荐 LTS/Krypton)
+- pnpm 10.27.0
+- Rush 5.172.1
 
 ### 安装步骤
 
-1. **安装 Node.js 18+**
+1. **安装 Node.js 24+**
 
 ```bash
-nvm install lts/hydrogen
-nvm alias default lts/hydrogen # 设置默认 node 版本
-nvm use lts/hydrogen
+nvm install lts/krypton
+nvm alias default lts/krypton # 设置默认 node 版本
+nvm use lts/krypton
 ```
 
 2. **克隆仓库**
@@ -47,7 +47,7 @@ git clone git@github.com:coze-dev/cozeloop-js.git
 3. **安装必需的全局依赖**
 
 ```bash
-npm i -g pnpm@9.12.0 @microsoft/rush@5.150.0
+npm i -g pnpm@10.27.0 @microsoft/rush@5.172.1
 ```
 
 4. **安装项目依赖**
