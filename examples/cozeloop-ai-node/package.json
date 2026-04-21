@@ -22,7 +22,7 @@
     "@loop-infra/eslint-config": "workspace:*",
     "@loop-infra/ts-config": "workspace:*",
     "@loop-infra/vitest-config": "workspace:*",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "dotenv": "~16.4.7",
     "msw": "^2.7.3",
     "tsx": "^4.20.5",

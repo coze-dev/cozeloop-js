@@ -18,7 +18,7 @@
   "devDependencies": {
     "@loop-infra/eslint-config": "workspace:*",
     "@loop-infra/ts-config": "workspace:*",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@vitejs/plugin-react": "~4.3.3",
     "@vitest/coverage-v8": "~2.1.4",
     "happy-dom": "^20.0.11",
