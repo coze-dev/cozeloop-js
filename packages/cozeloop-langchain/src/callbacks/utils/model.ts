@@ -44,7 +44,7 @@ export function extractLLMAttributes(
 
   // guess model name
   const name =
-    llm.id.at(-1) ||
+    llm.id[llm.id.length - 1] ||
     mixed.model ||
     mixed.modelName ||
     mixed.model_name ||

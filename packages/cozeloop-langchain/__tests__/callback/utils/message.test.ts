@@ -44,6 +44,7 @@ describe('parseBaseMessage', () => {
         url: 'https://example.com/image.jpg',
       },
     };
+    // @ts-expect-error skip
     const baseMessage = new AIMessage({ content: [complexContent] });
     const parsedMessage = parseBaseMessage(baseMessage);
     expect(parsedMessage).toEqual({

@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: avk5jcsa6uxo2n5cahoirjiuw4
+pnpmfileChecksum: sha256-E1T7OJ3DLTjpDqf4RdJzK9VDtAxgm4gDEQCLYdHD8nI=
 
 importers:
 
@@ -161,8 +161,8 @@ importers:
         specifier: ~9.6.1
         version: 9.6.1
       '@types/node':
-        specifier: ^20
-        version: 20.17.22
+        specifier: ^24
+        version: 24.12.2
       typescript:
         specifier: ^5.5.3
         version: 5.8.2
@@ -180,7 +180,7 @@ importers:
     dependencies:
       vite-tsconfig-paths:
         specifier: ^4.2.1
-        version: 4.3.2(typescript@5.8.2)(vite@5.4.14(@types/node@20.17.22))
+        version: 4.3.2(typescript@5.8.2)(vite@5.4.14(@types/node@24.12.2))
     devDependencies:
       '@loop-infra/eslint-config':
         specifier: workspace:*
@@ -189,14 +189,14 @@ importers:
         specifier: workspace:*
         version: link:../ts-config
       '@types/node':
-        specifier: ^20
-        version: 20.17.22
+        specifier: ^24
+        version: 24.12.2
       '@vitejs/plugin-react':
         specifier: ~4.3.3
-        version: 4.3.4(vite@5.4.14(@types/node@20.17.22))
+        version: 4.3.4(vite@5.4.14(@types/node@24.12.2))
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2)))
       happy-dom:
         specifier: ^20.0.11
         version: 20.0.11
@@ -208,7 +208,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2))
 
   ../../examples/cozeloop-ai-node:
     dependencies:
@@ -235,14 +235,14 @@ importers:
         specifier: workspace:*
         version: link:../../config/vitest-config
       '@types/node':
-        specifier: ^20
-        version: 20.17.22
+        specifier: ^24
+        version: 24.12.2
       dotenv:
         specifier: ~16.4.7
         version: 16.4.7
       msw:
         specifier: ^2.7.3
-        version: 2.7.3(@types/node@20.17.22)(typescript@5.8.2)
+        version: 2.7.3(@types/node@24.12.2)(typescript@5.8.2)
       tsx:
         specifier: ^4.20.5
         version: 4.20.5
@@ -272,14 +272,14 @@ importers:
         specifier: workspace:*
         version: link:../../config/vitest-config
       '@types/node':
-        specifier: ^20
-        version: 20.17.22
+        specifier: ^24
+        version: 24.12.2
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2)))
       msw:
         specifier: ^2.7.3
-        version: 2.7.3(@types/node@20.17.22)(typescript@5.8.2)
+        version: 2.7.3(@types/node@24.12.2)(typescript@5.8.2)
       rimraf:
         specifier: ~3.0.2
         version: 3.0.2
@@ -291,7 +291,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2))
 
   ../../packages/cozeloop-ai:
     dependencies:
@@ -354,8 +354,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.9
       '@types/node':
-        specifier: ^20
-        version: 20.17.22
+        specifier: ^24
+        version: 24.12.2
       '@types/node-fetch':
         specifier: ^2.x
         version: 2.6.12
@@ -367,7 +367,7 @@ importers:
         version: 1.1.6
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2)))
       axios:
         specifier: ^1.8.2
         version: 1.9.0
@@ -376,7 +376,7 @@ importers:
         version: 16.4.7
       msw:
         specifier: ^2.7.3
-        version: 2.7.3(@types/node@20.17.22)(typescript@5.8.2)
+        version: 2.7.3(@types/node@24.12.2)(typescript@5.8.2)
       rimraf:
         specifier: ~3.0.2
         version: 3.0.2
@@ -388,7 +388,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2))
 
   ../../packages/cozeloop-langchain:
     dependencies:
@@ -436,17 +436,17 @@ importers:
         specifier: workspace:*
         version: link:../../config/vitest-config
       '@types/node':
-        specifier: ^20
-        version: 20.17.22
+        specifier: ^24
+        version: 24.12.2
       '@vitest/coverage-v8':
         specifier: ~2.1.4
-        version: 2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))
+        version: 2.1.9(vitest@2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2)))
       langchain:
         specifier: ^1.2.3
         version: 1.2.3(@langchain/core@1.1.8(@opentelemetry/api@1.9.0)(@opentelemetry/exporter-trace-otlp-proto@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(openai@6.15.0(ws@8.18.3)(zod@4.3.5)))(@opentelemetry/api@1.9.0)(@opentelemetry/exporter-trace-otlp-proto@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(openai@6.15.0(ws@8.18.3)(zod@4.3.5))
       msw:
         specifier: ^2.7.3
-        version: 2.7.3(@types/node@20.17.22)(typescript@5.8.2)
+        version: 2.7.3(@types/node@24.12.2)(typescript@5.8.2)
       tsup:
         specifier: ^8.0.1
         version: 8.4.0(postcss@8.5.3)(tsx@4.20.5)(typescript@5.8.2)
@@ -455,7 +455,7 @@ importers:
         version: 5.8.2
       vitest:
         specifier: ~2.1.4
-        version: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+        version: 2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2))
 
 packages:
 
@@ -2068,6 +2068,9 @@ packages:
 
   '@types/node@20.17.22':
     resolution: {integrity: sha512-9RV2zST+0s3EhfrMZIhrz2bhuhBwxgkbHEwP2gtGWPjBzVQjifMzJ9exw7aDZhR1wbpj8zBrfp3bo8oJcGiUUw==}
+
+  '@types/node@24.12.2':
+    resolution: {integrity: sha512-A1sre26ke7HDIuY/M23nd9gfB+nrmhtYyMINbjI1zHJxYteKR6qSMX56FsmjMcDb3SMcjJg5BiRRgOCC/yBD0g==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -4530,6 +4533,9 @@ packages:
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
+
   unicode-canonical-property-names-ecmascript@2.0.1:
     resolution: {integrity: sha512-dA8WbNeb2a6oQzAQ55YlT5vQAWGV9WXOsi3SskE3bcCdM0P4SDd+24zS/OCacdRq5BkdsRj9q3Pg6YyQoxIGqg==}
     engines: {node: '>=4'}
@@ -5891,17 +5897,17 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.2': {}
 
-  '@inquirer/confirm@5.1.6(@types/node@20.17.22)':
+  '@inquirer/confirm@5.1.6(@types/node@24.12.2)':
     dependencies:
-      '@inquirer/core': 10.1.7(@types/node@20.17.22)
-      '@inquirer/type': 3.0.4(@types/node@20.17.22)
+      '@inquirer/core': 10.1.7(@types/node@24.12.2)
+      '@inquirer/type': 3.0.4(@types/node@24.12.2)
     optionalDependencies:
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
 
-  '@inquirer/core@10.1.7(@types/node@20.17.22)':
+  '@inquirer/core@10.1.7(@types/node@24.12.2)':
     dependencies:
       '@inquirer/figures': 1.0.10
-      '@inquirer/type': 3.0.4(@types/node@20.17.22)
+      '@inquirer/type': 3.0.4(@types/node@24.12.2)
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
       mute-stream: 2.0.0
@@ -5909,13 +5915,13 @@ snapshots:
       wrap-ansi: 6.2.0
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
 
   '@inquirer/figures@1.0.10': {}
 
-  '@inquirer/type@3.0.4(@types/node@20.17.22)':
+  '@inquirer/type@3.0.4(@types/node@24.12.2)':
     optionalDependencies:
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -6473,13 +6479,13 @@ snapshots:
   '@types/jsonwebtoken@9.0.9':
     dependencies:
       '@types/ms': 2.1.0
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
 
   '@types/ms@2.1.0': {}
 
   '@types/node-fetch@2.6.12':
     dependencies:
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
       form-data: 4.0.4
 
   '@types/node@18.19.86':
@@ -6489,6 +6495,10 @@ snapshots:
   '@types/node@20.17.22':
     dependencies:
       undici-types: 6.19.8
+
+  '@types/node@24.12.2':
+    dependencies:
+      undici-types: 7.16.0
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -6771,18 +6781,18 @@ snapshots:
       '@typescript-eslint/types': 8.25.0
       eslint-visitor-keys: 4.2.0
 
-  '@vitejs/plugin-react@4.3.4(vite@5.4.14(@types/node@20.17.22))':
+  '@vitejs/plugin-react@4.3.4(vite@5.4.14(@types/node@24.12.2))':
     dependencies:
       '@babel/core': 7.26.9
       '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.26.9)
       '@babel/plugin-transform-react-jsx-source': 7.25.9(@babel/core@7.26.9)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.4.14(@types/node@20.17.22)
+      vite: 5.4.14(@types/node@24.12.2)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@2.1.9(vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)))':
+  '@vitest/coverage-v8@2.1.9(vitest@2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2)))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -6796,7 +6806,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))
+      vitest: 2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2))
     transitivePeerDependencies:
       - supports-color
 
@@ -6807,14 +6817,14 @@ snapshots:
       chai: 5.2.0
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.9(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))(vite@5.4.14(@types/node@20.17.22))':
+  '@vitest/mocker@2.1.9(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2))(vite@5.4.14(@types/node@24.12.2))':
     dependencies:
       '@vitest/spy': 2.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      msw: 2.7.3(@types/node@20.17.22)(typescript@5.8.2)
-      vite: 5.4.14(@types/node@20.17.22)
+      msw: 2.7.3(@types/node@24.12.2)(typescript@5.8.2)
+      vite: 5.4.14(@types/node@24.12.2)
 
   '@vitest/pretty-format@2.1.9':
     dependencies:
@@ -8464,12 +8474,12 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2):
+  msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2):
     dependencies:
       '@bundled-es-modules/cookie': 2.0.1
       '@bundled-es-modules/statuses': 1.0.1
       '@bundled-es-modules/tough-cookie': 0.1.6
-      '@inquirer/confirm': 5.1.6(@types/node@20.17.22)
+      '@inquirer/confirm': 5.1.6(@types/node@24.12.2)
       '@mswjs/interceptors': 0.37.6
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/until': 2.1.0
@@ -8744,7 +8754,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
       long: 5.3.1
 
   proxy-from-env@1.1.0: {}
@@ -9332,6 +9342,8 @@ snapshots:
 
   undici-types@6.19.8: {}
 
+  undici-types@7.16.0: {}
+
   unicode-canonical-property-names-ecmascript@2.0.1: {}
 
   unicode-match-property-ecmascript@2.0.0:
@@ -9369,13 +9381,13 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite-node@2.1.9(@types/node@20.17.22):
+  vite-node@2.1.9(@types/node@24.12.2):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 1.1.2
-      vite: 5.4.14(@types/node@20.17.22)
+      vite: 5.4.14(@types/node@24.12.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -9387,30 +9399,30 @@ snapshots:
       - supports-color
       - terser
 
-  vite-tsconfig-paths@4.3.2(typescript@5.8.2)(vite@5.4.14(@types/node@20.17.22)):
+  vite-tsconfig-paths@4.3.2(typescript@5.8.2)(vite@5.4.14(@types/node@24.12.2)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
       tsconfck: 3.1.5(typescript@5.8.2)
     optionalDependencies:
-      vite: 5.4.14(@types/node@20.17.22)
+      vite: 5.4.14(@types/node@24.12.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.4.14(@types/node@20.17.22):
+  vite@5.4.14(@types/node@24.12.2):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.3
       rollup: 4.34.9
     optionalDependencies:
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
       fsevents: 2.3.3
 
-  vitest@2.1.9(@types/node@20.17.22)(happy-dom@20.0.11)(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2)):
+  vitest@2.1.9(@types/node@24.12.2)(happy-dom@20.0.11)(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2)):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(msw@2.7.3(@types/node@20.17.22)(typescript@5.8.2))(vite@5.4.14(@types/node@20.17.22))
+      '@vitest/mocker': 2.1.9(msw@2.7.3(@types/node@24.12.2)(typescript@5.8.2))(vite@5.4.14(@types/node@24.12.2))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -9426,11 +9438,11 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 1.2.0
-      vite: 5.4.14(@types/node@20.17.22)
-      vite-node: 2.1.9(@types/node@20.17.22)
+      vite: 5.4.14(@types/node@24.12.2)
+      vite-node: 2.1.9(@types/node@24.12.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 20.17.22
+      '@types/node': 24.12.2
       happy-dom: 20.0.11
     transitivePeerDependencies:
       - less

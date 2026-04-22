@@ -384,7 +384,7 @@ export class CozeloopCallbackHandler
     metadata?: Record<string, unknown>,
     runName?: string,
   ) {
-    const spanName = `${runName ?? metadata?.toolName ?? tool.id.at(-1) ?? 'Tool'}`;
+    const spanName = `${runName ?? metadata?.toolName ?? tool.id[tool.id.length - 1] ?? 'Tool'}`;
     this._startSpan(spanName, runId, parentRunId, span => {
       span.setAttributes({
         [CozeloopAttr.SPAN_TYPE]: CozeloopSpanType.TOOL,

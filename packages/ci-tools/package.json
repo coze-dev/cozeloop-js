@@ -43,7 +43,7 @@
     "@loop-infra/eslint-config": "workspace:*",
     "@loop-infra/ts-config": "workspace:*",
     "@loop-infra/vitest-config": "workspace:*",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@vitest/coverage-v8": "~2.1.4",
     "msw": "^2.7.3",
     "rimraf": "~3.0.2",
